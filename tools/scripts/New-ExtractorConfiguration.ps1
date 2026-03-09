@@ -85,7 +85,6 @@ try {
         "Authorization" = "Bearer $token"
     }
     $TagsUri = "$uri/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroupName/providers/Microsoft.ApiManagement/service/$ApimInstanceName/tags?api-version=2022-08-01"
-    $TagsUri
     $tags = (Invoke-RestMethod -Method GET -Uri $TagsUri -Headers $headers).value.name
 
 } catch {
@@ -151,5 +150,4 @@ $fileContent = $StringBuilder.ToString()
 Out-File -FilePath "autogen.configuration.extractor.$Stage.yaml" -InputObject $fileContent -Force
 
 # Output completion message
-Write-Output "Done listing APIs, tags, loggers, namedValues, products, and backends"
 Write-Output "Done listing APIs, tags, loggers, namedValues, products, and backends"
