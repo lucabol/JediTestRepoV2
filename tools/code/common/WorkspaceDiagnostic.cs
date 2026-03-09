@@ -158,6 +158,17 @@ public sealed record WorkspaceDiagnosticDto
         [JsonPropertyName("verbosity")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public string? Verbosity { get; init; }
+
+        [JsonPropertyName("largeLanguageModel")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public LargeLanguageModelDiagnosticSettings? LargeLanguageModel { get; init; }
+    }
+
+    public sealed record LargeLanguageModelDiagnosticSettings
+    {
+        [JsonPropertyName("logMessages")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public bool? LogMessages { get; init; }
     }
 
     public sealed record PipelineDiagnosticSettings
