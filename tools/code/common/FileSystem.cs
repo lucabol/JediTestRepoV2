@@ -93,8 +93,12 @@ public static class FileInfoExtensions
 
     public static async ValueTask<T> ReadAsJson<T>(this FileInfo file, CancellationToken cancellationToken)
     {
-        var binaryData = await file.ReadAsBinaryData(cancellationToken);
-        return binaryData.ToObjectFromJson<T>();
+        using var stream = file.OpenRead();
+        // StreamReader with detectEncodingFromByteOrderMarks strips any UTF-8 BOM before reading,
+        // preventing System.Text.Json from seeing 0xEF as the first byte and throwing.
+        using var reader = new StreamReader(stream, detectEncodingFromByteOrderMarks: true);
+        var content = await reader.ReadToEndAsync(cancellationToken);
+        return BinaryData.FromString(content).ToObjectFromJson<T>();
     }
 
     public static async ValueTask<BinaryData> ReadAsBinaryData(this FileInfo file, CancellationToken cancellationToken)
