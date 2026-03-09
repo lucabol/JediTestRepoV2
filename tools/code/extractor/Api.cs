@@ -150,10 +150,12 @@ internal static class ApiModule
                    .List(pipeline, cancellationToken);
 
         bool shouldExtractApiDto(ApiDto dto) =>
-            // Don't extract if its version set should not be extracted
-            common.ApiModule.TryGetVersionSetName(dto)
-                            .Map(shouldExtractVersionSet)
-                            .IfNone(true);
+            // When explicit API names are configured, skip the version-set filter —
+            // the caller already narrowed the list to the requested APIs.
+            findConfigurationApis().IsSome
+            || common.ApiModule.TryGetVersionSetName(dto)
+                               .Map(shouldExtractVersionSet)
+                               .IfNone(true);
 
         bool shouldExtractVersionSet(VersionSetName name) =>
             findConfigurationVersionSets()
