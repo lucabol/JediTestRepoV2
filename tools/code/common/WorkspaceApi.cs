@@ -475,6 +475,10 @@ public static class WorkspaceApiModule
 
     public static async ValueTask PutDto(this WorkspaceApiUri uri, WorkspaceApiDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
     {
+        // APIM rejects an empty string serviceUrl with a ValidationError; normalise to null so the field is omitted.
+        if (string.IsNullOrEmpty(dto.Properties.ServiceUrl))
+            dto = dto with { Properties = dto.Properties with { ServiceUrl = null } };
+
         if (dto.Properties.Format is null && dto.Properties.Value is null)
         {
             var content = BinaryData.FromObjectAsJson(dto);
