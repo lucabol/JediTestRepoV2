@@ -167,7 +167,7 @@ internal static class ApiDiagnosticModule
                     // Get the diagnostic with the specified name
                 from diagnostic in diagnostics.PickJsonObjects()
                                               .Where(diagnostic => diagnostic.TryGetStringProperty("name")
-                                                                         .Where(name => name.Equals(name.ToString(), StringComparison.OrdinalIgnoreCase))
+                                                                         .Where(diagnosticNameValue => diagnosticNameValue.Equals(name.ToString(), StringComparison.OrdinalIgnoreCase))
                                                                          .Any())
                                               .HeadOrNone()
                 select diagnostic;
