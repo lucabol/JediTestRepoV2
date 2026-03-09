@@ -177,8 +177,14 @@ internal static class NamedValueModule
 
             logger.LogInformation("Putting named value {NamedValueName}...", name);
 
+            // Azure APIM requires displayName in every PUT request; fall back to the resource name
+            // when the artifact file was created by an older version that omitted it.
+            var dtoToSend = string.IsNullOrEmpty(dto.Properties.DisplayName)
+                ? dto with { Properties = dto.Properties with { DisplayName = name.ToString() } }
+                : dto;
+
             await NamedValueUri.From(name, serviceUri)
-                               .PutDto(dto, pipeline, cancellationToken);
+                               .PutDto(dtoToSend, pipeline, cancellationToken);
         };
     }
 
