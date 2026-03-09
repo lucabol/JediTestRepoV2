@@ -92,8 +92,14 @@ The extractor will export the artifacts listed below.
 | OpenAPI specification | ./apis/``api_name``/specification.{yaml\|json} |
 | API policy | ./apis/``api_name``/policy.xml |
 | Operation policy | ./apis/``api_name``/operations/``operation_name``/policy.xml |
-| tags | ./tags/``tag_name``
-| backends | ./backends/``backend_name``
+| Tag information | ./tags/``tag_name``/tagInformation.json |
+| API tag information | ./apis/``api_name``/tags/``tag_name``/apiTagInformation.json |
+| Backend information | ./backends/``backend_name``/backendInformation.json |
+| Named value information | ./named values/``named_value_name``/namedValueInformation.json |
+| Policy fragment information | ./policy fragments/``fragment_name``/policyFragmentInformation.json |
+| Policy fragment content | ./policy fragments/``fragment_name``/policy.xml |
+| Version set information | ./version sets/``version_set_name``/versionSetInformation.json |
+| Product API association | ./products/``product_display_name``/apis/``api_name``/productApiInformation.json |
 
 
 ### Extracting Select Artifacts
