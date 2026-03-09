@@ -38,8 +38,12 @@ Here are the different logging levels available. By default the logging level is
 
 | COMMIT_ID specified | Action |
 | - | - |
-| No | Put all files in the artifacts directory |
-| Yes | Put artifacts that have changed in commit. Also include all artifacts defined in configuration (configuration YAML, environment variables, etc) that exist in the artifacts directory |
+| No | Put all files in the artifacts directory. **Deletions are NOT applied** — artifacts removed from the repository will remain in the APIM instance. Use this mode to force-republish all artifacts (e.g. after a build failure), not to delete resources. |
+| Yes | Put artifacts that have changed in commit. Also include all artifacts defined in configuration (configuration YAML, environment variables, etc) that exist in the artifacts directory. **Deleted artifacts (those removed in the specified commit) are also removed from APIM.** |
+
+```
+Note: The `publish-all-artifacts-in-repo` (no COMMIT_ID) mode only performs PUT operations — it does not delete any resources from the APIM instance, even if the corresponding artifact folder has been deleted from the repository. To have deletions reflected in APIM, you must use commit-based publishing by providing a COMMIT_ID. The publisher uses the git diff of the specified commit to detect deleted artifacts and remove them from APIM.
+```
 
 ### Configuration Override Across Environments
  In an enterprise setting you may want to override some configurations as you promote your APIM across environments. For example you may have a policy which points to a backend url which is different across environments. Or you may be using a completely different application insights instance across environments and you would like to point to the correct application insights instance. In order to override these configurations you will need to provide them inside a environment specific configuration file which the publisher tool can pick up and parse when pushing the changes across different APIM instances. For example if you have three different environments (Dev -> QA -> Prod) then you would have two separate configuration files (e.g. configuration.qa.yaml and configuration.prod.yaml). The lowest environment doesn't require a configuration file as its the source environment.
@@ -84,5 +88,5 @@ Note: You don't have to create the named values in the target APIM environments 
 ```
 
 ```
-Note: Important note regarding deleting apis. If you delete the specification file nothing happens. But if you delete the information file we delete the api. Now if you delete one but not the other it will do a put of whichever file is left. So always make sure you delete both files when deleting an api. As a matter of fact its recommended you delete the folder pertaining to the api under question.
+Note: Deleting APIs (and other resources) from APIM via APIOps requires commit-based publishing (COMMIT_ID must be set to the commit that contains the deletion). When using commit-based publishing: if you delete the specification file only, nothing happens; if you delete the information file (apiInformation.json) the API is removed from APIM; if you delete one but not the other it will do a PUT of whichever file is left. It is recommended to always delete the entire API folder rather than individual files within it. When using publish-all mode (no COMMIT_ID), deleted artifact folders are NOT removed from APIM — the absence of a file is not treated as a delete instruction in that mode.
 ```
