@@ -440,6 +440,7 @@ public static class WorkspaceApiModule
     {
         var formatWithoutLink = specification switch
         {
+            ApiSpecification.Grpc => "grpc",
             ApiSpecification.Wadl => "wadl",
             ApiSpecification.Wsdl => "wsdl",
             ApiSpecification.OpenApi openApiSpecification =>

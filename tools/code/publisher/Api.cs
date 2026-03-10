@@ -230,6 +230,7 @@ internal static class ApiModule
                 {
                     Format = specification switch
                     {
+                        ApiSpecification.Grpc => "grpc",
                         ApiSpecification.Wsdl => "wsdl",
                         ApiSpecification.Wadl => "wadl-xml",
                         ApiSpecification.OpenApi openApi => (openApi.Format, openApi.Version) switch
@@ -698,6 +699,7 @@ file static class Common
             WadlSpecificationFile.Name,
             WsdlSpecificationFile.Name,
             GraphQlSpecificationFile.Name,
+            GrpcSpecificationFile.Name,
             JsonOpenApiSpecificationFile.Name,
             YamlOpenApiSpecificationFile.Name
         }.ToFrozenSet();

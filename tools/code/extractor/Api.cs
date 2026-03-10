@@ -178,6 +178,7 @@ internal static class ApiModule
             (dto.Properties.Type ?? dto.Properties.ApiType) switch
             {
                 "graphql" => new ApiSpecification.GraphQl(),
+                "grpc" => new ApiSpecification.Grpc(),
                 "soap" => new ApiSpecification.Wsdl(),
                 "http" => defaultApiSpecification.Value,
                 null => defaultApiSpecification.Value,

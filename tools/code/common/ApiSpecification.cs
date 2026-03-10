@@ -12,6 +12,7 @@ namespace common;
 public abstract record ApiSpecification
 {
     public sealed record GraphQl : ApiSpecification;
+    public sealed record Grpc : ApiSpecification;
     public sealed record Wadl : ApiSpecification;
     public sealed record Wsdl : ApiSpecification;
     public sealed record OpenApi : ApiSpecification
@@ -65,6 +66,7 @@ public abstract record ApiSpecificationFile : ResourceFile
         specification switch
         {
             ApiSpecification.GraphQl => GraphQlSpecificationFile.From(apiName, serviceDirectory),
+            ApiSpecification.Grpc => GrpcSpecificationFile.From(apiName, serviceDirectory),
             ApiSpecification.Wadl => WadlSpecificationFile.From(apiName, serviceDirectory),
             ApiSpecification.Wsdl => WsdlSpecificationFile.From(apiName, serviceDirectory),
             ApiSpecification.OpenApi openApi => OpenApiSpecificationFile.From(openApi, apiName, serviceDirectory),
@@ -82,6 +84,9 @@ public abstract record ApiSpecificationFile : ResourceFile
         var tryParseGraphQl = () => (from specificationFile in GraphQlSpecificationFile.TryParse(file, serviceDirectory)
                                      select specificationFile as ApiSpecificationFile).AsTask();
 
+        var tryParseGrpc = () => (from specificationFile in GrpcSpecificationFile.TryParse(file, serviceDirectory)
+                                  select specificationFile as ApiSpecificationFile).AsTask();
+
         var tryParseWadl = () => (from specificationFile in WadlSpecificationFile.TryParse(file, serviceDirectory)
                                   select specificationFile as ApiSpecificationFile).AsTask();
 
@@ -91,7 +96,7 @@ public abstract record ApiSpecificationFile : ResourceFile
         var tryParseOpenApi = async () => from specificationFile in await OpenApiSpecificationFile.TryParse(file, getFileContents, serviceDirectory, cancellationToken)
                                           select specificationFile as ApiSpecificationFile;
 
-        return await ImmutableArray.Create(tryParseGraphQl, tryParseWadl, tryParseWsdl, tryParseOpenApi)
+        return await ImmutableArray.Create(tryParseGraphQl, tryParseGrpc, tryParseWadl, tryParseWsdl, tryParseOpenApi)
                                    .Pick(async (f, cancellationToken) => await f(), cancellationToken);
     }
 }
@@ -112,6 +117,24 @@ public sealed record GraphQlSpecificationFile : ApiSpecificationFile
             ? from parent in ApiDirectory.TryParse(file.Directory, serviceDirectory)
               select new GraphQlSpecificationFile { Parent = parent }
             : Option<GraphQlSpecificationFile>.None;
+}
+
+public sealed record GrpcSpecificationFile : ApiSpecificationFile
+{
+    public override ApiSpecification Specification { get; } = new ApiSpecification.Grpc();
+
+    public static string Name => "specification.proto";
+
+    protected override FileInfo Value => new(Path.Combine(Parent.ToDirectoryInfo().FullName, Name));
+
+    public static GrpcSpecificationFile From(ApiName apiName, ManagementServiceDirectory serviceDirectory) =>
+        new() { Parent = ApiDirectory.From(apiName, serviceDirectory) };
+
+    public static Option<GrpcSpecificationFile> TryParse(FileInfo? file, ManagementServiceDirectory serviceDirectory) =>
+        file is not null && file.Name == Name
+            ? from parent in ApiDirectory.TryParse(file.Directory, serviceDirectory)
+              select new GrpcSpecificationFile { Parent = parent }
+            : Option<GrpcSpecificationFile>.None;
 }
 
 public sealed record WadlSpecificationFile : ApiSpecificationFile
