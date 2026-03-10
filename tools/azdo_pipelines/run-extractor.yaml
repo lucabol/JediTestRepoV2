@@ -158,7 +158,7 @@ stages:
           #Running Super Linting Tool on the API(s) - START
           - task: NodeTool@0
             inputs:
-              versionSpec: '20.x'
+              versionSpec: '22.x'
             displayName: 'Install Node.js'
 
           - script: |
@@ -196,9 +196,9 @@ stages:
                 cd "$apiDirectoryPath" # exclude top directory
                 
                 echo "# Azure APIM Modifications Summary" > "$outputFilePath"
-                echo "" >> "outputFilePath" #newline                
+                echo "" >> "$outputFilePath"
                 echo '```' >> "$outputFilePath"
-                tree -d --noreport -I "outputFilePath" | sed 's/^/    /' >> "$outputFilePath"
+                tree -d --noreport | sed 's/^/    /' >> "$outputFilePath"
                 echo '```' >> "$outputFilePath"
 
                 # Display the path to the generated Markdown file
