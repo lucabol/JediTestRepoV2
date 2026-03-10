@@ -102,14 +102,17 @@ internal static class SubscriptionModule
 
             // Don't extract the master subscription
             return name != SubscriptionName.From("master")
-                    // Don't extract subscription if its API should not be extracted
-                    && common.SubscriptionModule.TryGetApiName(dto)
-                                                .Map(shouldExtractApi)
-                                                .IfNone(true)
-                    // Don't extract subscription if its product should not be extracted
-                    && common.SubscriptionModule.TryGetProductName(dto)
-                                                .Map(shouldExtractProduct)
-                                                .IfNone(true);
+                    // When explicit subscription names are configured, skip the API/product
+                    // filters — the caller already narrowed the list to the requested subscriptions.
+                    && (findConfigurationSubscriptions().IsSome
+                        // Don't extract subscription if its API should not be extracted
+                        || (common.SubscriptionModule.TryGetApiName(dto)
+                                                     .Map(shouldExtractApi)
+                                                     .IfNone(true)
+                            // Don't extract subscription if its product should not be extracted
+                            && common.SubscriptionModule.TryGetProductName(dto)
+                                                        .Map(shouldExtractProduct)
+                                                        .IfNone(true)));
         }
     }
 
