@@ -127,6 +127,7 @@ internal static class WorkspaceVersionSetModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
 
         builder.Services.TryAddSingleton(GetFindWorkspaceVersionSetDto);
     }
@@ -135,6 +136,9 @@ internal static class WorkspaceVersionSetModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var overrideFactory = provider.GetRequiredService<OverrideDtoFactory>();
+
+        var overrideDto = overrideFactory.Create<VersionSetName, WorkspaceVersionSetDto>();
 
         return async (name, workspaceName, cancellationToken) =>
         {
@@ -142,7 +146,8 @@ internal static class WorkspaceVersionSetModule
             var contentsOption = await tryGetFileContents(informationFile.ToFileInfo(), cancellationToken);
 
             return from contents in contentsOption
-                   select contents.ToObjectFromJson<WorkspaceVersionSetDto>();
+                   let dto = contents.ToObjectFromJson<WorkspaceVersionSetDto>()
+                   select overrideDto(name, dto);
         };
     }
 
