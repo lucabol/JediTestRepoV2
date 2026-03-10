@@ -150,6 +150,7 @@ internal static class ApiModule
         var findSpecificationContents = provider.GetRequiredService<FindApiSpecificationContents>();
         var overrideDtoFactory = provider.GetRequiredService<OverrideDtoFactory>();
         var correctRevisionNumber = provider.GetRequiredService<CorrectApimRevisionNumber>();
+        var makeApiRevisionCurrent = provider.GetRequiredService<MakeApiRevisionCurrent>();
         var putInApim = provider.GetRequiredService<PutApiInApim>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
 
@@ -189,6 +190,21 @@ internal static class ApiModule
                             : Option<(ApiSpecification.GraphQl, BinaryData)>.None;
                 });
                 await putInApim(name, dto, graphQlSpecificationContentsOption, cancellationToken);
+
+                // For non-revisioned (root) API names with a revision number > 1,
+                // ensure the correct revision is set as current after the PUT.
+                // correctRevisionNumber only handles this when a previous commit exists;
+                // on a fresh deployment there is no previous commit, so it skips.
+                // Calling makeApiRevisionCurrent here (after putInApim) guarantees the
+                // revision already exists in APIM when we create the release.
+                if (!ApiName.IsRevisioned(name))
+                {
+                    var revisionNumber = Common.GetRevisionNumber(informationFileDto);
+                    if (revisionNumber.ToInt() > 1)
+                    {
+                        await makeApiRevisionCurrent(name, revisionNumber, cancellationToken);
+                    }
+                }
             });
         }
 

@@ -141,6 +141,7 @@ internal static class WorkspaceApiModule
         var findDto = provider.GetRequiredService<FindWorkspaceApiDto>();
         var findSpecificationContents = provider.GetRequiredService<FindWorkspaceApiSpecificationContents>();
         var correctRevisionNumber = provider.GetRequiredService<CorrectWorkspaceApimRevisionNumber>();
+        var makeApiRevisionCurrent = provider.GetRequiredService<MakeWorkspaceApiRevisionCurrent>();
         var putInApim = provider.GetRequiredService<PutWorkspaceApiInApim>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
 
@@ -181,6 +182,19 @@ internal static class WorkspaceApiModule
                             : Option<(ApiSpecification.GraphQl, BinaryData)>.None;
                 });
                 await putInApim(name, dto, graphQlSpecificationContentsOption, workspaceName, cancellationToken);
+
+                // For non-revisioned (root) API names with a revision number > 1,
+                // ensure the correct revision is set as current after the PUT.
+                // correctRevisionNumber only handles this when a previous commit exists;
+                // on a fresh deployment there is no previous commit, so it skips.
+                if (!ApiName.IsRevisioned(name))
+                {
+                    var revisionNumber = Common.GetRevisionNumber(informationFileDto);
+                    if (revisionNumber.ToInt() > 1)
+                    {
+                        await makeApiRevisionCurrent(name, revisionNumber, workspaceName, cancellationToken);
+                    }
+                }
             });
         }
 
