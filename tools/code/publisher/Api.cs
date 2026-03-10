@@ -535,7 +535,17 @@ internal static class ApiModule
             var uri = getRevisionedUri(name, revisionNumber);
 
             // APIM sometimes fails revisions if isCurrent is set to true.
-            var dtoWithoutIsCurrent = dto with { Properties = dto.Properties with { IsCurrent = null } };
+            // Also normalize apiVersionSetId to a relative path (e.g. /apiVersionSets/{name})
+            // so that artifacts extracted from one environment can be published to another without
+            // carrying a subscription/resource-group-specific prefix that would cause a 404.
+            var dtoWithoutIsCurrent = dto with
+            {
+                Properties = dto.Properties with
+                {
+                    IsCurrent = null,
+                    ApiVersionSetId = NormalizeVersionSetId(dto.Properties.ApiVersionSetId)
+                }
+            };
 
             await uri.PutDto(dtoWithoutIsCurrent, pipeline, cancellationToken);
 
@@ -552,6 +562,28 @@ internal static class ApiModule
             var revisionedApiName = ApiName.GetRevisionedName(name, revisionNumber);
             return ApiUri.From(revisionedApiName, serviceUri);
         }
+    }
+
+    /// <summary>
+    /// Strips the environment-specific subscription/resource-group prefix from an
+    /// <c>apiVersionSetId</c> value, returning the portable relative form
+    /// <c>/apiVersionSets/{name}</c>.
+    ///
+    /// The APIM GET response stores the fully-qualified ARM resource ID
+    /// (e.g. <c>/subscriptions/.../apiVersionSets/my-set</c>).  When that
+    /// artifact is published to a different APIM instance the fully-qualified ID
+    /// points to the source instance and APIM returns 404 "ApiVersionSet not found".
+    /// Normalising to the relative form makes the artifact portable across environments.
+    /// </summary>
+    internal static string? NormalizeVersionSetId(string? versionSetId)
+    {
+        if (versionSetId is null)
+            return null;
+
+        // Find the last occurrence of "/apiVersionSets/" and take everything from there.
+        const string marker = "/apiVersionSets/";
+        var idx = versionSetId.LastIndexOf(marker, StringComparison.OrdinalIgnoreCase);
+        return idx >= 0 ? versionSetId[idx..] : versionSetId;
     }
 
     public static void ConfigureDeleteApis(IHostApplicationBuilder builder)

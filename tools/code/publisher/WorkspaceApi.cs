@@ -525,7 +525,16 @@ internal static class WorkspaceApiModule
             var uri = getRevisionedUri(name, workspaceName, revisionNumber);
 
             // APIM sometimes fails revisions if isCurrent is set to true.
-            var dtoWithoutIsCurrent = dto with { Properties = dto.Properties with { IsCurrent = null } };
+            // Also normalize apiVersionSetId to the workspace-relative form so that
+            // artifacts extracted from one environment work in another.
+            var dtoWithoutIsCurrent = dto with
+            {
+                Properties = dto.Properties with
+                {
+                    IsCurrent = null,
+                    ApiVersionSetId = ApiModule.NormalizeVersionSetId(dto.Properties.ApiVersionSetId)
+                }
+            };
 
             await uri.PutDto(dtoWithoutIsCurrent, pipeline, cancellationToken);
 
