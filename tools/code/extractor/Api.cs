@@ -31,6 +31,7 @@ internal static class ApiModule
         ApiTagModule.ConfigureExtractApiTags(builder);
         ApiDiagnosticModule.ConfigureExtractApiDiagnostics(builder);
         ApiOperationModule.ConfigureExtractApiOperations(builder);
+        ApiReleaseModule.ConfigureExtractApiReleases(builder);
 
         builder.Services.TryAddSingleton(GetExtractApis);
     }
@@ -43,6 +44,7 @@ internal static class ApiModule
         var extractApiTags = provider.GetRequiredService<ExtractApiTags>();
         var extractApiDiagnostics = provider.GetRequiredService<ExtractApiDiagnostics>();
         var extractApiOperations = provider.GetRequiredService<ExtractApiOperations>();
+        var extractApiReleases = provider.GetRequiredService<ExtractApiReleases>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
 
@@ -68,6 +70,7 @@ internal static class ApiModule
             await extractApiTags(name, cancellationToken);
             await extractApiDiagnostics(name, cancellationToken);
             await extractApiOperations(name, cancellationToken);
+            await extractApiReleases(name, cancellationToken);
         }
     }
 
