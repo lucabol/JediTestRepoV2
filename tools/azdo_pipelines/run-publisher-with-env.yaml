@@ -104,7 +104,7 @@ steps:
         }
 
         Write-Information "Downloading release..."
-        $uri = "[source repository link])/$releaseFileName"
+        $uri = "https://github.com/Azure/apiops/releases/download/$(apiops_release_version)/$releaseFileName"
         $downloadFilePath = Join-Path "$(Agent.TempDirectory)" $releaseFileName
         Invoke-WebRequest -Uri "$uri" -OutFile "$downloadFilePath"
 
