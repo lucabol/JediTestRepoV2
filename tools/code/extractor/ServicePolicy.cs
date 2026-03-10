@@ -23,6 +23,7 @@ internal static class ServicePolicyModule
     {
         ConfigureListServicePolicies(builder);
         ConfigureWriteServicePolicyArtifacts(builder);
+        common.ConfigurationModule.ConfigureConfigurationJson(builder);
 
         builder.Services.TryAddSingleton(GetExtractServicePolicies);
     }
@@ -31,11 +32,22 @@ internal static class ServicePolicyModule
     {
         var list = provider.GetRequiredService<ListServicePolicies>();
         var writeArtifacts = provider.GetRequiredService<WriteServicePolicyArtifacts>();
+        var configurationJson = provider.GetRequiredService<ConfigurationJson>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
 
+        var excludeGlobalPolicy =
+            configurationJson.Value.TryGetPropertyValue("excludeGlobalPolicy", out var node)
+            && node.TryAsBool().Match(Right: v => v, Left: _ => false);
+
         return async cancellationToken =>
         {
+            if (excludeGlobalPolicy)
+            {
+                logger.LogInformation("Skipping service policy extraction because excludeGlobalPolicy is set to true.");
+                return;
+            }
+
             using var _ = activitySource.StartActivity(nameof(ExtractServicePolicies));
 
             logger.LogInformation("Extracting service policies...");
