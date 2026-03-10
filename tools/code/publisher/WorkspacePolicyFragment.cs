@@ -144,6 +144,7 @@ internal static class WorkspacePolicyFragmentModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
 
         builder.Services.TryAddSingleton(GetFindWorkspacePolicyFragmentDto);
     }
@@ -152,6 +153,9 @@ internal static class WorkspacePolicyFragmentModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var overrideFactory = provider.GetRequiredService<OverrideDtoFactory>();
+
+        var overrideDto = overrideFactory.Create<PolicyFragmentName, WorkspacePolicyFragmentDto>();
 
         return async (name, workspaceName, cancellationToken) =>
         {
@@ -167,7 +171,8 @@ internal static class WorkspacePolicyFragmentModule
             var contentsOption = await tryGetFileContents(informationFile.ToFileInfo(), cancellationToken);
 
             return from contents in contentsOption
-                   select contents.ToObjectFromJson<WorkspacePolicyFragmentDto>();
+                   let dto = contents.ToObjectFromJson<WorkspacePolicyFragmentDto>()
+                   select overrideDto(name, dto);
         }
 
         async ValueTask<Option<BinaryData>> tryGetPolicyContents(PolicyFragmentName name, WorkspaceName workspaceName, CancellationToken cancellationToken)

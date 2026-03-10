@@ -127,6 +127,7 @@ internal static class WorkspaceLoggerModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
 
         builder.Services.TryAddSingleton(GetFindWorkspaceLoggerDto);
     }
@@ -135,6 +136,9 @@ internal static class WorkspaceLoggerModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var overrideFactory = provider.GetRequiredService<OverrideDtoFactory>();
+
+        var overrideDto = overrideFactory.Create<LoggerName, WorkspaceLoggerDto>();
 
         return async (name, workspaceName, cancellationToken) =>
         {
@@ -142,7 +146,8 @@ internal static class WorkspaceLoggerModule
             var contentsOption = await tryGetFileContents(informationFile.ToFileInfo(), cancellationToken);
 
             return from contents in contentsOption
-                   select contents.ToObjectFromJson<WorkspaceLoggerDto>();
+                   let dto = contents.ToObjectFromJson<WorkspaceLoggerDto>()
+                   select overrideDto(name, dto);
         };
     }
 

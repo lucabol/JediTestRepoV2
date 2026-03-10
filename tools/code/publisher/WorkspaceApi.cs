@@ -263,6 +263,7 @@ internal static class WorkspaceApiModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
 
         builder.Services.TryAddSingleton(GetFindWorkspaceApiDto);
     }
@@ -271,6 +272,9 @@ internal static class WorkspaceApiModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var overrideFactory = provider.GetRequiredService<OverrideDtoFactory>();
+
+        var overrideDto = overrideFactory.Create<ApiName, WorkspaceApiDto>();
 
         return async (name, workspaceName, cancellationToken) =>
         {
@@ -278,7 +282,8 @@ internal static class WorkspaceApiModule
             var contentsOption = await tryGetFileContents(informationFile.ToFileInfo(), cancellationToken);
 
             return from contents in contentsOption
-                   select contents.ToObjectFromJson<WorkspaceApiDto>();
+                   let dto = contents.ToObjectFromJson<WorkspaceApiDto>()
+                   select overrideDto(name, dto);
         };
     }
 
