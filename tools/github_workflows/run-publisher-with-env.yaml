@@ -15,6 +15,11 @@ on:
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH:
         required: true
         type: string
+      USE_OIDC_AUTH:
+        description: 'Set to true to use OIDC federated credential (workload identity) instead of a client secret. Requires the calling job to have "id-token: write" permission and the app registration to have a federated identity credential for this GitHub Actions environment.'
+        required: false
+        type: boolean
+        default: false
 
 env:
   apiops_release_version: desired-version-goes-here
@@ -25,11 +30,25 @@ jobs:
   build:
     runs-on: ubuntu-latest
     environment: ${{ inputs.API_MANAGEMENT_ENVIRONMENT }}
+    permissions:
+      id-token: write  # Required when USE_OIDC_AUTH is true
+      contents: read
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
           fetch-depth: 2
+
+      # Log in to Azure using OIDC federated credential (no client secret required).
+      # Only runs when USE_OIDC_AUTH is true. Requires AZURE_CLIENT_ID, AZURE_TENANT_ID
+      # and AZURE_SUBSCRIPTION_ID to be set as environment secrets or variables, and the
+      # app registration to have a federated identity credential scoped to this environment.
+      - uses: azure/login@v2
+        if: ${{ inputs.USE_OIDC_AUTH == true }}
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
     
       # Run Spectral
       - uses: actions/setup-node@v4

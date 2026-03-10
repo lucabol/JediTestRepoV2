@@ -16,6 +16,11 @@ on:
         options:
           - "publish-artifacts-in-last-commit"
           - "publish-all-artifacts-in-repo"
+      USE_OIDC_AUTH:
+        description: 'Set to true to authenticate to Azure using OIDC federated credential (workload identity) instead of a client secret. Requires a federated identity credential on the app registration for this Actions environment.'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   get-commit:
@@ -36,6 +41,7 @@ jobs:
       API_MANAGEMENT_ENVIRONMENT: dev # change this to match the dev environment created in settings
       COMMIT_ID: ${{ needs.get-commit.outputs.commit_id }}
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
+      USE_OIDC_AUTH: ${{ github.event.inputs.USE_OIDC_AUTH == 'true' }}
     secrets: inherit
 
   #Publish without Commit ID. Publishes all artifacts that reside in the artifacts folder
@@ -46,6 +52,7 @@ jobs:
     with:
       API_MANAGEMENT_ENVIRONMENT: dev # change this to match the dev environment created in settings
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
+      USE_OIDC_AUTH: ${{ github.event.inputs.USE_OIDC_AUTH == 'true' }}
     secrets: inherit
 
   Push-Changes-To-APIM-Prod-With-Commit-ID:
@@ -57,6 +64,7 @@ jobs:
       CONFIGURATION_YAML_PATH: configuration.prod.yaml # make sure the file is available at the root
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
       COMMIT_ID: ${{ needs.get-commit.outputs.commit_id }}
+      USE_OIDC_AUTH: ${{ github.event.inputs.USE_OIDC_AUTH == 'true' }}
     secrets: inherit
 
   Push-Changes-To-APIM-Prod-Without-Commit-ID:
@@ -67,4 +75,5 @@ jobs:
       API_MANAGEMENT_ENVIRONMENT: prod # change this to match the prod environment created in settings
       CONFIGURATION_YAML_PATH: configuration.prod.yaml # make sure the file is available at the root
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
+      USE_OIDC_AUTH: ${{ github.event.inputs.USE_OIDC_AUTH == 'true' }}
     secrets: inherit

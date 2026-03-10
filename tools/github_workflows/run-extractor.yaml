@@ -19,6 +19,11 @@ on:
         - OpenAPIV3Json
         - OpenAPIV2Yaml
         - OpenAPIV2Json
+      USE_OIDC_AUTH:
+        description: 'Set to true to authenticate to Azure using OIDC federated credential (workload identity) instead of a client secret. Requires a federated identity credential on the app registration for this Actions environment.'
+        required: false
+        type: boolean
+        default: false
 
 env:
   apiops_release_version: desired-version-goes-here
@@ -26,9 +31,23 @@ env:
 jobs:
   extract:
     runs-on: ubuntu-latest
-    environment: dev # change this to match the dev environment created in settings 
+    environment: dev # change this to match the dev environment created in settings
+    permissions:
+      id-token: write  # Required when USE_OIDC_AUTH is true
+      contents: write  # Required to push extracted artifacts back to the repo
     steps:
       - uses: actions/checkout@v4
+
+      # Log in to Azure using OIDC federated credential (no client secret required).
+      # Only runs when USE_OIDC_AUTH is true. Requires AZURE_CLIENT_ID, AZURE_TENANT_ID
+      # and AZURE_SUBSCRIPTION_ID to be set as environment secrets or variables, and the
+      # app registration to have a federated identity credential scoped to this environment.
+      - uses: azure/login@v2
+        if: ${{ github.event.inputs.USE_OIDC_AUTH == 'true' }}
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           
       - name: Run extractor without Config Yaml
         if: ${{ github.event.inputs.CONFIGURATION_YAML_PATH == 'Extract All APIs' }}
