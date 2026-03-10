@@ -84,7 +84,7 @@ jobs:
           }
 
           Write-Information "Downloading release..."
-          $uri = "[source repository link] env.apiops_release_version }}/$releaseFileName"
+          $uri = "https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/$releaseFileName"
           $downloadFilePath = Join-Path "${{ runner.temp }}" $releaseFileName
           Invoke-WebRequest -Uri "$uri" -OutFile "$downloadFilePath"
 
@@ -139,7 +139,7 @@ jobs:
           }
 
           Write-Information "Downloading release..."
-          $uri = "[source repository link] env.apiops_release_version }}/$releaseFileName"
+          $uri = "https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/$releaseFileName"
           $downloadFilePath = Join-Path "${{ runner.temp }}" $releaseFileName
           Invoke-WebRequest -Uri "$uri" -OutFile "$downloadFilePath"
 
@@ -196,7 +196,7 @@ jobs:
           }
 
           Write-Information "Downloading release..."
-          $uri = "[source repository link] env.apiops_release_version }}/$releaseFileName"
+          $uri = "https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/$releaseFileName"
           $downloadFilePath = Join-Path "${{ runner.temp }}" $releaseFileName
           Invoke-WebRequest -Uri "$uri" -OutFile "$downloadFilePath"
 
@@ -252,7 +252,7 @@ jobs:
           }
 
           Write-Information "Downloading release..."
-          $uri = "[source repository link] env.apiops_release_version }}/$releaseFileName"
+          $uri = "https://github.com/Azure/apiops/releases/download/${{ env.apiops_release_version }}/$releaseFileName"
           $downloadFilePath = Join-Path "${{ runner.temp }}" $releaseFileName
           Invoke-WebRequest -Uri "$uri" -OutFile "$downloadFilePath"
 
