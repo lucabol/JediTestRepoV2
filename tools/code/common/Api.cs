@@ -496,6 +496,7 @@ public static class ApiModule
     {
         var formatWithoutLink = specification switch
         {
+            ApiSpecification.Grpc => "grpc",
             ApiSpecification.Wadl => "wadl",
             ApiSpecification.Wsdl => "wsdl",
             ApiSpecification.OpenApi openApiSpecification =>
