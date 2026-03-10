@@ -82,7 +82,15 @@ public static class AzureModule
             var expirationDate = new DateTimeOffset(jsonWebToken.ValidTo);
             var accessToken = new AccessToken(token, expirationDate);
 
-            return DelegatedTokenCredential.Create((context, cancellationToken) => accessToken);
+            return DelegatedTokenCredential.Create((context, cancellationToken) =>
+            {
+                if (DateTimeOffset.UtcNow < expirationDate)
+                    return accessToken;
+
+                throw new AuthenticationFailedException(
+                    "The AZURE_BEARER_TOKEN has expired. Static bearer tokens are not suitable for long-running operations. " +
+                    "Use managed identity, a service principal, or provide a fresh token before each run.");
+            });
         }
 
         static DefaultAzureCredential GetDefaultAzureCredential(Uri azureAuthorityHost) =>
