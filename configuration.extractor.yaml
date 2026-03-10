@@ -36,3 +36,7 @@
  policyFragmentNames:
   - policyFragment1
   - policyFragment2
+
+# Set to true to skip extracting the global (service-level) policy.
+# Useful for multi-team/multi-repo setups where a central team manages global policy separately.
+# excludeGlobalPolicy: true
