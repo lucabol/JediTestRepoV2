@@ -178,9 +178,24 @@ public sealed record WorkspaceBackendDto
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public JsonObject? Header { get; init; }
 
+        [JsonPropertyName("managedIdentity")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public BackendManagedIdentityCredentials? ManagedIdentity { get; init; }
+
         [JsonPropertyName("query")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public JsonObject? Query { get; init; }
+    }
+
+    public record BackendManagedIdentityCredentials
+    {
+        [JsonPropertyName("clientId")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string? ClientId { get; init; }
+
+        [JsonPropertyName("resourceId")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+        public string? ResourceId { get; init; }
     }
 
     public record BackendAuthorizationHeaderCredentials
