@@ -195,4 +195,13 @@ public static class ApiResolverModule
         var content = await file.ToFileInfo().ReadAsBinaryData(cancellationToken);
         return content.ToObjectFromJson<ApiResolverDto>();
     }
+
+    public static async ValueTask PutDto(this ApiResolverUri uri, ApiResolverDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
+    {
+        var content = BinaryData.FromObjectAsJson(dto);
+        await pipeline.PutContent(uri.ToUri(), content, cancellationToken);
+    }
+
+    public static async ValueTask Delete(this ApiResolverUri uri, HttpPipeline pipeline, CancellationToken cancellationToken) =>
+        await pipeline.DeleteResource(uri.ToUri(), waitForCompletion: true, cancellationToken);
 }
