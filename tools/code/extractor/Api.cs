@@ -31,6 +31,7 @@ internal static class ApiModule
         ApiTagModule.ConfigureExtractApiTags(builder);
         ApiDiagnosticModule.ConfigureExtractApiDiagnostics(builder);
         ApiOperationModule.ConfigureExtractApiOperations(builder);
+        ApiResolverModule.ConfigureExtractApiResolvers(builder);
 
         builder.Services.TryAddSingleton(GetExtractApis);
     }
@@ -43,6 +44,7 @@ internal static class ApiModule
         var extractApiTags = provider.GetRequiredService<ExtractApiTags>();
         var extractApiDiagnostics = provider.GetRequiredService<ExtractApiDiagnostics>();
         var extractApiOperations = provider.GetRequiredService<ExtractApiOperations>();
+        var extractApiResolvers = provider.GetRequiredService<ExtractApiResolvers>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
 
@@ -68,6 +70,11 @@ internal static class ApiModule
             await extractApiTags(name, cancellationToken);
             await extractApiDiagnostics(name, cancellationToken);
             await extractApiOperations(name, cancellationToken);
+            // Resolvers are only applicable to Synthetic GraphQL APIs
+            if (string.Equals(dto.Properties.ApiType, "graphql", StringComparison.OrdinalIgnoreCase))
+            {
+                await extractApiResolvers(name, cancellationToken);
+            }
         }
     }
 
