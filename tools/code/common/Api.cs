@@ -606,6 +606,8 @@ public static class ApiModule
     private static async ValueTask PutNonSoapApi(ApiUri uri, ApiDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
     {
         // Put API without the specification.
+        // ServiceUrl is intentionally omitted on this first PUT; APIM rejects an empty serviceUrl,
+        // and the URL hasn't been established yet for newly created APIs.
         var modelWithoutSpecification = dto with
         {
             Properties = dto.Properties with
@@ -621,6 +623,14 @@ public static class ApiModule
 
         // Put API again with specification
         await pipeline.PutContent(uri.ToUri(), BinaryData.FromObjectAsJson(dto), cancellationToken);
+
+        // Re-apply all properties without the specification.
+        // When APIM imports an OpenAPI/Swagger spec it extracts 'info.description' and can overwrite
+        // the description that was set in the first PUT.  A third PUT (without the spec body) re-applies
+        // every property from the information file so that values like 'description' reflect what the
+        // user configured in apiInformation.json rather than what the spec declared.
+        var propertiesDto = dto with { Properties = dto.Properties with { Format = null, Value = null } };
+        await pipeline.PutContent(uri.ToUri(), BinaryData.FromObjectAsJson(propertiesDto), cancellationToken);
     }
 
     private static bool CreationInProgress(Response response)
