@@ -53,6 +53,17 @@ backends:
     properties:
       url: "https://prod-75.eastus.logic.azure.com/workflows/[guid goes here]/triggers"
       resourceId: "https://management.azure.com/subscriptions/[subscription Guid goes here]/resourceGroups/rg-apim-lab-prod/providers/Microsoft.Logic/workflows/helloworldfromprodlogicapp"
+# Version set property overrides. The key is "versionSets" (not "apiVersionSets").
+# IMPORTANT: This section overrides properties of version sets that already exist in your
+# extracted artifacts (i.e. api-version-sets/<name>/apiVersionSetInformation.json).
+# It does NOT create new version sets. If the version set folder does not exist in your
+# apimartifacts directory, the publisher will not process it regardless of this config.
+versionSets:
+  - name: [version-set-name-matching-folder-in-api-version-sets]
+    properties:
+      displayName: "[Override display name for prod]"
+      description: "[Optional: override description for prod environment]"
+      versioningScheme: Segment  # or Header or Query
 apis:
   - name: demo-conference-api
     diagnostics:
