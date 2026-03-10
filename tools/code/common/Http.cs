@@ -169,9 +169,7 @@ public static class HttpPipelineExtensions
     {
         var either = await pipeline.TryPutContent(uri, content, cancellationToken);
 
-#pragma warning disable CA1806 // Do not ignore method results
-        either.IfLeft(response => throw response.ToHttpRequestException(uri));
-#pragma warning restore CA1806 // Do not ignore method results
+        either.IfLeftThrow(uri);
     }
 
     public static async ValueTask<Either<Response, Unit>> TryPutContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken)
@@ -207,9 +205,7 @@ public static class HttpPipelineExtensions
     {
         var either = await pipeline.TryPatchContent(uri, content, cancellationToken);
 
-#pragma warning disable CA1806 // Do not ignore method results
-        either.IfLeft(response => throw response.ToHttpRequestException(uri));
-#pragma warning restore CA1806 // Do not ignore method results
+        either.IfLeftThrow(uri);
     }
 
     public static async ValueTask<Either<Response, Unit>> TryPatchContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken)
