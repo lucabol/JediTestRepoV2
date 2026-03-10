@@ -648,7 +648,11 @@ internal static class ApiModule
                                                     {
                                                         if (currentRevisionNumber != revisionNumber)
                                                         {
-                                                            await deleteFromApim(name, cancellationToken);
+                                                            // Delete the specific revision, not the root API.
+                                                            // Using the root name here would cause deleteFromApim to call
+                                                            // DeleteAllRevisions, removing the entire API.
+                                                            var revisionedName = ApiName.GetRevisionedName(name, revisionNumber);
+                                                            await deleteFromApim(revisionedName, cancellationToken);
                                                         }
                                                     },
                                                     // If there is no current revision in source control, process the root API deletion
