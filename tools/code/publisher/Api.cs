@@ -3,6 +3,7 @@ using common;
 using DotNext.Threading;
 using LanguageExt;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
@@ -59,6 +60,13 @@ internal static class ApiModule
         var put = provider.GetRequiredService<PutApi>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
+        var configuration = provider.GetRequiredService<IConfiguration>();
+
+        var maxParallelism = configuration.TryGetValue("API_PUBLISH_MAX_PARALLELISM")
+                                          .Bind(value => int.TryParse(value, out var parsed) && parsed > 0
+                                                         ? Option<int>.Some(parsed)
+                                                         : Option<int>.None)
+                                          .IfNone(-1);
 
         return async cancellationToken =>
         {
@@ -66,11 +74,16 @@ internal static class ApiModule
 
             logger.LogInformation("Putting APIs...");
 
+            if (maxParallelism != -1)
+            {
+                logger.LogInformation("API publish parallelism capped at {MaxParallelism}.", maxParallelism);
+            }
+
             await getPublisherFiles()
                     .Choose(tryParseName.Invoke)
                     .Where(isNameInSourceControl.Invoke)
                     .Distinct()
-                    .IterParallel(put.Invoke, cancellationToken);
+                    .IterParallel(put.Invoke, maxDegreeOfParallelism: maxParallelism, cancellationToken);
         };
     }
 
