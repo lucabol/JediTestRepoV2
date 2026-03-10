@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,9 +20,42 @@ public static class HostingModule
     /// <returns></returns>
     public static async ValueTask RunHost(string[] arguments, string applicationName, Action<IHostApplicationBuilder> configureRunApplication)
     {
+        if (HandleEarlyExit(arguments, applicationName))
+        {
+            return;
+        }
+
         using var host = GetHost(arguments, applicationName, configureRunApplication);
         await StartHost(host);
         await RunApplication(host);
+    }
+
+    private static bool HandleEarlyExit(string[] arguments, string applicationName)
+    {
+        if (arguments.Contains("--version") || arguments.Contains("-v"))
+        {
+            var version = Assembly.GetEntryAssembly()
+                                  ?.GetCustomAttribute<AssemblyFileVersionAttribute>()
+                                  ?.Version
+                          ?? "unknown";
+            Console.WriteLine(version);
+            return true;
+        }
+
+        if (arguments.Contains("--help") || arguments.Contains("-h"))
+        {
+            Console.WriteLine($"Usage: {applicationName} [options]");
+            Console.WriteLine();
+            Console.WriteLine("Configuration is provided via environment variables.");
+            Console.WriteLine("An optional YAML configuration file can be specified using CONFIGURATION_YAML_PATH.");
+            Console.WriteLine();
+            Console.WriteLine("Options:");
+            Console.WriteLine("  --version, -v    Show version information");
+            Console.WriteLine("  --help,    -h    Show this help message");
+            return true;
+        }
+
+        return false;
     }
 
     private static IHost GetHost(string[] arguments, string applicationName, Action<IHostApplicationBuilder> configureRunApplication)
