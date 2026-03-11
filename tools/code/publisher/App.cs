@@ -39,6 +39,7 @@ internal static class AppModule
         WorkspaceNamedValueModule.ConfigurePutWorkspaceNamedValues(builder);
         WorkspaceBackendModule.ConfigurePutWorkspaceBackends(builder);
         WorkspaceTagModule.ConfigurePutWorkspaceTags(builder);
+        WorkspaceSubscriptionModule.ConfigurePutWorkspaceSubscriptions(builder);
         WorkspaceVersionSetModule.ConfigurePutWorkspaceVersionSets(builder);
         WorkspaceLoggerModule.ConfigurePutWorkspaceLoggers(builder);
         WorkspaceDiagnosticModule.ConfigurePutWorkspaceDiagnostics(builder);
@@ -50,6 +51,7 @@ internal static class AppModule
         WorkspaceApiModule.ConfigureDeleteWorkspaceApis(builder);
         WorkspaceGroupModule.ConfigureDeleteWorkspaceGroups(builder);
         WorkspaceProductModule.ConfigureDeleteWorkspaceProducts(builder);
+        WorkspaceSubscriptionModule.ConfigureDeleteWorkspaceSubscriptions(builder);
         WorkspacePolicyModule.ConfigureDeleteWorkspacePolicies(builder);
         WorkspacePolicyFragmentModule.ConfigureDeleteWorkspacePolicyFragments(builder);
         WorkspaceDiagnosticModule.ConfigureDeleteWorkspaceDiagnostics(builder);
@@ -112,6 +114,7 @@ internal static class AppModule
         var putWorkspaceNamedValues = provider.GetRequiredService<PutWorkspaceNamedValues>();
         var putWorkspaceBackends = provider.GetRequiredService<PutWorkspaceBackends>();
         var putWorkspaceTags = provider.GetRequiredService<PutWorkspaceTags>();
+        var putWorkspaceSubscriptions = provider.GetRequiredService<PutWorkspaceSubscriptions>();
         var putWorkspaceVersionSets = provider.GetRequiredService<PutWorkspaceVersionSets>();
         var putWorkspaceLoggers = provider.GetRequiredService<PutWorkspaceLoggers>();
         var putWorkspaceDiagnostics = provider.GetRequiredService<PutWorkspaceDiagnostics>();
@@ -123,6 +126,7 @@ internal static class AppModule
         var deleteWorkspaceApis = provider.GetRequiredService<DeleteWorkspaceApis>();
         var deleteWorkspaceGroups = provider.GetRequiredService<DeleteWorkspaceGroups>();
         var deleteWorkspaceProducts = provider.GetRequiredService<DeleteWorkspaceProducts>();
+        var deleteWorkspaceSubscriptions = provider.GetRequiredService<DeleteWorkspaceSubscriptions>();
         var deleteWorkspacePolicies = provider.GetRequiredService<DeleteWorkspacePolicies>();
         var deleteWorkspacePolicyFragments = provider.GetRequiredService<DeleteWorkspacePolicyFragments>();
         var deleteWorkspaceDiagnostics = provider.GetRequiredService<DeleteWorkspaceDiagnostics>();
@@ -202,9 +206,11 @@ internal static class AppModule
                 await putWorkspaceProducts(cancellationToken);
                 await putWorkspaceGroups(cancellationToken);
                 await putWorkspaceApis(cancellationToken);
+                await putWorkspaceSubscriptions(cancellationToken);
                 await deleteWorkspaceApis(cancellationToken);
                 await deleteWorkspaceGroups(cancellationToken);
                 await deleteWorkspaceProducts(cancellationToken);
+                await deleteWorkspaceSubscriptions(cancellationToken);
                 await deleteWorkspacePolicies(cancellationToken);
                 await deleteWorkspacePolicyFragments(cancellationToken);
                 await deleteWorkspaceDiagnostics(cancellationToken);
