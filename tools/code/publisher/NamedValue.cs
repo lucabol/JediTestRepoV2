@@ -168,10 +168,18 @@ internal static class NamedValueModule
 
         return async (name, dto, cancellationToken) =>
         {
-            // Don't put secret named values without a value or keyvault identifier
+            // Don't put secret named values without a value or keyvault identifier.
+            // This typically happens for auto-managed named values (e.g. Azure Function host keys
+            // imported via the APIM portal wizard), which carry secret:true but no value or
+            // Key Vault reference because APIM manages their lifecycle internally.
             if (dto.Properties.Secret is true && dto.Properties.Value is null && dto.Properties.KeyVault?.SecretIdentifier is null)
             {
-                logger.LogWarning("Named value {NamedValueName} is secret, but no value or keyvault identifier was specified. Skipping it...", name);
+                logger.LogWarning(
+                    "Named value {NamedValueName} is secret but has no value or Key Vault reference — it cannot be provisioned by the publisher and will be skipped. " +
+                    "If any backend has credentials (header or query) that reference this named value, the backend PUT will fail with a 400 ValidationError from APIM. " +
+                    "To resolve: either supply a 'value' or a 'keyVault.secretIdentifier' for this named value in your environment configuration override, " +
+                    "or pre-create the named value manually in the target APIM instance before running the publisher.",
+                    name);
                 return;
             }
 
