@@ -26,6 +26,7 @@ internal static class AppModule
         ProductModule.ConfigurePutProducts(builder);
         GroupModule.ConfigurePutGroups(builder);
         ApiModule.ConfigurePutApis(builder);
+        ApiReleaseModule.ConfigurePutApiReleases(builder);
         SubscriptionModule.ConfigurePutSubscriptions(builder);
         ApiPolicyModule.ConfigurePutApiPolicies(builder);
         ApiTagModule.ConfigurePutApiTags(builder);
@@ -48,6 +49,8 @@ internal static class AppModule
         WorkspaceGroupModule.ConfigurePutWorkspaceGroups(builder);
         WorkspaceApiModule.ConfigurePutWorkspaceApis(builder);
         WorkspaceApiModule.ConfigureDeleteWorkspaceApis(builder);
+        WorkspaceApiReleaseModule.ConfigurePutWorkspaceApiReleases(builder);
+        WorkspaceApiReleaseModule.ConfigureDeleteWorkspaceApiReleases(builder);
         WorkspaceGroupModule.ConfigureDeleteWorkspaceGroups(builder);
         WorkspaceProductModule.ConfigureDeleteWorkspaceProducts(builder);
         WorkspacePolicyModule.ConfigureDeleteWorkspacePolicies(builder);
@@ -68,6 +71,7 @@ internal static class AppModule
         ApiTagModule.ConfigureDeleteApiTags(builder);
         ApiPolicyModule.ConfigureDeleteApiPolicies(builder);
         SubscriptionModule.ConfigureDeleteSubscriptions(builder);
+        ApiReleaseModule.ConfigureDeleteApiReleases(builder);
         ApiModule.ConfigureDeleteApis(builder);
         GroupModule.ConfigureDeleteGroups(builder);
         ProductModule.ConfigureDeleteProducts(builder);
@@ -99,6 +103,7 @@ internal static class AppModule
         var putProducts = provider.GetRequiredService<PutProducts>();
         var putGroups = provider.GetRequiredService<PutGroups>();
         var putApis = provider.GetRequiredService<PutApis>();
+        var putApiReleases = provider.GetRequiredService<PutApiReleases>();
         var putSubscriptions = provider.GetRequiredService<PutSubscriptions>();
         var putApiPolicies = provider.GetRequiredService<PutApiPolicies>();
         var putApiTags = provider.GetRequiredService<PutApiTags>();
@@ -120,7 +125,9 @@ internal static class AppModule
         var putWorkspaceProducts = provider.GetRequiredService<PutWorkspaceProducts>();
         var putWorkspaceGroups = provider.GetRequiredService<PutWorkspaceGroups>();
         var putWorkspaceApis = provider.GetRequiredService<PutWorkspaceApis>();
+        var putWorkspaceApiReleases = provider.GetRequiredService<PutWorkspaceApiReleases>();
         var deleteWorkspaceApis = provider.GetRequiredService<DeleteWorkspaceApis>();
+        var deleteWorkspaceApiReleases = provider.GetRequiredService<DeleteWorkspaceApiReleases>();
         var deleteWorkspaceGroups = provider.GetRequiredService<DeleteWorkspaceGroups>();
         var deleteWorkspaceProducts = provider.GetRequiredService<DeleteWorkspaceProducts>();
         var deleteWorkspacePolicies = provider.GetRequiredService<DeleteWorkspacePolicies>();
@@ -141,6 +148,7 @@ internal static class AppModule
         var deleteApiTags = provider.GetRequiredService<DeleteApiTags>();
         var deleteApiPolicies = provider.GetRequiredService<DeleteApiPolicies>();
         var deleteSubscriptions = provider.GetRequiredService<DeleteSubscriptions>();
+        var deleteApiReleases = provider.GetRequiredService<DeleteApiReleases>();
         var deleteApis = provider.GetRequiredService<DeleteApis>();
         var deleteGroups = provider.GetRequiredService<DeleteGroups>();
         var deleteProducts = provider.GetRequiredService<DeleteProducts>();
@@ -178,6 +186,7 @@ internal static class AppModule
             await putProducts(cancellationToken);
             await putGroups(cancellationToken);
             await putApis(cancellationToken);
+            await putApiReleases(cancellationToken);
             await putSubscriptions(cancellationToken);
             await putApiPolicies(cancellationToken);
             await putApiTags(cancellationToken);
@@ -202,7 +211,9 @@ internal static class AppModule
                 await putWorkspaceProducts(cancellationToken);
                 await putWorkspaceGroups(cancellationToken);
                 await putWorkspaceApis(cancellationToken);
+                await putWorkspaceApiReleases(cancellationToken);
                 await deleteWorkspaceApis(cancellationToken);
+                await deleteWorkspaceApiReleases(cancellationToken);
                 await deleteWorkspaceGroups(cancellationToken);
                 await deleteWorkspaceProducts(cancellationToken);
                 await deleteWorkspacePolicies(cancellationToken);
@@ -225,6 +236,7 @@ internal static class AppModule
             await deleteApiTags(cancellationToken);
             await deleteApiPolicies(cancellationToken);
             await deleteSubscriptions(cancellationToken);
+            await deleteApiReleases(cancellationToken);
             await deleteApis(cancellationToken);
             await deleteGroups(cancellationToken);
             await deleteProducts(cancellationToken);
