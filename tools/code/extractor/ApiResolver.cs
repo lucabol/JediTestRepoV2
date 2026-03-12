@@ -23,6 +23,7 @@ internal static class ApiResolverModule
     {
         ConfigureListApiResolvers(builder);
         ConfigureWriteApiResolverArtifacts(builder);
+        ApiResolverPolicyModule.ConfigureExtractApiResolverPolicies(builder);
 
         builder.Services.TryAddSingleton(GetExtractApiResolvers);
     }
@@ -31,6 +32,7 @@ internal static class ApiResolverModule
     {
         var list = provider.GetRequiredService<ListApiResolvers>();
         var writeArtifacts = provider.GetRequiredService<WriteApiResolverArtifacts>();
+        var extractPolicies = provider.GetRequiredService<ExtractApiResolverPolicies>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
 
@@ -41,8 +43,12 @@ internal static class ApiResolverModule
             logger.LogInformation("Extracting resolvers for GraphQL API {ApiName}...", apiName);
 
             await list(apiName, cancellationToken)
-                    .IterParallel(async resource => await writeArtifacts(resource.Name, resource.Dto, apiName, cancellationToken),
-                                  cancellationToken);
+                    .IterParallel(async resource =>
+                    {
+                        await writeArtifacts(resource.Name, resource.Dto, apiName, cancellationToken);
+                        await extractPolicies(resource.Name, apiName, cancellationToken);
+                    },
+                    cancellationToken);
         };
     }
 
