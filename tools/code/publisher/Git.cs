@@ -34,6 +34,34 @@ public static class Git
                 .ToFrozenSet(x => x.FullName);
     }
 
+    public static FrozenSet<FileInfo> GetChangedFilesInCommitRange(DirectoryInfo directory, CommitId fromCommitId, CommitId toCommitId)
+    {
+        var repositoryDirectory = GetRepositoryDirectory(directory);
+        using var repository = new Repository(repositoryDirectory.FullName);
+
+        var fromCommit = GetCommit(repository, fromCommitId);
+        var toCommit = GetCommit(repository, toCommitId);
+
+        return repository.Commits
+                         .QueryBy(new CommitFilter
+                         {
+                             IncludeReachableFrom = toCommit,
+                             ExcludeReachableFrom = fromCommit
+                         })
+                         .SelectMany(commit =>
+                             repository.Diff
+                                       .Compare<TreeChanges>(commit.Parents.FirstOrDefault()?.Tree, commit.Tree)
+                                       .SelectMany(change => (change.Path, change.OldPath) switch
+                                       {
+                                           (null, not null) => [change.OldPath],
+                                           (not null, null) => [change.Path],
+                                           (null, null) => [],
+                                           (var path, var oldPath) => new[] { path, oldPath }.Distinct()
+                                       }))
+                         .Select(path => new FileInfo(Path.Combine(repositoryDirectory.FullName, path)))
+                         .ToFrozenSet(x => x.FullName);
+    }
+
     private static TreeChanges GetChanges(Repository repository, CommitId commitId)
     {
         var commit = GetCommit(repository, commitId);

@@ -50,6 +50,8 @@ public delegate ValueTask PublisherAction(CancellationToken cancellationToken);
 
 public delegate Option<CommitId> TryGetCommitId();
 
+public delegate Option<CommitId> TryGetPastCommitId();
+
 public delegate ValueTask<Option<BinaryData>> TryGetFileContentsInCommit(FileInfo fileInfo, CommitId commitId, CancellationToken cancellationToken);
 
 internal static class CommonModule
@@ -57,6 +59,7 @@ internal static class CommonModule
     public static void ConfigureGetPublisherFiles(IHostApplicationBuilder builder)
     {
         ConfigureTryGetCommitId(builder);
+        ConfigureTryGetPastCommitId(builder);
         AzureModule.ConfigureManagementServiceDirectory(builder);
         builder.Services.AddMemoryCache();
 
@@ -66,6 +69,7 @@ internal static class CommonModule
     private static GetPublisherFiles GetGetPublisherFiles(IServiceProvider provider)
     {
         var tryGetCommitId = provider.GetRequiredService<TryGetCommitId>();
+        var tryGetPastCommitId = provider.GetRequiredService<TryGetPastCommitId>();
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var cache = provider.GetRequiredService<IMemoryCache>();
 
@@ -74,18 +78,28 @@ internal static class CommonModule
         return () =>
             cache.GetOrCreate(cacheKey, _ => getFiles())!;
 
-        FrozenSet<FileInfo> getFiles() =>
-            tryGetCommitId()
-                .Map(getFilesFromCommitId)
-                .IfNone(serviceDirectory.GetFilesRecursively);
+        FrozenSet<FileInfo> getFiles()
+        {
+            var pastCommitId = tryGetPastCommitId();
+            var commitId = tryGetCommitId();
 
-        FrozenSet<FileInfo> getFilesFromCommitId(CommitId commitId) =>
-            Git.GetChangedFilesInCommit(serviceDirectory.ToDirectoryInfo(), commitId);
+            if (pastCommitId.IsSome && commitId.IsSome)
+            {
+                var past = pastCommitId.IfNone(() => throw new InvalidOperationException("PAST_COMMIT_ID is unexpectedly absent."));
+                var to = commitId.IfNone(() => throw new InvalidOperationException("COMMIT_ID is unexpectedly absent."));
+                return Git.GetChangedFilesInCommitRange(serviceDirectory.ToDirectoryInfo(), past, to);
+            }
+
+            return commitId
+                .Map(id => Git.GetChangedFilesInCommit(serviceDirectory.ToDirectoryInfo(), id))
+                .IfNone(serviceDirectory.GetFilesRecursively);
+        }
     }
 
     public static void ConfigureGetArtifactFiles(IHostApplicationBuilder builder)
     {
         ConfigureTryGetCommitId(builder);
+        ConfigureTryGetPastCommitId(builder);
         AzureModule.ConfigureManagementServiceDirectory(builder);
         builder.Services.AddMemoryCache();
 
@@ -204,6 +218,20 @@ internal static class CommonModule
 
         return () =>
             configuration.TryGetValue("COMMIT_ID")
+                         .Map(commitId => new CommitId(commitId));
+    }
+
+    private static void ConfigureTryGetPastCommitId(IHostApplicationBuilder builder)
+    {
+        builder.Services.TryAddSingleton(GetTryGetPastCommitId);
+    }
+
+    private static TryGetPastCommitId GetTryGetPastCommitId(IServiceProvider provider)
+    {
+        var configuration = provider.GetRequiredService<IConfiguration>();
+
+        return () =>
+            configuration.TryGetValue("PAST_COMMIT_ID")
                          .Map(commitId => new CommitId(commitId));
     }
 }
