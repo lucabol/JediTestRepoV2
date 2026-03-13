@@ -197,7 +197,6 @@ public sealed record WorkspaceApiDto
         public ImmutableArray<string>? Protocols { get; init; }
 
         [JsonPropertyName("serviceUrl")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
 #pragma warning disable CA1056 // URI-like properties should not be strings
         public string? ServiceUrl { get; init; }
 #pragma warning restore CA1056 // URI-like properties should not be strings
