@@ -31,6 +31,7 @@ internal static class AppModule
         ApiTagModule.ConfigurePutApiTags(builder);
         ApiDiagnosticModule.ConfigurePutApiDiagnostics(builder);
         ApiResolverModule.ConfigurePutApiResolvers(builder);
+        ApiResolverPolicyModule.ConfigurePutApiResolverPolicies(builder);
         GatewayApiModule.ConfigurePutGatewayApis(builder);
         ProductPolicyModule.ConfigurePutProductPolicies(builder);
         ProductGroupModule.ConfigurePutProductGroups(builder);
@@ -67,6 +68,7 @@ internal static class AppModule
         GatewayApiModule.ConfigureDeleteGatewayApis(builder);
         ApiDiagnosticModule.ConfigureDeleteApiDiagnostics(builder);
         ApiResolverModule.ConfigureDeleteApiResolvers(builder);
+        ApiResolverPolicyModule.ConfigureDeleteApiResolverPolicies(builder);
         ApiTagModule.ConfigureDeleteApiTags(builder);
         ApiPolicyModule.ConfigureDeleteApiPolicies(builder);
         SubscriptionModule.ConfigureDeleteSubscriptions(builder);
@@ -106,6 +108,7 @@ internal static class AppModule
         var putApiTags = provider.GetRequiredService<PutApiTags>();
         var putApiDiagnostics = provider.GetRequiredService<PutApiDiagnostics>();
         var putApiResolvers = provider.GetRequiredService<PutApiResolvers>();
+        var putApiResolverPolicies = provider.GetRequiredService<PutApiResolverPolicies>();
         var putGatewayApis = provider.GetRequiredService<PutGatewayApis>();
         var putProductPolicies = provider.GetRequiredService<PutProductPolicies>();
         var putProductGroups = provider.GetRequiredService<PutProductGroups>();
@@ -142,6 +145,7 @@ internal static class AppModule
         var deleteGatewayApis = provider.GetRequiredService<DeleteGatewayApis>();
         var deleteApiDiagnostics = provider.GetRequiredService<DeleteApiDiagnostics>();
         var deleteApiResolvers = provider.GetRequiredService<DeleteApiResolvers>();
+        var deleteApiResolverPolicies = provider.GetRequiredService<DeleteApiResolverPolicies>();
         var deleteApiTags = provider.GetRequiredService<DeleteApiTags>();
         var deleteApiPolicies = provider.GetRequiredService<DeleteApiPolicies>();
         var deleteSubscriptions = provider.GetRequiredService<DeleteSubscriptions>();
@@ -187,6 +191,7 @@ internal static class AppModule
             await putApiTags(cancellationToken);
             await putApiDiagnostics(cancellationToken);
             await putApiResolvers(cancellationToken);
+            await putApiResolverPolicies(cancellationToken);
             await putGatewayApis(cancellationToken);
             await putProductPolicies(cancellationToken);
             await putProductGroups(cancellationToken);
@@ -228,6 +233,7 @@ internal static class AppModule
             await deleteGatewayApis(cancellationToken);
             await deleteApiDiagnostics(cancellationToken);
             await deleteApiResolvers(cancellationToken);
+            await deleteApiResolverPolicies(cancellationToken);
             await deleteApiTags(cancellationToken);
             await deleteApiPolicies(cancellationToken);
             await deleteSubscriptions(cancellationToken);
