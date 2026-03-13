@@ -54,7 +54,7 @@ public static class HostingModule
 
         builder.Configuration
                .TryGetValue("CONFIGURATION_YAML_PATH")
-               .Iter(path => builder.Configuration.AddYamlFile(path));
+               .Iter(path => builder.Configuration.AddYamlFile(path, optional: true));
     }
 
     private static void ConfigureLogging(HostApplicationBuilder builder, string applicationName)
