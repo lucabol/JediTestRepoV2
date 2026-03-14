@@ -18,6 +18,10 @@ parameters:
     values:
       - publish-artifacts-in-last-commit
       - publish-all-artifacts-in-repo
+  - name: PAST_COMMIT_ID
+    type: string
+    displayName: "Optional: last successfully deployed commit SHA (enables range-based deployment). Leave blank for standard single-commit or full-repo modes."
+    default: ""
 
 variables:
   - group: apim-automation
@@ -40,6 +44,7 @@ stages:
               API_MANAGEMENT_SERVICE_NAME : $(APIM_NAME)
               ENVIRONMENT: "Dev"
               COMMIT_ID: ${{ parameters.COMMIT_ID }}
+              PAST_COMMIT_ID: ${{ parameters.PAST_COMMIT_ID }}
   - stage: push_changes_to_Prod_APIM
     displayName: Push changes to Prod APIM
     jobs:
@@ -64,4 +69,4 @@ stages:
                      CONFIGURATION_YAML_PATH:  $(Build.SourcesDirectory)/configuration.prod.yaml
                      ENVIRONMENT: "Prod"
                      COMMIT_ID: ${{ parameters.COMMIT_ID }}
-              
+                     PAST_COMMIT_ID: ${{ parameters.PAST_COMMIT_ID }}

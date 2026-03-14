@@ -19,6 +19,10 @@ parameters:
   - name: COMMIT_ID
     type: string
     default: publish-artifacts-in-last-commit
+  - name: PAST_COMMIT_ID
+    type: string
+    displayName: "Optional: last successfully deployed commit SHA (enables range-based deployment with PAST_COMMIT_ID)"
+    default: ""
 
 steps:
   - script: echo Provided configuration was ${{ parameters.CONFIGURATION_YAML_PATH }}
@@ -155,3 +159,5 @@ steps:
         COMMIT_ID: $(Build.SourceVersion)
       ${{ if ne( parameters['CONFIGURATION_YAML_PATH'], '' ) }}:
         CONFIGURATION_YAML_PATH: ${{ parameters.CONFIGURATION_YAML_PATH }}
+      ${{ if ne( parameters['PAST_COMMIT_ID'], '' ) }}:
+        PAST_COMMIT_ID: ${{ parameters.PAST_COMMIT_ID }}
