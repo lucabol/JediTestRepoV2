@@ -238,10 +238,20 @@ internal static class WorkspaceApiModule
                         ApiSpecification.GraphQl => null,
                         ApiSpecification.OpenApi { Format: common.OpenApiFormat.Yaml, Version: OpenApiVersion.V2 } =>
                             await convertStreamToOpenApiV3Yaml(contents, $"Could not convert specification for API {name} to OpenAPIV3.", cancellationToken),
-                        _ => contents.ToString()
+                        _ => readUtf8WithoutBom(contents)
                     }
                 }
             };
+
+        // Reads BinaryData as UTF-8 text, stripping a leading byte-order mark if present.
+        // This prevents double-encoding of non-ASCII characters (e.g. ° becoming ├é┬°) when
+        // the spec value is serialized to JSON and sent to APIM (issue #14).
+        static string readUtf8WithoutBom(BinaryData data)
+        {
+            using var stream = data.ToStream();
+            using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            return reader.ReadToEnd();
+        }
 
         static async ValueTask<string> convertStreamToOpenApiV3Yaml(BinaryData contents, string errorMessage, CancellationToken cancellationToken)
         {

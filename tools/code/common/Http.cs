@@ -178,7 +178,7 @@ public static class HttpPipelineExtensions
     {
         using var request = pipeline.CreateRequest(uri, RequestMethod.Put);
         request.Content = RequestContent.Create(content);
-        request.Headers.Add("Content-type", "application/json");
+        request.Headers.Add("Content-type", "application/json; charset=utf-8");
 
         var response = await pipeline.SendRequestAsync(request, cancellationToken);
         if (response.IsError)
@@ -216,7 +216,7 @@ public static class HttpPipelineExtensions
     {
         using var request = pipeline.CreateRequest(uri, RequestMethod.Patch);
         request.Content = RequestContent.Create(content);
-        request.Headers.Add("Content-type", "application/json");
+        request.Headers.Add("Content-type", "application/json; charset=utf-8");
 
         var response = await pipeline.SendRequestAsync(request, cancellationToken);
         if (response.IsError)
