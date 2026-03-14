@@ -79,6 +79,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct](https://ope
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [[contact email redacted]](mailto:[contact email redacted]) with any additional questions or comments.
 
+# Azure DevOps Prerequisites
+
+If you are using the Azure DevOps (ADO) pipelines provided with APIOps, the following Marketplace extensions must be installed in your Azure DevOps organisation before running the publisher pipeline:
+
+- **[Replace Tokens](https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens)** (`qetza.replacetokens`) — used by the publisher pipeline to substitute environment-specific secret values (e.g. named-value secrets) in your `configuration.*.yaml` files. This extension is only invoked when you supply a `CONFIGURATION_YAML_PATH` parameter. If the extension is not installed, the pipeline will fail with:
+  ```
+  A task is missing. The pipeline references a task called 'replacetokens'.
+  ```
+  Install it from the [Azure DevOps Marketplace](https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens) at the organisation level.
+
 # Supporting Tools
 
 While the APIOPs tool does not have built-in support for promoting the migration of the APIM Dev Portal, there is another tool available that offers such functionality. We suggest you explore that tool which can be found [here](https://[external tool repository]).

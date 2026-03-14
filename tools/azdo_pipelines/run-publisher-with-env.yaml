@@ -63,10 +63,12 @@ steps:
       addSpnToEnvironment: true
       failOnStandardError: true
 
-  # replacetokens@6 task will need to be installed to use
+  # The replacetokens@6 ADO Marketplace extension must be installed in your organisation to use this step.
+  # Install it from: https://marketplace.visualstudio.com/items?itemName=qetza.replacetokens
+  # This step is only executed when CONFIGURATION_YAML_PATH is provided.
   - ${{ if ne(parameters.CONFIGURATION_YAML_PATH, '') }}:
       - task: qetza.replacetokens.replacetokens-task.replacetokens@6
-        displayName: "Perform namevalue secret substitution in ${{ parameters.CONFIGURATION_YAML_PATH }}"
+        displayName: "Perform namevalue secret substitution in ${{ parameters.CONFIGURATION_YAML_PATH }} (requires Replace Tokens extension)"
         inputs:
           sources: ${{ parameters.CONFIGURATION_YAML_PATH }}
           encoding: "auto"
