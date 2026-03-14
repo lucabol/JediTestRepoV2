@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,6 +102,18 @@ public static class FileInfoExtensions
     {
         using var stream = file.OpenRead();
         return await BinaryData.FromStreamAsync(stream, cancellationToken);
+    }
+
+    /// <summary>
+    /// Reads the file content as a UTF-8 string, stripping a leading byte-order mark if present.
+    /// Use this instead of <see cref="ReadAsBinaryData"/> when the content will be sent as a string
+    /// (e.g., API specification values in APIM REST calls) to avoid double-encoding issues with
+    /// non-ASCII characters (see GitHub issue #14).
+    /// </summary>
+    public static async ValueTask<string> ReadAsText(this FileInfo file, CancellationToken cancellationToken)
+    {
+        using var reader = new StreamReader(file.FullName, Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+        return await reader.ReadToEndAsync(cancellationToken);
     }
 
     /// <summary>
