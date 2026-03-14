@@ -16,6 +16,11 @@ on:
         options:
           - "publish-artifacts-in-last-commit"
           - "publish-all-artifacts-in-repo"
+      PAST_COMMIT_ID:
+        description: "Optional: last successfully deployed commit SHA. When set, deploys all changes between this commit and the current HEAD (range-based deployment)."
+        required: false
+        type: string
+        default: ""
 
 jobs:
   get-commit:
@@ -35,6 +40,7 @@ jobs:
     with:
       API_MANAGEMENT_ENVIRONMENT: dev # change this to match the dev environment created in settings
       COMMIT_ID: ${{ needs.get-commit.outputs.commit_id }}
+      PAST_COMMIT_ID: ${{ github.event.inputs.PAST_COMMIT_ID }}
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
     secrets: inherit
 
@@ -57,6 +63,7 @@ jobs:
       CONFIGURATION_YAML_PATH: configuration.prod.yaml # make sure the file is available at the root
       API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH: apimartifacts # change this to the artifacts folder
       COMMIT_ID: ${{ needs.get-commit.outputs.commit_id }}
+      PAST_COMMIT_ID: ${{ github.event.inputs.PAST_COMMIT_ID }}
     secrets: inherit
 
   Push-Changes-To-APIM-Prod-Without-Commit-ID:
