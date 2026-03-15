@@ -124,7 +124,7 @@ public static class ApiOperationPolicyModule
     }
 
     public static async ValueTask Delete(this ApiOperationPolicyUri uri, HttpPipeline pipeline, CancellationToken cancellationToken) =>
-        await pipeline.DeleteResource(uri.ToUri(), waitForCompletion: true, cancellationToken);
+        await pipeline.DeleteResourceIfExists(uri.ToUri(), waitForCompletion: true, cancellationToken);
 
     public static async ValueTask PutDto(this ApiOperationPolicyUri uri, ApiOperationPolicyDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
     {
