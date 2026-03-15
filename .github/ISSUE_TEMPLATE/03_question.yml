@@ -1,47 +1,33 @@
 name: Question
-description: Make sure you take a look at the closed issues before opening a new one. Create a report to help us improve. Please make sure you read the docs before opening an issue. 
-title: "[Question]"
+description: Make sure you take a look at the closed issues and docs before opening a new one.
+title: "[Question] "
+labels:
+  - question
 
 body:
   - type: input
     id: library
     attributes:
       label: Release version
-      placeholder: e.g. APIOps Toolkit for Azure APIM v1.0.0
+      placeholder: e.g. APIOps Toolkit for Azure APIM v6.0.1
     validations:
-      required: true
+      required: false
   - type: textarea
     id: background
     attributes:
       label: Question Details
-      description: Please provide the details of your question here.
-      placeholder: Question Details
-    validations:
-      required: true 
-  - type: textarea
-    id: expected-behavior
-    attributes:
-      label: Expected behavior
-      description: |
-        Provide a description of the expected behavior.
-      placeholder: Expected behavior
+      description: Please describe your question in as much detail as possible.
+      placeholder: |
+        What are you trying to do?
+        What have you already tried?
+        Are there any error messages or unexpected output?
     validations:
       required: true
   - type: textarea
-    id: actual-behavior
+    id: context
     attributes:
-      label: Actual behavior
-      description: |
-        Provide a description of the actual behavior observed. If applicable please include any error messages, exception stacktraces or memory dumps.
-      placeholder: Actual behavior
+      label: Environment / Context
+      description: Any relevant details about your setup (e.g. APIM tier, pipeline type, OS).
+      placeholder: e.g. APIM Premium tier, GitHub Actions, Ubuntu runner
     validations:
-      required: true
-  - type: textarea
-    id: repro-steps
-    attributes:
-      label: Reproduction Steps
-      description: |
-        Please include minimal steps to reproduce the problem if possible. E.g.: the smallest possible code snippet; or a small project, with steps to run it. If possible include text as text rather than screenshots (so it shows up in searches).
-      placeholder: Minimal Reproduction
-    validations:
-      required: true
+      required: false
