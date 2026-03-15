@@ -253,6 +253,9 @@ public static class HttpPipelineExtensions
     private static async ValueTask<Response> WaitForLongRunningOperation(this HttpPipeline pipeline, Response response, CancellationToken cancellationToken)
     {
         var updatedResponse = response;
+        var backoffDelay = TimeSpan.FromMilliseconds(500);
+        var maxBackoffDelay = TimeSpan.FromSeconds(30);
+
         while (((updatedResponse.Status is (int)HttpStatusCode.OK or (int)HttpStatusCode.Created && IsProvisioningInProgress(updatedResponse)) || 
                 updatedResponse.Status == (int)HttpStatusCode.Accepted)
                && updatedResponse.Headers.TryGetValue("Location", out var locationHeaderValue)
@@ -263,10 +266,14 @@ public static class HttpPipelineExtensions
             {
                 var retryAfterDuration = TimeSpan.FromSeconds(retryAfterSeconds);
                 await Task.Delay(retryAfterDuration, cancellationToken);
+                // Reset backoff when the server provides an explicit hint
+                backoffDelay = TimeSpan.FromMilliseconds(500);
             }
             else
             {
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                await Task.Delay(backoffDelay, cancellationToken);
+                // Exponential backoff: double the delay on each poll, capped at maxBackoffDelay
+                backoffDelay = TimeSpan.FromMilliseconds(Math.Min(backoffDelay.TotalMilliseconds * 2, maxBackoffDelay.TotalMilliseconds));
             }
 
             using var request = pipeline.CreateRequest(locationUri, RequestMethod.Get);
