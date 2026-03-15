@@ -131,6 +131,23 @@ public static class HttpPipelineExtensions
         either.IfLeftThrow(uri);
     }
 
+    /// <summary>
+    /// Deletes the resource at <paramref name="uri"/>. If the resource is already gone (404 Not Found), succeeds silently.
+    /// </summary>
+    public static async ValueTask DeleteResourceIfExists(this HttpPipeline pipeline, Uri uri, bool waitForCompletion, CancellationToken cancellationToken)
+    {
+        var either = await pipeline.TryDeleteResource(uri, waitForCompletion, cancellationToken);
+
+        either.IfLeft(response =>
+        {
+            using (response)
+            {
+                if (response.Status != (int)HttpStatusCode.NotFound)
+                    throw response.ToHttpRequestException(uri);
+            }
+        });
+    }
+
     public static async ValueTask<Either<Response, Unit>> TryDeleteResource(this HttpPipeline pipeline, Uri uri, bool waitForCompletion, CancellationToken cancellationToken)
     {
         using var request = pipeline.CreateRequest(uri, RequestMethod.Delete);
