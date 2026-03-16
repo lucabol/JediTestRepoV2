@@ -19,6 +19,7 @@ internal static class AppModule
         GatewayModule.ConfigureExtractGateways(builder);
         VersionSetModule.ConfigureExtractVersionSets(builder);
         BackendModule.ConfigureExtractBackends(builder);
+        AuthorizationServerModule.ConfigureExtractAuthorizationServers(builder);
         LoggerModule.ConfigureExtractLoggers(builder);
         DiagnosticModule.ConfigureExtractDiagnostics(builder);
         PolicyFragmentModule.ConfigureExtractPolicyFragments(builder);
@@ -40,6 +41,7 @@ internal static class AppModule
         var extractGateways = provider.GetRequiredService<ExtractGateways>();
         var extractVersionSets = provider.GetRequiredService<ExtractVersionSets>();
         var extractBackends = provider.GetRequiredService<ExtractBackends>();
+        var extractAuthorizationServers = provider.GetRequiredService<ExtractAuthorizationServers>();
         var extractLoggers = provider.GetRequiredService<ExtractLoggers>();
         var extractDiagnostics = provider.GetRequiredService<ExtractDiagnostics>();
         var extractPolicyFragments = provider.GetRequiredService<ExtractPolicyFragments>();
@@ -65,6 +67,7 @@ internal static class AppModule
             await extractGateways(cancellationToken);
             await extractVersionSets(cancellationToken);
             await extractBackends(cancellationToken);
+            await extractAuthorizationServers(cancellationToken);
             await extractLoggers(cancellationToken);
             await extractDiagnostics(cancellationToken);
             await extractPolicyFragments(cancellationToken);
