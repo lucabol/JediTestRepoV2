@@ -17,6 +17,7 @@ internal static class AppModule
         NamedValueModule.ConfigurePutNamedValues(builder);
         GatewayModule.ConfigurePutGateways(builder);
         BackendModule.ConfigurePutBackends(builder);
+        AuthorizationServerModule.ConfigurePutAuthorizationServers(builder);
         TagModule.ConfigurePutTags(builder);
         VersionSetModule.ConfigurePutVersionSets(builder);
         LoggerModule.ConfigurePutLoggers(builder);
@@ -78,6 +79,7 @@ internal static class AppModule
         VersionSetModule.ConfigureDeleteVersionSets(builder);
         TagModule.ConfigureDeleteTags(builder);
         BackendModule.ConfigureDeleteBackends(builder);
+        AuthorizationServerModule.ConfigureDeleteAuthorizationServers(builder);
         GatewayModule.ConfigureDeleteGateways(builder);
         NamedValueModule.ConfigureDeleteNamedValues(builder);
         builder.Services.AddFeatureManagement();
@@ -90,6 +92,7 @@ internal static class AppModule
         var putNamedValues = provider.GetRequiredService<PutNamedValues>();
         var putGateways = provider.GetRequiredService<PutGateways>();
         var putBackends = provider.GetRequiredService<PutBackends>();
+        var putAuthorizationServers = provider.GetRequiredService<PutAuthorizationServers>();
         var putTags = provider.GetRequiredService<PutTags>();
         var putVersionSets = provider.GetRequiredService<PutVersionSets>();
         var putLoggers = provider.GetRequiredService<PutLoggers>();
@@ -151,6 +154,7 @@ internal static class AppModule
         var deleteVersionSets = provider.GetRequiredService<DeleteVersionSets>();
         var deleteTags = provider.GetRequiredService<DeleteTags>();
         var deleteBackends = provider.GetRequiredService<DeleteBackends>();
+        var deleteAuthorizationServers = provider.GetRequiredService<DeleteAuthorizationServers>();
         var deleteGateways = provider.GetRequiredService<DeleteGateways>();
         var deleteNamedValues = provider.GetRequiredService<DeleteNamedValues>();
         var featureManager = provider.GetRequiredService<IFeatureManager>();
@@ -171,6 +175,7 @@ internal static class AppModule
             await putTags(cancellationToken);
             await putVersionSets(cancellationToken);
             await putBackends(cancellationToken);
+            await putAuthorizationServers(cancellationToken);
             await putLoggers(cancellationToken);
             await putDiagnostics(cancellationToken);
             await putPolicyFragments(cancellationToken);
@@ -235,6 +240,7 @@ internal static class AppModule
             await deleteVersionSets(cancellationToken);
             await deleteTags(cancellationToken);
             await deleteBackends(cancellationToken);
+            await deleteAuthorizationServers(cancellationToken);
             await deleteGateways(cancellationToken);
             await deleteNamedValues(cancellationToken);
 

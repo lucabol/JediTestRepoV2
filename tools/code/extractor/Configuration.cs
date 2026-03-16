@@ -26,6 +26,7 @@ public sealed class FindConfigurationNamesFactory(ConfigurationJson configuratio
             [typeof(GatewayName)] = "gatewayNames",
             [typeof(VersionSetName)] = "versionSetNames",
             [typeof(BackendName)] = "backendNames",
+            [typeof(AuthorizationServerName)] = "authorizationServerNames",
             [typeof(LoggerName)] = "loggerNames",
             [typeof(DiagnosticName)] = "diagnosticNames",
             [typeof(PolicyFragmentName)] = "policyFragmentNames",
