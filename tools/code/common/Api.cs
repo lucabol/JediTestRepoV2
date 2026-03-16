@@ -603,6 +603,22 @@ public static class ApiModule
                     })
                     .Build());
 
+    // When multiple APIs sharing the same inline tags are published in parallel, APIM can return
+    // 400 "Tag with the same name already exists" due to a race condition during implicit tag creation.
+    // Retrying the PUT succeeds because the tag already exists by then.
+    private static readonly Lazy<ResiliencePipeline> nonSoapApiWithSpecResiliencePipeline = new(() =>
+        new ResiliencePipelineBuilder()
+                    .AddRetry(new()
+                    {
+                        BackoffType = DelayBackoffType.Exponential,
+                        UseJitter = true,
+                        MaxRetryAttempts = 3,
+                        ShouldHandle = new PredicateBuilder().Handle<HttpRequestException>(exception =>
+                            exception.StatusCode == HttpStatusCode.BadRequest
+                            && exception.Message.Contains("Tag with the same name already exists", StringComparison.OrdinalIgnoreCase))
+                    })
+                    .Build());
+
     private static async ValueTask PutNonSoapApi(ApiUri uri, ApiDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
     {
         // Put API without the specification.
@@ -619,8 +635,9 @@ public static class ApiModule
         };
         await pipeline.PutContent(uri.ToUri(), BinaryData.FromObjectAsJson(modelWithoutSpecification), cancellationToken);
 
-        // Put API again with specification
-        await pipeline.PutContent(uri.ToUri(), BinaryData.FromObjectAsJson(dto), cancellationToken);
+        // Put API again with specification; retry on tag race condition (parallel API publishing).
+        await nonSoapApiWithSpecResiliencePipeline.Value
+                .ExecuteAsync(async cancellationToken => await pipeline.PutContent(uri.ToUri(), BinaryData.FromObjectAsJson(dto), cancellationToken), cancellationToken);
     }
 
     private static bool CreationInProgress(Response response)
