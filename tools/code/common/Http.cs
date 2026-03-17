@@ -179,6 +179,9 @@ public static class HttpPipelineExtensions
         using var request = pipeline.CreateRequest(uri, RequestMethod.Put);
         request.Content = RequestContent.Create(content);
         request.Headers.Add("Content-type", "application/json");
+        // APIM requires If-Match for conditional updates; "*" means "update regardless of ETag"
+        // which is the correct semantics for idempotent publish operations (issue #12).
+        request.Headers.Add("If-Match", "*");
 
         var response = await pipeline.SendRequestAsync(request, cancellationToken);
         if (response.IsError)
