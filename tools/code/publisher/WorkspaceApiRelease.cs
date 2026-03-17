@@ -55,7 +55,6 @@ internal static class WorkspaceApiReleaseModule
         return async (name, apiName, workspaceName, cancellationToken) =>
         {
             logger.LogInformation("Deleting API release {WorkspaceApiReleaseName} from API {ApiName} in workspace {WorkspaceName}...", name, apiName, workspaceName);
-            logger.LogInformation("Deleting API release {WorkspaceApiReleaseName} from API {ApiName} in workspace {WorkspaceName}...", name, apiName, workspaceName);
 
             await WorkspaceApiReleaseUri.From(name, apiName, workspaceName, serviceUri)
                                         .Delete(pipeline, cancellationToken);
