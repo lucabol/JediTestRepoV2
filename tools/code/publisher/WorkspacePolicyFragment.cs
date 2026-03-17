@@ -190,11 +190,21 @@ internal static class WorkspacePolicyFragmentModule
                 Properties = dto.Properties with
                 {
                     Format = "rawxml",
-                    Value = contents.ToString()
+                    Value = readUtf8WithoutBom(contents)
                 }
             });
 
             return dto;
+        }
+
+        // Reads BinaryData as UTF-8 text, stripping a leading byte-order mark if present.
+        // Prevents non-ASCII characters in policy files from being BOM-corrupted when the
+        // policy value is sent to APIM (same issue as #14 for API specs).
+        static string readUtf8WithoutBom(BinaryData data)
+        {
+            using var stream = data.ToStream();
+            using var reader = new System.IO.StreamReader(stream, System.Text.Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+            return reader.ReadToEnd();
         }
     }
 
