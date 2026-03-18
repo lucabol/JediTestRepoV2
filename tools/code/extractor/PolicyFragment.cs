@@ -54,6 +54,7 @@ internal static class PolicyFragmentModule
         ConfigurationModule.ConfigureFindConfigurationNamesFactory(builder);
         AzureModule.ConfigureManagementServiceUri(builder);
         AzureModule.ConfigureHttpPipeline(builder);
+        PolicyContentFormatModule.ConfigureDefaultPolicyContentFormat(builder);
 
         builder.Services.TryAddSingleton(GetListPolicyFragments);
     }
@@ -63,6 +64,7 @@ internal static class PolicyFragmentModule
         var findConfigurationNamesFactory = provider.GetRequiredService<FindConfigurationNamesFactory>();
         var serviceUri = provider.GetRequiredService<ManagementServiceUri>();
         var pipeline = provider.GetRequiredService<HttpPipeline>();
+        var format = provider.GetRequiredService<DefaultPolicyContentFormat>().Value;
 
         var findConfigurationNames = findConfigurationNamesFactory.Create<PolicyFragmentName>();
 
@@ -76,14 +78,14 @@ internal static class PolicyFragmentModule
                  .ToAsyncEnumerable()
                  .Choose(async uri =>
                  {
-                     var dtoOption = await uri.TryGetDto(pipeline, cancellationToken);
+                     var dtoOption = await uri.TryGetDto(pipeline, cancellationToken, format);
                      return dtoOption.Map(dto => (uri.Name, dto));
                  });
 
         IAsyncEnumerable<(PolicyFragmentName, PolicyFragmentDto)> listAll(CancellationToken cancellationToken)
         {
             var policyFragmentsUri = PolicyFragmentsUri.From(serviceUri);
-            return policyFragmentsUri.List(pipeline, cancellationToken);
+            return policyFragmentsUri.List(pipeline, cancellationToken, format);
         }
     }
 

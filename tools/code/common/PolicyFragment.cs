@@ -175,25 +175,27 @@ public static class PolicyFragmentModule
                 .Select(jsonObject => jsonObject.GetStringProperty("name"))
                 .Select(PolicyFragmentName.From);
 
-    public static IAsyncEnumerable<(PolicyFragmentName Name, PolicyFragmentDto Dto)> List(this PolicyFragmentsUri policyFragmentsUri, HttpPipeline pipeline, CancellationToken cancellationToken) =>
+    public static IAsyncEnumerable<(PolicyFragmentName Name, PolicyFragmentDto Dto)> List(this PolicyFragmentsUri policyFragmentsUri, HttpPipeline pipeline, CancellationToken cancellationToken, PolicyContentFormat? format = null) =>
         policyFragmentsUri.ListNames(pipeline, cancellationToken)
                       .SelectAwait(async name =>
                       {
                           var uri = new PolicyFragmentUri { Parent = policyFragmentsUri, Name = name };
-                          var dto = await uri.GetDto(pipeline, cancellationToken);
+                          var dto = await uri.GetDto(pipeline, cancellationToken, format);
                           return (name, dto);
                       });
 
-    public static async ValueTask<Option<PolicyFragmentDto>> TryGetDto(this PolicyFragmentUri uri, HttpPipeline pipeline, CancellationToken cancellationToken)
+    public static async ValueTask<Option<PolicyFragmentDto>> TryGetDto(this PolicyFragmentUri uri, HttpPipeline pipeline, CancellationToken cancellationToken, PolicyContentFormat? format = null)
     {
-        var contentUri = uri.ToUri().AppendQueryParam("format", "rawxml").ToUri();
+        var policyFormat = (format ?? new PolicyContentFormat.RawXml()).ToFormatString();
+        var contentUri = uri.ToUri().AppendQueryParam("format", policyFormat).ToUri();
         var contentOption = await pipeline.GetContentOption(contentUri, cancellationToken);
         return contentOption.Map(content => content.ToObjectFromJson<PolicyFragmentDto>());
     }
 
-    public static async ValueTask<PolicyFragmentDto> GetDto(this PolicyFragmentUri uri, HttpPipeline pipeline, CancellationToken cancellationToken)
+    public static async ValueTask<PolicyFragmentDto> GetDto(this PolicyFragmentUri uri, HttpPipeline pipeline, CancellationToken cancellationToken, PolicyContentFormat? format = null)
     {
-        var contentUri = uri.ToUri().AppendQueryParam("format", "rawxml").ToUri();
+        var policyFormat = (format ?? new PolicyContentFormat.RawXml()).ToFormatString();
+        var contentUri = uri.ToUri().AppendQueryParam("format", policyFormat).ToUri();
         var content = await pipeline.GetContent(contentUri, cancellationToken);
         return content.ToObjectFromJson<PolicyFragmentDto>();
     }

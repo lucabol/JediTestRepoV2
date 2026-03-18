@@ -108,18 +108,19 @@ public static class ProductPolicyModule
                 .Select(jsonObject => jsonObject.GetStringProperty("name"))
                 .Select(ProductPolicyName.From);
 
-    public static IAsyncEnumerable<(ProductPolicyName Name, ProductPolicyDto Dto)> List(this ProductPoliciesUri productPoliciesUri, HttpPipeline pipeline, CancellationToken cancellationToken) =>
+    public static IAsyncEnumerable<(ProductPolicyName Name, ProductPolicyDto Dto)> List(this ProductPoliciesUri productPoliciesUri, HttpPipeline pipeline, CancellationToken cancellationToken, PolicyContentFormat? format = null) =>
         productPoliciesUri.ListNames(pipeline, cancellationToken)
                           .SelectAwait(async name =>
                           {
                               var uri = new ProductPolicyUri { Parent = productPoliciesUri, Name = name };
-                              var dto = await uri.GetDto(pipeline, cancellationToken);
+                              var dto = await uri.GetDto(pipeline, cancellationToken, format);
                               return (name, dto);
                           });
 
-    public static async ValueTask<ProductPolicyDto> GetDto(this ProductPolicyUri uri, HttpPipeline pipeline, CancellationToken cancellationToken)
+    public static async ValueTask<ProductPolicyDto> GetDto(this ProductPolicyUri uri, HttpPipeline pipeline, CancellationToken cancellationToken, PolicyContentFormat? format = null)
     {
-        var contentUri = uri.ToUri().AppendQueryParam("format", "rawxml").ToUri();
+        var policyFormat = (format ?? new PolicyContentFormat.RawXml()).ToFormatString();
+        var contentUri = uri.ToUri().AppendQueryParam("format", policyFormat).ToUri();
         var content = await pipeline.GetContent(contentUri, cancellationToken);
         return content.ToObjectFromJson<ProductPolicyDto>();
     }

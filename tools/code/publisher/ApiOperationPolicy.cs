@@ -128,6 +128,7 @@ internal static class ApiOperationPolicyModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        PolicyContentFormatModule.ConfigureDefaultPolicyContentFormat(builder);
 
         builder.Services.TryAddSingleton(GetFindApiOperationPolicyDto);
     }
@@ -136,6 +137,7 @@ internal static class ApiOperationPolicyModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var format = provider.GetRequiredService<DefaultPolicyContentFormat>().Value.ToFormatString();
 
         return async (name, operationName, apiName, cancellationToken) =>
         {
@@ -146,7 +148,7 @@ internal static class ApiOperationPolicyModule
                    {
                        Properties = new ApiOperationPolicyDto.ApiOperationPolicyContract
                        {
-                           Format = "rawxml",
+                           Format = format,
                            Value = contents.ToString()
                        }
                    };
