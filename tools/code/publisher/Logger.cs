@@ -6,9 +6,11 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -146,11 +148,62 @@ internal static class LoggerModule
 
             var contentsOption = await tryGetFileContents(informationFileInfo, cancellationToken);
 
-            return from contents in contentsOption
-                   let dto = contents.ToObjectFromJson<LoggerDto>()
-                   select overrideDto(name, dto);
+            return await contentsOption.BindTask(async contents =>
+            {
+                var dto = contents.ToObjectFromJson<LoggerDto>();
+                dto = await NormalizeEventHubLoggerIdentityClientId(dto, serviceDirectory, cancellationToken);
+                return Option<LoggerDto>.Some(overrideDto(name, dto));
+            });
         };
     }
+
+    /// <summary>
+    /// Azure APIM returns <c>credentials.identityClientId</c> for EventHub loggers configured with managed
+    /// identity as the Named Value's internal resource name (e.g. <c>abcd1234</c>).  The PUT/PATCH endpoint
+    /// however expects it as the Named Value display name wrapped in <c>{{...}}</c> notation
+    /// (e.g. <c>{{Logger-Credentials--abcd1234}}</c>).  This method resolves the internal name to the
+    /// display name using the Named Value artifacts on disk, fixing the round-trip.
+    /// See GitHub issues #7 and #32 for the original bug report.
+    /// </summary>
+    private static async ValueTask<LoggerDto> NormalizeEventHubLoggerIdentityClientId(LoggerDto dto, ManagementServiceDirectory serviceDirectory, CancellationToken cancellationToken)
+    {
+        if (dto.Properties.LoggerType is not "azureEventHub")
+            return dto;
+
+        if (dto.Properties.Credentials is not JsonObject credentials)
+            return dto;
+
+        if (credentials["identityClientId"] is not JsonValue identityClientIdValue)
+            return dto;
+
+        var identityClientId = identityClientIdValue.GetValue<string>();
+
+        // Empty string signals system-assigned managed identity — leave as-is.
+        // Already-wrapped values ({{...}}) need no further processing.
+        if (string.IsNullOrEmpty(identityClientId) || identityClientId.StartsWith("{{", StringComparison.Ordinal))
+            return dto;
+
+        var displayNameOption = await TryGetNamedValueDisplayName(identityClientId, serviceDirectory, cancellationToken);
+
+        return displayNameOption.Match(
+            displayName =>
+            {
+                var updatedCredentials = new JsonObject(credentials.Select(kvp => new KeyValuePair<string, JsonNode?>(kvp.Key, kvp.Value?.DeepClone())));
+                updatedCredentials["identityClientId"] = JsonValue.Create($"{{{{{displayName}}}}}");
+                return dto with { Properties = dto.Properties with { Credentials = updatedCredentials } };
+            },
+            () => dto);
+    }
+
+    private static async ValueTask<Option<string>> TryGetNamedValueDisplayName(string namedValueName, ManagementServiceDirectory serviceDirectory, CancellationToken cancellationToken) =>
+        await common.NamedValueModule.ListInformationFiles(serviceDirectory)
+                              .Where(file => file.Parent.Name.ToString().Equals(namedValueName, StringComparison.OrdinalIgnoreCase))
+                              .HeadOrNone()
+                              .BindTask(async file =>
+                              {
+                                  var nvDto = await file.ReadDto(cancellationToken);
+                                  return Prelude.Optional(nvDto.Properties.DisplayName);
+                              });
 
     private static void ConfigurePutLoggerInApim(IHostApplicationBuilder builder)
     {
