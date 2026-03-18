@@ -127,6 +127,7 @@ internal static class ProductPolicyModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        PolicyContentFormatModule.ConfigureDefaultPolicyContentFormat(builder);
 
         builder.Services.TryAddSingleton(GetFindProductPolicyDto);
     }
@@ -135,6 +136,7 @@ internal static class ProductPolicyModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var format = provider.GetRequiredService<DefaultPolicyContentFormat>().Value.ToFormatString();
 
         return async (name, productName, cancellationToken) =>
         {
@@ -145,7 +147,7 @@ internal static class ProductPolicyModule
                    {
                        Properties = new ProductPolicyDto.ProductPolicyContract
                        {
-                           Format = "rawxml",
+                           Format = format,
                            Value = contents.ToString()
                        }
                    };

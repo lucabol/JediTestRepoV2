@@ -144,6 +144,7 @@ internal static class PolicyFragmentModule
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
         OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
+        PolicyContentFormatModule.ConfigureDefaultPolicyContentFormat(builder);
 
         builder.Services.TryAddSingleton(GetFindPolicyFragmentDto);
     }
@@ -153,6 +154,7 @@ internal static class PolicyFragmentModule
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
         var overrideFactory = provider.GetRequiredService<OverrideDtoFactory>();
+        var format = provider.GetRequiredService<DefaultPolicyContentFormat>().Value.ToFormatString();
 
         var overrideDto = overrideFactory.Create<PolicyFragmentName, PolicyFragmentDto>();
 
@@ -192,7 +194,7 @@ internal static class PolicyFragmentModule
             {
                 Properties = dto.Properties with
                 {
-                    Format = "rawxml",
+                    Format = format,
                     Value = contents.ToString()
                 }
             });

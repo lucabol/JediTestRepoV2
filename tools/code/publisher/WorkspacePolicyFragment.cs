@@ -144,6 +144,7 @@ internal static class WorkspacePolicyFragmentModule
     {
         AzureModule.ConfigureManagementServiceDirectory(builder);
         CommonModule.ConfigureTryGetFileContents(builder);
+        PolicyContentFormatModule.ConfigureDefaultPolicyContentFormat(builder);
 
         builder.Services.TryAddSingleton(GetFindWorkspacePolicyFragmentDto);
     }
@@ -152,6 +153,7 @@ internal static class WorkspacePolicyFragmentModule
     {
         var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
         var tryGetFileContents = provider.GetRequiredService<TryGetFileContents>();
+        var format = provider.GetRequiredService<DefaultPolicyContentFormat>().Value.ToFormatString();
 
         return async (name, workspaceName, cancellationToken) =>
         {
@@ -189,7 +191,7 @@ internal static class WorkspacePolicyFragmentModule
             {
                 Properties = dto.Properties with
                 {
-                    Format = "rawxml",
+                    Format = format,
                     Value = contents.ToString()
                 }
             });
