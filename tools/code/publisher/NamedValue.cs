@@ -177,8 +177,13 @@ internal static class NamedValueModule
 
             logger.LogInformation("Putting named value {NamedValueName}...", name);
 
+            // APIM requires displayName on PUT; fall back to the resource name when the artifact omits it.
+            var dtoToPublish = dto.Properties.DisplayName is null
+                ? dto with { Properties = dto.Properties with { DisplayName = name.ToString() } }
+                : dto;
+
             await NamedValueUri.From(name, serviceUri)
-                               .PutDto(dto, pipeline, cancellationToken);
+                               .PutDto(dtoToPublish, pipeline, cancellationToken);
         };
     }
 
