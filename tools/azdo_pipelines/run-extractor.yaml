@@ -196,7 +196,7 @@ stages:
                 cd "$apiDirectoryPath" # exclude top directory
                 
                 echo "# Azure APIM Modifications Summary" > "$outputFilePath"
-                echo "" >> "outputFilePath" #newline                
+                echo "" >> "$outputFilePath" #newline                
                 echo '```' >> "$outputFilePath"
                 tree -d --noreport -I "outputFilePath" | sed 's/^/    /' >> "$outputFilePath"
                 echo '```' >> "$outputFilePath"
