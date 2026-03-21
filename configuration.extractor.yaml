@@ -1,38 +1,57 @@
-# Note: With the introduction of workspaces we recommend using workspaces with APIOps when possible to limit what can be extracted whenever possible. 
+# Note: With the introduction of workspaces we recommend using workspaces with APIOps when possible to limit what can be extracted whenever possible.
 # More information about workspaces can be found here https://learn.microsoft.com/en-us/azure/api-management/workspaces-overview
+#
+# All keys below are optional. Omit a key entirely to extract all resources of that type.
+# Include a key with a list of names to extract only those specific resources.
 
- apiNames:
+apiNames:
   - apiName1
   - apiName2
 
- backendNames:
+backendNames:
   - backendName1
   - backendName2
 
- diagnosticNames:
- - diagnosticName1
- - diagnosticName2
+diagnosticNames:
+  - diagnosticName1
+  - diagnosticName2
 
- loggerNames:
+gatewayNames:
+  - gatewayName1
+  - gatewayName2
+
+groupNames:
+  - groupName1
+  - groupName2
+
+loggerNames:
   - loggerName1
   - loggerName2
 
- namedValueNames:
+namedValueNames:
   - namedValueName1
   - namedValueName2
 
- productNames:
+policyFragmentNames:
+  - policyFragment1
+  - policyFragment2
+
+productNames:
   - productName1
   - productName2
 
- subscriptionNames:
- - subscriptionName1
- - subscriptionName2
+subscriptionNames:
+  - subscriptionName1
+  - subscriptionName2
 
- tagNames:
+tagNames:
   - tagName1
   - tagName2
-  
- policyFragmentNames:
-  - policyFragment1
-  - policyFragment2
+
+versionSetNames:
+  - versionSetName1
+  - versionSetName2
+
+workspaceNames:
+  - workspaceName1
+  - workspaceName2
