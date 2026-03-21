@@ -152,7 +152,7 @@ public static class ConfigurationExtensions
 
     public static Option<string> TryGetValue(this IConfiguration configuration, string key) =>
         configuration.TryGetSection(key)
-                     .Where(section => section.Value is not null)
+                     .Where(section => string.IsNullOrWhiteSpace(section.Value) is false)
                      .Select(section => section.Value!);
 
     public static Option<IConfigurationSection> TryGetSection(this IConfiguration configuration, string key)
