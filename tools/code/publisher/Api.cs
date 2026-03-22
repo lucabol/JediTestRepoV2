@@ -140,6 +140,7 @@ internal static class ApiModule
         OverrideDtoModule.ConfigureOverrideDtoFactory(builder);
         ConfigureCorrectApimRevisionNumber(builder);
         ConfigurePutApiInApim(builder);
+        AzureModule.ConfigureManagementServiceUri(builder);
 
         builder.Services.TryAddSingleton(GetPutApi);
     }
@@ -152,6 +153,7 @@ internal static class ApiModule
         var correctRevisionNumber = provider.GetRequiredService<CorrectApimRevisionNumber>();
         var putInApim = provider.GetRequiredService<PutApiInApim>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
+        var serviceUri = provider.GetRequiredService<ManagementServiceUri>();
 
         var overrideDto = overrideDtoFactory.Create<ApiName, ApiDto>();
         var taskDictionary = new ConcurrentDictionary<ApiName, AsyncLazy<Unit>>();
@@ -180,6 +182,7 @@ internal static class ApiModule
                 await putCurrentRevision(name, informationFileDto, cancellationToken);
                 var specificationContentsOption = await findSpecificationContents(name, cancellationToken);
                 var dto = await tryGetDto(name, informationFileDto, specificationContentsOption, cancellationToken);
+                dto = normalizeVersionSetId(dto);
                 var graphQlSpecificationContentsOption = specificationContentsOption.Bind(specificationContents =>
                 {
                     var (specification, contents) = specificationContents;
@@ -190,6 +193,29 @@ internal static class ApiModule
                 });
                 await putInApim(name, dto, graphQlSpecificationContentsOption, cancellationToken);
             });
+        }
+
+        // Rewrite apiVersionSetId to use the target environment's ARM path.
+        // Extracted artifacts contain the source environment's full ARM resource ID, which
+        // will not match any version set in the target environment.  By extracting just the
+        // version-set name (the last path segment) and reconstructing the ARM path from the
+        // target serviceUri we ensure APIM can resolve the association and avoids the
+        // "Cannot create API with the same Path unless it's part of the same version set" 400 error.
+        ApiDto normalizeVersionSetId(ApiDto dto)
+        {
+            var sourceId = dto.Properties.ApiVersionSetId;
+            if (string.IsNullOrWhiteSpace(sourceId))
+                return dto;
+
+            var versionSetName = sourceId.Split('/').LastOrDefault();
+            if (string.IsNullOrWhiteSpace(versionSetName))
+                return dto;
+
+            var targetId = VersionSetUri.From(VersionSetName.From(versionSetName), serviceUri)
+                                        .ToUri()
+                                        .AbsolutePath;
+
+            return dto with { Properties = dto.Properties with { ApiVersionSetId = targetId } };
         }
 
         async ValueTask putCurrentRevision(ApiName name, ApiDto dto, CancellationToken cancellationToken)

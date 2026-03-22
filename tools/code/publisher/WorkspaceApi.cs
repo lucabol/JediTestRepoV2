@@ -132,6 +132,7 @@ internal static class WorkspaceApiModule
         ConfigureFindWorkspaceApiSpecificationContents(builder);
         ConfigureCorrectWorkspaceApimRevisionNumber(builder);
         ConfigurePutWorkspaceApiInApim(builder);
+        AzureModule.ConfigureManagementServiceUri(builder);
 
         builder.Services.TryAddSingleton(GetPutWorkspaceApi);
     }
@@ -143,6 +144,7 @@ internal static class WorkspaceApiModule
         var correctRevisionNumber = provider.GetRequiredService<CorrectWorkspaceApimRevisionNumber>();
         var putInApim = provider.GetRequiredService<PutWorkspaceApiInApim>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
+        var serviceUri = provider.GetRequiredService<ManagementServiceUri>();
 
         var taskDictionary = new ConcurrentDictionary<(ApiName, WorkspaceName), AsyncLazy<Unit>>();
 
@@ -172,6 +174,7 @@ internal static class WorkspaceApiModule
                 await putCurrentRevision(name, informationFileDto, workspaceName, cancellationToken);
                 var specificationContentsOption = await findSpecificationContents(name, workspaceName, cancellationToken);
                 var dto = await tryGetDto(name, informationFileDto, specificationContentsOption, cancellationToken);
+                dto = normalizeVersionSetId(dto, workspaceName);
                 var graphQlSpecificationContentsOption = specificationContentsOption.Bind(specificationContents =>
                 {
                     var (specification, contents) = specificationContents;
@@ -182,6 +185,24 @@ internal static class WorkspaceApiModule
                 });
                 await putInApim(name, dto, graphQlSpecificationContentsOption, workspaceName, cancellationToken);
             });
+        }
+
+        // Rewrite apiVersionSetId to use the target environment's workspace-scoped ARM path.
+        WorkspaceApiDto normalizeVersionSetId(WorkspaceApiDto dto, WorkspaceName workspaceName)
+        {
+            var sourceId = dto.Properties.ApiVersionSetId;
+            if (string.IsNullOrWhiteSpace(sourceId))
+                return dto;
+
+            var versionSetName = sourceId.Split('/').LastOrDefault();
+            if (string.IsNullOrWhiteSpace(versionSetName))
+                return dto;
+
+            var targetId = WorkspaceVersionSetUri.From(VersionSetName.From(versionSetName), workspaceName, serviceUri)
+                                                 .ToUri()
+                                                 .AbsolutePath;
+
+            return dto with { Properties = dto.Properties with { ApiVersionSetId = targetId } };
         }
 
         async ValueTask putCurrentRevision(ApiName name, WorkspaceApiDto dto, WorkspaceName workspaceName, CancellationToken cancellationToken)
