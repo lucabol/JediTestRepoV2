@@ -192,7 +192,7 @@ stages:
               targetType: 'inline'
               script: |
                 outputFilePath="$(Build.ArtifactStagingDirectory)/run-extractor.md"
-                apiDirectoryPath="$(Build.ArtifactStagingDirectory)/artifacts"
+                apiDirectoryPath="$(Build.ArtifactStagingDirectory)/${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
                 cd "$apiDirectoryPath" # exclude top directory
                 
                 echo "# Azure APIM Modifications Summary" > "$outputFilePath"
