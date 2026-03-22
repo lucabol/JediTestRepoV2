@@ -1,1 +1,1 @@
-{"n":"03-22T01:26","prs_count":40,"prs":"68:216","notes":"All 118 issues commented. No CI. Monthly #115. Many fix PRs open (96 total). #68 fix PR#216 normalizes apiVersionSetId to target ARM path."}
+{"n":"03-22T07:12","prs_count":98,"prs":"68:216,azdo-extractor:217","notes":"All 118 issues commented. No CI. Monthly #115. Many fix PRs open (98 total). #217 fixes hardcoded 'artifacts' path in ADO extractor pipeline summary step. #216 normalizes apiVersionSetId. All fixable bugs have PRs."}
