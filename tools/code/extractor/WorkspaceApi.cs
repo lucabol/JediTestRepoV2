@@ -26,6 +26,7 @@ internal static class WorkspaceApiModule
     {
         ConfigureListWorkspaceApis(builder);
         ConfigureWriteWorkspaceApiArtifacts(builder);
+        WorkspaceApiReleaseModule.ConfigureExtractWorkspaceApiReleases(builder);
 
         builder.Services.TryAddSingleton(GetExtractWorkspaceApis);
     }
@@ -34,6 +35,7 @@ internal static class WorkspaceApiModule
     {
         var list = provider.GetRequiredService<ListWorkspaceApis>();
         var writeArtifacts = provider.GetRequiredService<WriteWorkspaceApiArtifacts>();
+        var extractWorkspaceApiReleases = provider.GetRequiredService<ExtractWorkspaceApiReleases>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
 
@@ -55,6 +57,7 @@ internal static class WorkspaceApiModule
         async ValueTask extractApi(ApiName name, WorkspaceApiDto dto, Option<(ApiSpecification Specification, BinaryData Contents)> specificationOption, WorkspaceName workspaceName, CancellationToken cancellationToken)
         {
             await writeArtifacts(name, dto, specificationOption, workspaceName, cancellationToken);
+            await extractWorkspaceApiReleases(name, workspaceName, cancellationToken);
         }
     }
 
