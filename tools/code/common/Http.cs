@@ -1,6 +1,7 @@
 ﻿using Azure;
 using Azure.Core;
 using Azure.Core.Pipeline;
+using Flurl;
 using LanguageExt;
 using LanguageExt.UnsafeValueAccess;
 using Microsoft.Extensions.Logging;
@@ -80,7 +81,10 @@ public static class HttpPipelineExtensions
 
     public static async IAsyncEnumerable<JsonObject> ListJsonObjects(this HttpPipeline pipeline, Uri uri, [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        Uri? nextLink = uri;
+        // Request the maximum page size (1000) to minimise pagination round-trips.
+        // The nextLink returned by APIM already embeds $top, so subsequent pages keep the same size.
+        var initialUri = uri.ToString().SetQueryParam("$top", 1000).ToUri();
+        Uri? nextLink = initialUri;
 
         while (nextLink is not null)
         {
