@@ -174,34 +174,8 @@ public static class HttpPipelineExtensions
 #pragma warning restore CA1806 // Do not ignore method results
     }
 
-    public static async ValueTask<Either<Response, Unit>> TryPutContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken)
-    {
-        using var request = pipeline.CreateRequest(uri, RequestMethod.Put);
-        request.Content = RequestContent.Create(content);
-        request.Headers.Add("Content-type", "application/json");
-
-        var response = await pipeline.SendRequestAsync(request, cancellationToken);
-        if (response.IsError)
-        {
-            return response;
-        };
-
-        using (response)
-        {
-            var operationResponse = await pipeline.WaitForLongRunningOperation(response, cancellationToken);
-            if (operationResponse.IsError)
-            {
-                return operationResponse;
-            }
-            else
-            {
-                using (operationResponse)
-                {
-                    return Unit.Default;
-                }
-            }
-        }
-    }
+    public static async ValueTask<Either<Response, Unit>> TryPutContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken) =>
+        await pipeline.TrySendJsonContent(uri, content, RequestMethod.Put, cancellationToken);
 
     public static async ValueTask PatchContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken)
     {
@@ -212,9 +186,12 @@ public static class HttpPipelineExtensions
 #pragma warning restore CA1806 // Do not ignore method results
     }
 
-    public static async ValueTask<Either<Response, Unit>> TryPatchContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken)
+    public static async ValueTask<Either<Response, Unit>> TryPatchContent(this HttpPipeline pipeline, Uri uri, BinaryData content, CancellationToken cancellationToken) =>
+        await pipeline.TrySendJsonContent(uri, content, RequestMethod.Patch, cancellationToken);
+
+    private static async ValueTask<Either<Response, Unit>> TrySendJsonContent(this HttpPipeline pipeline, Uri uri, BinaryData content, RequestMethod method, CancellationToken cancellationToken)
     {
-        using var request = pipeline.CreateRequest(uri, RequestMethod.Patch);
+        using var request = pipeline.CreateRequest(uri, method);
         request.Content = RequestContent.Create(content);
         request.Headers.Add("Content-type", "application/json");
 
@@ -415,44 +392,28 @@ public class CommonRetryPolicy : RetryPolicy
     }
 
     private static bool HasManagementApiRequestFailedError(Response response) =>
-        TryGetErrorCode(response)
+        TryGetErrorProperty(response, "code")
             .Where(code => code.Equals("ManagementApiRequestFailed", StringComparison.OrdinalIgnoreCase))
             .IsSome;
 
     private static bool HasConflictError(Response response) =>
-        TryGetErrorCode(response)
+        TryGetErrorProperty(response, "code")
             .Where(code => code.Equals("Conflict", StringComparison.OrdinalIgnoreCase))
             .IsSome;
 
     private static bool HasOperationOnTheApiIsInProgressMessage(Response response) =>
-        TryGetMessage(response)
-            .Where(code => code.Equals("Operation on the API is in progress", StringComparison.OrdinalIgnoreCase))
+        TryGetErrorProperty(response, "message")
+            .Where(msg => msg.Equals("Operation on the API is in progress", StringComparison.OrdinalIgnoreCase))
             .IsSome;
 
-    private static Option<string> TryGetErrorCode(Response response)
+    private static Option<string> TryGetErrorProperty(Response response, string propertyName)
     {
         try
         {
             return response.Content
                            .ToObjectFromJson<JsonObject>()
                            .TryGetJsonObjectProperty("error")
-                           .Bind(error => error.TryGetStringProperty("code"))
-                           .ToOption();
-        }
-        catch (Exception exception) when (exception is ArgumentNullException or NotSupportedException or JsonException)
-        {
-            return Option<string>.None;
-        }
-    }
-
-    private static Option<string> TryGetMessage(Response response)
-    {
-        try
-        {
-            return response.Content
-                           .ToObjectFromJson<JsonObject>()
-                           .TryGetJsonObjectProperty("error")
-                           .Bind(error => error.TryGetStringProperty("message"))
+                           .Bind(error => error.TryGetStringProperty(propertyName))
                            .ToOption();
         }
         catch (Exception exception) when (exception is ArgumentNullException or NotSupportedException or JsonException)
