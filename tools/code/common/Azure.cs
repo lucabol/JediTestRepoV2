@@ -104,8 +104,23 @@ public static class AzureModule
     {
         var tokenCredential = provider.GetRequiredService<TokenCredential>();
         var azureEnvironment = provider.GetRequiredService<AzureEnvironment>();
+        var configuration = provider.GetRequiredService<IConfiguration>();
 
         var clientOptions = ClientOptions.Default;
+
+        // Allow users to override retry/timeout settings via environment variables (issue #5).
+        configuration.TryGetValue("AZURE_MAX_RETRIES")
+                     .IfSome(s => { if (int.TryParse(s, out var n) && n > 0) clientOptions.Retry.MaxRetries = n; });
+
+        configuration.TryGetValue("AZURE_NETWORK_TIMEOUT_SECONDS")
+                     .IfSome(s => { if (int.TryParse(s, out var n) && n > 0) clientOptions.Retry.NetworkTimeout = TimeSpan.FromSeconds(n); });
+
+        configuration.TryGetValue("AZURE_RETRY_DELAY_SECONDS")
+                     .IfSome(s => { if (int.TryParse(s, out var n) && n > 0) clientOptions.Retry.Delay = TimeSpan.FromSeconds(n); });
+
+        configuration.TryGetValue("AZURE_MAX_RETRY_DELAY_SECONDS")
+                     .IfSome(s => { if (int.TryParse(s, out var n) && n > 0) clientOptions.Retry.MaxDelay = TimeSpan.FromSeconds(n); });
+
         clientOptions.RetryPolicy = new CommonRetryPolicy();
 
         var bearerAuthenticationPolicy = new BearerTokenAuthenticationPolicy(tokenCredential, azureEnvironment.DefaultScope);
