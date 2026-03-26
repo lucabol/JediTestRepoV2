@@ -123,8 +123,16 @@ public static class ApiOperationPolicyModule
         return content.ToObjectFromJson<ApiOperationPolicyDto>();
     }
 
-    public static async ValueTask Delete(this ApiOperationPolicyUri uri, HttpPipeline pipeline, CancellationToken cancellationToken) =>
-        await pipeline.DeleteResource(uri.ToUri(), waitForCompletion: true, cancellationToken);
+    public static async ValueTask Delete(this ApiOperationPolicyUri uri, HttpPipeline pipeline, CancellationToken cancellationToken)
+    {
+        var either = await pipeline.TryDeleteResource(uri.ToUri(), waitForCompletion: true, cancellationToken);
+
+        // Don't throw if we get a 404 — this can occur when the parent operation was removed
+        // by a prior spec update, which causes APIM to automatically delete the operation and its policies.
+        _ = either.IfLeft(response => response.Status == (int)HttpStatusCode.NotFound
+                                        ? Unit.Default
+                                        : throw response.ToHttpRequestException(uri.ToUri()));
+    }
 
     public static async ValueTask PutDto(this ApiOperationPolicyUri uri, ApiOperationPolicyDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
     {
