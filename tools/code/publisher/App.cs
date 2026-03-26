@@ -46,8 +46,10 @@ internal static class AppModule
         WorkspacePolicyModule.ConfigurePutWorkspacePolicies(builder);
         WorkspaceProductModule.ConfigurePutWorkspaceProducts(builder);
         WorkspaceGroupModule.ConfigurePutWorkspaceGroups(builder);
+        WorkspaceSubscriptionModule.ConfigurePutWorkspaceSubscriptions(builder);
         WorkspaceApiModule.ConfigurePutWorkspaceApis(builder);
         WorkspaceApiModule.ConfigureDeleteWorkspaceApis(builder);
+        WorkspaceSubscriptionModule.ConfigureDeleteWorkspaceSubscriptions(builder);
         WorkspaceGroupModule.ConfigureDeleteWorkspaceGroups(builder);
         WorkspaceProductModule.ConfigureDeleteWorkspaceProducts(builder);
         WorkspacePolicyModule.ConfigureDeleteWorkspacePolicies(builder);
@@ -119,8 +121,10 @@ internal static class AppModule
         var putWorkspacePolicies = provider.GetRequiredService<PutWorkspacePolicies>();
         var putWorkspaceProducts = provider.GetRequiredService<PutWorkspaceProducts>();
         var putWorkspaceGroups = provider.GetRequiredService<PutWorkspaceGroups>();
+        var putWorkspaceSubscriptions = provider.GetRequiredService<PutWorkspaceSubscriptions>();
         var putWorkspaceApis = provider.GetRequiredService<PutWorkspaceApis>();
         var deleteWorkspaceApis = provider.GetRequiredService<DeleteWorkspaceApis>();
+        var deleteWorkspaceSubscriptions = provider.GetRequiredService<DeleteWorkspaceSubscriptions>();
         var deleteWorkspaceGroups = provider.GetRequiredService<DeleteWorkspaceGroups>();
         var deleteWorkspaceProducts = provider.GetRequiredService<DeleteWorkspaceProducts>();
         var deleteWorkspacePolicies = provider.GetRequiredService<DeleteWorkspacePolicies>();
@@ -201,8 +205,10 @@ internal static class AppModule
                 await putWorkspacePolicies(cancellationToken);
                 await putWorkspaceProducts(cancellationToken);
                 await putWorkspaceGroups(cancellationToken);
+                await putWorkspaceSubscriptions(cancellationToken);
                 await putWorkspaceApis(cancellationToken);
                 await deleteWorkspaceApis(cancellationToken);
+                await deleteWorkspaceSubscriptions(cancellationToken);
                 await deleteWorkspaceGroups(cancellationToken);
                 await deleteWorkspaceProducts(cancellationToken);
                 await deleteWorkspacePolicies(cancellationToken);
