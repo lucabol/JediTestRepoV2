@@ -1,4 +1,6 @@
-﻿using Azure.Core.Pipeline;
+﻿using Azure;
+using Azure.Core;
+using Azure.Core.Pipeline;
 using Flurl;
 using LanguageExt;
 using System;
@@ -194,6 +196,12 @@ public static class SubscriptionModule
     {
         var content = BinaryData.FromObjectAsJson(dto);
         await pipeline.PutContent(uri.ToUri(), content, cancellationToken);
+    }
+
+    public static async ValueTask<Either<Response, Unit>> TryPutDto(this SubscriptionUri uri, SubscriptionDto dto, HttpPipeline pipeline, CancellationToken cancellationToken)
+    {
+        var content = BinaryData.FromObjectAsJson(dto);
+        return await pipeline.TryPutContent(uri.ToUri(), content, cancellationToken);
     }
 
     public static IEnumerable<SubscriptionDirectory> ListDirectories(ManagementServiceDirectory serviceDirectory)
