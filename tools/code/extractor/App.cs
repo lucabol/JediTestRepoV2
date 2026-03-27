@@ -7,6 +7,7 @@ using Microsoft.FeatureManagement;
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace extractor;
 
@@ -60,19 +61,24 @@ internal static class AppModule
 
             logger.LogInformation("Running extractor {ReleaseVersion}...", releaseVersion);
 
-            await extractNamedValues(cancellationToken);
-            await extractTags(cancellationToken);
-            await extractGateways(cancellationToken);
-            await extractVersionSets(cancellationToken);
-            await extractBackends(cancellationToken);
-            await extractLoggers(cancellationToken);
-            await extractDiagnostics(cancellationToken);
-            await extractPolicyFragments(cancellationToken);
-            await extractServicePolicies(cancellationToken);
-            await extractProducts(cancellationToken);
-            await extractGroups(cancellationToken);
-            await extractSubscriptions(cancellationToken);
-            await extractApis(cancellationToken);
+            // All top-level resource types are independent: each makes its own APIM
+            // management API calls and writes to a distinct output subdirectory.
+            // Running them concurrently cuts wall-clock extraction time roughly
+            // proportionally to the number of resource types.
+            await Task.WhenAll(
+                extractNamedValues(cancellationToken).AsTask(),
+                extractTags(cancellationToken).AsTask(),
+                extractGateways(cancellationToken).AsTask(),
+                extractVersionSets(cancellationToken).AsTask(),
+                extractBackends(cancellationToken).AsTask(),
+                extractLoggers(cancellationToken).AsTask(),
+                extractDiagnostics(cancellationToken).AsTask(),
+                extractPolicyFragments(cancellationToken).AsTask(),
+                extractServicePolicies(cancellationToken).AsTask(),
+                extractProducts(cancellationToken).AsTask(),
+                extractGroups(cancellationToken).AsTask(),
+                extractSubscriptions(cancellationToken).AsTask(),
+                extractApis(cancellationToken).AsTask());
 
             if (await featureManager.IsEnabledAsync("Workspaces"))
             {
