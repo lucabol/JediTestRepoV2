@@ -227,7 +227,16 @@ internal static class ApiModule
             var informationFile = ApiInformationFile.From(name, serviceDirectory);
 
             logger.LogInformation("Writing API information file {ApiInformationFile}...", informationFile);
-            await informationFile.WriteDto(dto, cancellationToken);
+            // APIM sometimes returns an empty string for serviceUrl. Normalize it to null so
+            // the publisher does not later receive a ValidationError when putting the API.
+            var normalizedDto = dto with
+            {
+                Properties = dto.Properties with
+                {
+                    ServiceUrl = string.IsNullOrEmpty(dto.Properties.ServiceUrl) ? null : dto.Properties.ServiceUrl
+                }
+            };
+            await informationFile.WriteDto(normalizedDto, cancellationToken);
         };
     }
 

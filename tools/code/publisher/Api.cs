@@ -535,7 +535,15 @@ internal static class ApiModule
             var uri = getRevisionedUri(name, revisionNumber);
 
             // APIM sometimes fails revisions if isCurrent is set to true.
-            var dtoWithoutIsCurrent = dto with { Properties = dto.Properties with { IsCurrent = null } };
+            // APIM also rejects an empty string serviceUrl (it must be null or a valid URI).
+            var dtoWithoutIsCurrent = dto with
+            {
+                Properties = dto.Properties with
+                {
+                    IsCurrent = null,
+                    ServiceUrl = string.IsNullOrEmpty(dto.Properties.ServiceUrl) ? null : dto.Properties.ServiceUrl
+                }
+            };
 
             await uri.PutDto(dtoWithoutIsCurrent, pipeline, cancellationToken);
 
