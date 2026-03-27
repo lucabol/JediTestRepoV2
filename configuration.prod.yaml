@@ -53,6 +53,56 @@ backends:
     properties:
       url: "https://prod-75.eastus.logic.azure.com/workflows/[guid goes here]/triggers"
       resourceId: "https://management.azure.com/subscriptions/[subscription Guid goes here]/resourceGroups/rg-apim-lab-prod/providers/Microsoft.Logic/workflows/helloworldfromprodlogicapp"
+tags:
+  - name: my-tag
+    properties:
+      displayName: "My Tag"
+versionSets:
+  - name: my-versioned-api
+    properties:
+      displayName: "My Versioned API"
+      versioningScheme: Header
+      versionHeaderName: Api-Version
+gateways:
+  - name: my-gateway
+    properties:
+      description: "Production gateway"
+      locationData:
+        name: "East US"
+        city: "New York"
+        countryOrRegion: "United States"
+policyFragments:
+  - name: my-fragment
+    properties:
+      description: "Shared policy fragment for production"
+      format: rawxml
+      value: "<policies><inbound><base /></inbound></policies>"
+servicePolicies:
+  - name: policy
+    properties:
+      format: rawxml
+      value: "<policies><inbound><base /></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>"
+products:
+  - name: starter
+    properties:
+      displayName: "Starter"
+      description: "Production starter product"
+      approvalRequired: false
+      subscriptionRequired: true
+      subscriptionsLimit: 10
+      state: published
+groups:
+  - name: developers
+    properties:
+      displayName: "Developers"
+      description: "Production developer group"
+      type: custom
+subscriptions:
+  - name: my-subscription
+    properties:
+      displayName: "My Subscription"
+      scope: "/apis/demo-conference-api"
+      state: active
 apis:
   - name: demo-conference-api
     diagnostics:
