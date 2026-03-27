@@ -405,6 +405,11 @@ public class CommonRetryPolicy : RetryPolicy
                     ({ Response.Status: 409 }, _) when HasConflictError(message.Response) && HasOperationOnTheApiIsInProgressMessage(message.Response) => true,
                     ({ Response.Status: 412 }, _) => true,
                     ({ Response.Status: 429 }, _) => true,
+                    // APIM can return 400 ValidationError "Entity with specified identifier not found" when a
+                    // new operation's policy is PUT immediately after the API spec import — the operation may
+                    // not yet be fully committed on the APIM side.  Retrying resolves it once propagation
+                    // completes.
+                    ({ Response.Status: 400 }, _) when HasValidationErrorEntityNotFound(message.Response) => true,
                     _ => false
                 };
         }
@@ -427,6 +432,14 @@ public class CommonRetryPolicy : RetryPolicy
     private static bool HasOperationOnTheApiIsInProgressMessage(Response response) =>
         TryGetMessage(response)
             .Where(code => code.Equals("Operation on the API is in progress", StringComparison.OrdinalIgnoreCase))
+            .IsSome;
+
+    private static bool HasValidationErrorEntityNotFound(Response response) =>
+        TryGetErrorCode(response)
+            .Where(code => code.Equals("ValidationError", StringComparison.OrdinalIgnoreCase))
+            .IsSome
+        && TryGetMessage(response)
+            .Where(msg => msg.Contains("Entity with specified identifier not found", StringComparison.OrdinalIgnoreCase))
             .IsSome;
 
     private static Option<string> TryGetErrorCode(Response response)
