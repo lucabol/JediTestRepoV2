@@ -153,7 +153,16 @@ internal static class WorkspaceApiModule
             var informationFile = WorkspaceApiInformationFile.From(name, workspaceName, serviceDirectory);
 
             logger.LogInformation("Writing workspace API information file {WorkspaceApiInformationFile}...", informationFile);
-            await informationFile.WriteDto(dto, cancellationToken);
+            // APIM sometimes returns an empty string for serviceUrl. Normalize it to null so
+            // the publisher does not later receive a ValidationError when putting the API.
+            var normalizedDto = dto with
+            {
+                Properties = dto.Properties with
+                {
+                    ServiceUrl = string.IsNullOrEmpty(dto.Properties.ServiceUrl) ? null : dto.Properties.ServiceUrl
+                }
+            };
+            await informationFile.WriteDto(normalizedDto, cancellationToken);
         };
     }
 
