@@ -1,4 +1,6 @@
-﻿using Azure.Core.Pipeline;
+﻿using Azure;
+using Azure.Core;
+using Azure.Core.Pipeline;
 using common;
 using LanguageExt;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,6 +11,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -170,9 +173,50 @@ internal static class SubscriptionModule
         {
             logger.LogInformation("Putting subscription {SubscriptionName}...", name);
 
-            await SubscriptionUri.From(name, serviceUri)
-                                 .PutDto(dto, pipeline, cancellationToken);
+            var subscriptionUri = SubscriptionUri.From(name, serviceUri);
+            var result = await subscriptionUri.TryPutDto(dto, pipeline, cancellationToken);
+
+            result.IfLeft(response =>
+            {
+                var limitReached = IsSubscriptionsLimitReachedError(response);
+                using (response)
+                {
+                    if (limitReached)
+                    {
+                        logger.LogWarning(
+                            "Skipping subscription {SubscriptionName}: APIM rejected with 'Subscriptions limit reached for same user'. " +
+                            "This subscription is user-scoped and a subscription already exists for the same owner and scope in this environment. " +
+                            "Consider excluding user-scoped subscriptions (those with ownerId set) from cross-environment publishing.",
+                            name);
+                    }
+                    else
+                    {
+                        throw response.ToHttpRequestException(subscriptionUri.ToUri());
+                    }
+                }
+            });
         };
+    }
+
+    private static bool IsSubscriptionsLimitReachedError(Response response)
+    {
+        if (response.Status != 400)
+            return false;
+
+        try
+        {
+            return response.Content
+                           .ToObjectFromJson<JsonObject>()
+                           .TryGetJsonObjectProperty("error")
+                           .Bind(error => error.TryGetStringProperty("message"))
+                           .ToOption()
+                           .Map(message => message.Contains("Subscriptions limit reached", StringComparison.OrdinalIgnoreCase))
+                           .IfNone(false);
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public static void ConfigureDeleteSubscriptions(IHostApplicationBuilder builder)
