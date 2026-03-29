@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.OpenApi.Readers;
 using System;
 using System.Collections.Concurrent;
+using System.Net;
+using System.Net.Http;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -494,6 +496,7 @@ internal static class ApiModule
     {
         var putRelease = provider.GetRequiredService<PutApiReleaseInApim>();
         var deleteRelease = provider.GetRequiredService<DeleteApiReleaseFromApim>();
+        var logger = provider.GetRequiredService<ILogger>();
 
         return async (name, revisionNumber, cancellationToken) =>
         {
@@ -509,7 +512,19 @@ internal static class ApiModule
             };
 
             await putRelease(releaseName, releaseDto, name, cancellationToken);
-            await deleteRelease(releaseName, name, cancellationToken);
+
+            // The PUT release above already marks the revision as current.
+            // The DELETE is only cleanup — if it fails (e.g. due to a resource lock),
+            // the revision change has succeeded and the stale release marker is harmless.
+            try
+            {
+                await deleteRelease(releaseName, name, cancellationToken);
+            }
+            catch (HttpRequestException exception) when (exception.StatusCode is HttpStatusCode.Conflict or HttpStatusCode.Locked)
+            {
+                logger.LogWarning("Could not delete temporary release {ReleaseName} from API {ApiName} (status {StatusCode}). The revision was set to current successfully; the release cleanup can be retried manually.",
+                                  releaseName, name, exception.StatusCode);
+            }
         };
     }
 
