@@ -153,6 +153,7 @@ internal static class AppModule
         var deleteBackends = provider.GetRequiredService<DeleteBackends>();
         var deleteGateways = provider.GetRequiredService<DeleteGateways>();
         var deleteNamedValues = provider.GetRequiredService<DeleteNamedValues>();
+        var tryGetCommitId = provider.GetRequiredService<TryGetCommitId>();
         var featureManager = provider.GetRequiredService<IFeatureManager>();
         var activitySource = provider.GetRequiredService<ActivitySource>();
         var logger = provider.GetRequiredService<ILogger>();
@@ -165,6 +166,15 @@ internal static class AppModule
             using var activity = activitySource.StartActivity(nameof(RunApplication));
 
             logger.LogInformation("Running publisher {ReleaseVersion}...", releaseVersion);
+
+            if (tryGetCommitId().IsNone)
+            {
+                logger.LogWarning(
+                    "No COMMIT_ID environment variable detected — running in publish-all mode. " +
+                    "Resource deletions will NOT be performed. " +
+                    "To enable deletion of resources removed from source control, set COMMIT_ID to the relevant Git commit SHA " +
+                    "(use 'publish-artifacts-in-last-commit' mode in your pipeline).");
+            }
 
             await putNamedValues(cancellationToken);
             await putGateways(cancellationToken);
