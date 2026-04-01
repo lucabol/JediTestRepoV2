@@ -1,0 +1,11 @@
+# Extends the shared API linting ruleset from connectedcircuits/devops-api-linter.
+# The rule-path-lower-case-id rule is disabled here because it incorrectly flags
+# path template parameters such as `{id}`, which is a widely-used ASP.NET / REST
+# convention and is already lower-case.  Disabling the rule avoids false positives
+# on valid route templates like `/users/{id}` or `/items/{id}/details`.
+# See: https://github.com/lucabol/JediTestRepoV2/issues/76
+extends:
+  - https://raw.githubusercontent.com/connectedcircuits/devops-api-linter/main/rules.yaml
+rules:
+  rule-path-lower-case-id:
+    severity: off
