@@ -1,1 +1,1 @@
-{"r":"2026-04-02T07:23Z","p":117,"note":"Apr2026 #234. PR#237=spectral#76 fix. PR#157=backend-cred-fix(#89). All issues have RA comments."}
+{"r":"2026-04-02T19:16Z","p":118,"note":"Apr2026 #234. PR#237 updated with glob/slash fix (also closes #61, supersedes #218). New LLM diagnostic PR created for #113 (duplicate of #196, #125, #127, #139 - all need cleanup). All issues have RA comments."}
