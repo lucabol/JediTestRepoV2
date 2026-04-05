@@ -100,7 +100,16 @@ public static class FileInfoExtensions
     public static async ValueTask<BinaryData> ReadAsBinaryData(this FileInfo file, CancellationToken cancellationToken)
     {
         using var stream = file.OpenRead();
-        return await BinaryData.FromStreamAsync(stream, cancellationToken);
+        var data = await BinaryData.FromStreamAsync(stream, cancellationToken);
+        return StripUtf8Bom(data);
+    }
+
+    private static BinaryData StripUtf8Bom(BinaryData data)
+    {
+        var memory = data.ToMemory();
+        return memory.Length >= 3 && memory.Span[0] == 0xEF && memory.Span[1] == 0xBB && memory.Span[2] == 0xBF
+            ? new BinaryData(memory[3..].ToArray())
+            : data;
     }
 
     /// <summary>
