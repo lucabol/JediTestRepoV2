@@ -198,7 +198,7 @@ public static class Generator
     private static Gen<FrozenSet<T>> ModifyItems<T>(FrozenSet<T> set, Func<T, Gen<T>> updateGen) =>
         from itemsToModify in Generator.SubFrozenSetOf(set)
         from modifiedItems in itemsToModify.Select(updateGen).SequenceToImmutableArray()
-        select set.Concat(itemsToModify)
+        select set.Except(itemsToModify, set.Comparer)
                   .Concat(modifiedItems)
                   .ToFrozenSet(set.Comparer);
 
