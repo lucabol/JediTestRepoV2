@@ -255,7 +255,7 @@ internal static class ApiOperationPolicyModule
 
         return async (name, operationName, apiName, cancellationToken) =>
         {
-            logger.LogInformation("Deleting policy {ApiOperationPolicyName} from operation {ApiOperationName} in API {Apiname}...", name, operationName, apiName);
+            logger.LogInformation("Deleting policy {ApiOperationPolicyName} from operation {ApiOperationName} in API {ApiName}...", name, operationName, apiName);
 
             await ApiOperationPolicyUri.From(name, operationName, apiName, serviceUri)
                                        .Delete(pipeline, cancellationToken);
