@@ -1,1 +1,1 @@
-{"r":"2026-04-07T01:26Z","n":"T2:all 119 issues have RA comments,no new human activity. T6:PRs #241,#243,#244 clean. Issue #245 is failed-PR fallback,PR #244 already exists."}
+{"r":"2026-04-07T07:24Z","n":"T3:Created PR for fix-issue-83 (apiNames+versionSet filter bug in extractor/Api.cs). Commented on #83. T6:30 open RA PRs all clean. Issues #85,#106 covered by PR #233; #83 covered by new PR (branch: repo-assist/fix-issue-83-apinames-versionset-filter)."}
