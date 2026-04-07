@@ -146,8 +146,30 @@ internal static class BackendModule
 
             return from contents in contentsOption
                    let dto = contents.ToObjectFromJson<BackendDto>()
-                   select overrideDto(name, dto);
+                   select NormalizeEmptyCredentialArrays(overrideDto(name, dto));
         };
+    }
+
+    /// <summary>
+    /// Converts empty certificate arrays to null so they are omitted from the APIM PUT request.
+    /// APIM returns a 400 ValidationError when an empty certificate array is sent because it
+    /// attempts to resolve every entry in the array. Omitting the field signals "no credentials"
+    /// and APIM clears the existing value on a full PUT.
+    /// </summary>
+    private static BackendDto NormalizeEmptyCredentialArrays(BackendDto dto)
+    {
+        var credentials = dto.Properties.Credentials;
+        if (credentials is null) return dto;
+
+        var normalizedCredentials = credentials with
+        {
+            Certificate = credentials.Certificate?.Length == 0 ? null : credentials.Certificate,
+            CertificateIds = credentials.CertificateIds?.Length == 0 ? null : credentials.CertificateIds,
+        };
+
+        if (normalizedCredentials == credentials) return dto;
+
+        return dto with { Properties = dto.Properties with { Credentials = normalizedCredentials } };
     }
 
     private static void ConfigurePutBackendInApim(IHostApplicationBuilder builder)
