@@ -93,7 +93,6 @@ internal static class ApiModule
 
         return cancellationToken =>
             list(cancellationToken)
-                .Where(api => shouldExtractApiDto(api.Dto))
                 .SelectAwait(async api =>
                 {
                     var (name, dto) = api;
@@ -101,10 +100,13 @@ internal static class ApiModule
                     return (name, dto, specificationContentsOption);
                 });
 
+        // When specific API names are requested, skip the version set filter — the user has
+        // explicitly asked for those APIs.  Only apply the version set filter when listing all
+        // APIs so that unrelated version sets are not inadvertently included.
         IAsyncEnumerable<(ApiName Name, ApiDto Dto)> list(CancellationToken cancellationToken) =>
             findConfigurationApis()
                 .Map(names => listFromSet(names, cancellationToken))
-                .IfNone(() => listAll(cancellationToken));
+                .IfNone(() => listAll(cancellationToken).Where(api => shouldExtractApiDto(api.Item2)));
 
         IAsyncEnumerable<(ApiName, ApiDto)> listFromSet(IEnumerable<ApiName> names, CancellationToken cancellationToken) =>
             names.ToAsyncEnumerable()
