@@ -63,11 +63,13 @@ internal static class ApiModule
 
         async ValueTask extractApi(ApiName name, ApiDto dto, Option<(ApiSpecification Specification, BinaryData Contents)> specificationOption, CancellationToken cancellationToken)
         {
-            await writeArtifacts(name, dto, specificationOption, cancellationToken);
-            await extractApiPolicies(name, cancellationToken);
-            await extractApiTags(name, cancellationToken);
-            await extractApiDiagnostics(name, cancellationToken);
-            await extractApiOperations(name, cancellationToken);
+            await Task.WhenAll(
+                writeArtifacts(name, dto, specificationOption, cancellationToken).AsTask(),
+                extractApiPolicies(name, cancellationToken).AsTask(),
+                extractApiTags(name, cancellationToken).AsTask(),
+                extractApiDiagnostics(name, cancellationToken).AsTask(),
+                extractApiOperations(name, cancellationToken).AsTask()
+            );
         }
     }
 

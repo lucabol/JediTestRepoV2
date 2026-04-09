@@ -69,18 +69,20 @@ internal static class WorkspaceModule
 
         async ValueTask extractWorkspace(WorkspaceName name, WorkspaceDto dto, CancellationToken cancellationToken)
         {
-            await extractWorkspaceNamedValues(name, cancellationToken);
-            await extractWorkspaceBackends(name, cancellationToken);
-            await extractWorkspaceTags(name, cancellationToken);
-            await extractWorkspaceVersionSets(name, cancellationToken);
-            await extractWorkspaceLoggers(name, cancellationToken);
-            await extractWorkspaceDiagnostics(name, cancellationToken);
-            await extractWorkspacePolicyFragments(name, cancellationToken);
-            await extractWorkspacePolicies(name, cancellationToken);
-            await extractWorkspaceProducts(name, cancellationToken);
-            await extractWorkspaceGroups(name, cancellationToken);
-            await extractWorkspaceApis(name, cancellationToken);
-            await extractWorkspaceSubscriptions(name, cancellationToken);
+            await Task.WhenAll(
+                extractWorkspaceNamedValues(name, cancellationToken).AsTask(),
+                extractWorkspaceBackends(name, cancellationToken).AsTask(),
+                extractWorkspaceTags(name, cancellationToken).AsTask(),
+                extractWorkspaceVersionSets(name, cancellationToken).AsTask(),
+                extractWorkspaceLoggers(name, cancellationToken).AsTask(),
+                extractWorkspaceDiagnostics(name, cancellationToken).AsTask(),
+                extractWorkspacePolicyFragments(name, cancellationToken).AsTask(),
+                extractWorkspacePolicies(name, cancellationToken).AsTask(),
+                extractWorkspaceProducts(name, cancellationToken).AsTask(),
+                extractWorkspaceGroups(name, cancellationToken).AsTask(),
+                extractWorkspaceApis(name, cancellationToken).AsTask(),
+                extractWorkspaceSubscriptions(name, cancellationToken).AsTask()
+            );
         }
     }
 
