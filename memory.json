@@ -1,1 +1,18 @@
-{"r":"2026-04-10T07:25Z","n":"All 113 user issues RA-commented. 130 RA PRs open (all clean). PRs #181,#182,#251 duplicate Aspire upgrade. main@5e3e6b9. Monthly activity issue #234. safeoutputs MCP tools unavailable again (same as previous run). feat/api-schema-extraction-2026-04-10 branch committed locally but NOT pushed - needs retry when tools work. Addresses #2 (API schema extraction)."}
+{
+  "r": "2026-04-10T13:22Z",
+  "n": "All 113 user issues RA-commented. 130 RA PRs open. Monthly activity issue #234. safeoutputs MCP tools NOT available in this context (after compaction). TWO branches committed locally but NOT pushed: (1) repo-assist/fix-git-shallow-clone-deletion-silent-fail - fixes #85 #106 shallow clone silent deletion bug in Git.cs GetChanges(); (2) repo-assist/eng-add-dotnet-ci-2026-04-10 - adds .github/workflows/ci.yml. NEXT RUN: must push these branches and create PRs + comment on #85 #106 + update monthly issue #234. Build verified 0 errors both branches.",
+  "pending_branches": [
+    {
+      "branch": "repo-assist/fix-git-shallow-clone-deletion-silent-fail",
+      "type": "fix",
+      "issues": [85, 106],
+      "desc": "Detect shallow clone in publisher GetChanges(), throw clear error directing user to set fetch-depth: 0"
+    },
+    {
+      "branch": "repo-assist/eng-add-dotnet-ci-2026-04-10",
+      "type": "engineering",
+      "issues": [],
+      "desc": "Add .NET CI workflow .github/workflows/ci.yml"
+    }
+  ]
+}
