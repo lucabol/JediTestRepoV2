@@ -16,12 +16,14 @@ namespace extractor;
 
 public delegate ValueTask ExtractWorkspaces(CancellationToken cancellationToken);
 public delegate IAsyncEnumerable<(WorkspaceName Name, WorkspaceDto Dto)> ListWorkspaces(CancellationToken cancellationToken);
+public delegate ValueTask WriteWorkspaceInformationFile(WorkspaceName name, WorkspaceDto dto, CancellationToken cancellationToken);
 
 internal static class WorkspaceModule
 {
     public static void ConfigureExtractWorkspaces(IHostApplicationBuilder builder)
     {
         ConfigureListWorkspaces(builder);
+        ConfigureWriteWorkspaceInformationFile(builder);
         WorkspaceNamedValueModule.ConfigureExtractWorkspaceNamedValues(builder);
         WorkspaceBackendModule.ConfigureExtractWorkspaceBackends(builder);
         WorkspaceTagModule.ConfigureExtractWorkspaceTags(builder);
@@ -41,6 +43,7 @@ internal static class WorkspaceModule
     private static ExtractWorkspaces GetExtractWorkspaces(IServiceProvider provider)
     {
         var list = provider.GetRequiredService<ListWorkspaces>();
+        var writeInformationFile = provider.GetRequiredService<WriteWorkspaceInformationFile>();
         var extractWorkspaceNamedValues = provider.GetRequiredService<ExtractWorkspaceNamedValues>();
         var extractWorkspaceBackends = provider.GetRequiredService<ExtractWorkspaceBackends>();
         var extractWorkspaceTags = provider.GetRequiredService<ExtractWorkspaceTags>();
@@ -69,6 +72,7 @@ internal static class WorkspaceModule
 
         async ValueTask extractWorkspace(WorkspaceName name, WorkspaceDto dto, CancellationToken cancellationToken)
         {
+            await writeInformationFile(name, dto, cancellationToken);
             await extractWorkspaceNamedValues(name, cancellationToken);
             await extractWorkspaceBackends(name, cancellationToken);
             await extractWorkspaceTags(name, cancellationToken);
@@ -82,6 +86,27 @@ internal static class WorkspaceModule
             await extractWorkspaceApis(name, cancellationToken);
             await extractWorkspaceSubscriptions(name, cancellationToken);
         }
+    }
+
+    private static void ConfigureWriteWorkspaceInformationFile(IHostApplicationBuilder builder)
+    {
+        AzureModule.ConfigureManagementServiceDirectory(builder);
+
+        builder.Services.TryAddSingleton(GetWriteWorkspaceInformationFile);
+    }
+
+    private static WriteWorkspaceInformationFile GetWriteWorkspaceInformationFile(IServiceProvider provider)
+    {
+        var serviceDirectory = provider.GetRequiredService<ManagementServiceDirectory>();
+        var logger = provider.GetRequiredService<ILogger>();
+
+        return async (name, dto, cancellationToken) =>
+        {
+            var informationFile = WorkspaceInformationFile.From(name, serviceDirectory);
+
+            logger.LogInformation("Writing workspace information file {WorkspaceInformationFile}...", informationFile);
+            await informationFile.WriteDto(dto, cancellationToken);
+        };
     }
 
     private static void ConfigureListWorkspaces(IHostApplicationBuilder builder)
