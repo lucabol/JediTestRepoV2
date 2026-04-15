@@ -1,0 +1,9 @@
+{
+  "desc": "Workspace sample artifacts for PR related to issue #94",
+  "files": {
+    "SampleArtifacts/workspaces/sample-workspace/workspaceInformation.json": "{\"properties\":{\"displayName\":\"Sample Workspace\",\"description\":\"A sample workspace for demonstrating workspace-scoped resource management with APIOps.\"}}",
+    "SampleArtifacts/workspaces/sample-workspace/apis/sample-workspace-api/apiInformation.json": "{\"properties\":{\"apiRevision\":\"1\",\"displayName\":\"Sample Workspace API\",\"isCurrent\":true,\"path\":\"sample-workspace-api\",\"protocols\":[\"https\"],\"serviceUrl\":\"https://sample-backend.example.com/api\",\"subscriptionRequired\":true}}",
+    "SampleArtifacts/workspaces/sample-workspace/backends/sample-backend/backendInformation.json": "{\"properties\":{\"description\":\"Sample backend for workspace-scoped API\",\"protocol\":\"http\",\"url\":\"https://sample-backend.example.com/api\"}}",
+    "SampleArtifacts/workspaces/sample-workspace/named values/sample-named-value/namedValueInformation.json": "{\"properties\":{\"displayName\":\"sample-named-value\",\"secret\":false,\"tags\":[],\"value\":\"https://www.example.com\"}}"
+  }
+}
