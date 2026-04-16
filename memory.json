@@ -1,28 +1,11 @@
 {
-  "r": "2026-04-15T19:24Z",
-  "run": 214,
-  "n": "Run 214: safeoutputs MCP blocked by policy AGAIN (same as run 213). No PR/issue actions possible. Identified 4 duplicate PR pairs to comment on next unblocked run: (#157 superseded by #247), (#159 superseded by #246), (#196 superseded by #238), (#204 exact duplicate of #205). Monthly activity issue is likely #245 (automation+repo-assist+agentic-workflows). April 2026 PRs are #235-#253 (17 PRs). All 113 user issues still have RA comments from earlier.",
-  "pending": {
-    "duplicate_pr_comments": [
-      {"old": 157, "new": 247, "reason": "both normalize empty backend credential arrays to null (Closes #89)"},
-      {"old": 159, "new": 246, "reason": "both skip version-set filter when apiNames explicitly configured (Closes #83)"},
-      {"old": 196, "new": 238, "reason": "both add largeLanguageModel property to diagnostic DTOs (Closes #113)"},
-      {"old": 204, "new": 205, "reason": "identical title: remove duplicate log line in WorkspaceApiRelease publisher"}
-    ],
-    "monthly_activity_update": {
-      "issue": 245,
-      "desc": "Update April 2026 monthly activity summary - 131 open RA PRs, 4 duplicate pairs identified"
-    },
-    "workspace_samples_pr": {
-      "issue": 94,
-      "status": "TODO",
-      "desc": "PR #143 closes #94 but not yet merged. Workspace samples PR may still be worthwhile.",
-      "note": "PR #143 [Repo Assist] fix: apply YAML config overrides in workspace publisher modules (Closes #94) already exists"
-    }
-  },
+  "r": "2026-04-16T01:26Z",
+  "run": 215,
+  "n": "Run 215: Runs 213+214 (24441835222, etc.) failed with No Safe Outputs. Current run is 215. All 113 user issues have RA comments, no new human activity. PR #253 (workspace extractor fix) still open, no CI failures. Monthly activity issue is #234 (April 2026). Corrected memory: #245 is a duplicate RA PR (same fix as #244), not the monthly summary. Duplicate body artifact in #234 fixed this run.",
+  "pending": {},
   "last_cursor": 113,
   "all_issues_commented": true,
-  "open_ra_prs": 131,
-  "april_2026_prs": [235,236,237,238,239,240,241,242,243,244,246,247,248,249,250,251,253],
-  "monthly_summary_issue": 245
+  "open_ra_prs": 1,
+  "monthly_summary_issue": 234,
+  "last_successful_run": "24486984958"
 }
