@@ -62,10 +62,8 @@ public static class Git
     }
 
     private static Commit GetCommit(Repository repository, CommitId commitId) =>
-        repository.Commits
-                  .Where(commit => commit.Id.Sha == commitId.Value)
-                  .HeadOrNone()
-                  .IfNone(() => throw new InvalidOperationException($"Could not find commit with ID {commitId.Value}."));
+        repository.Lookup<Commit>(commitId.Value)
+        ?? throw new InvalidOperationException($"Could not find commit with ID {commitId.Value}.");
 
     public static Option<CommitId> TryGetPreviousCommitId(DirectoryInfo directory, CommitId commitId)
     {
