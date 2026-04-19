@@ -36,6 +36,7 @@ internal static class AppModule
         ProductTagModule.ConfigurePutProductTags(builder);
         ProductApiModule.ConfigurePutProductApis(builder);
         ApiOperationPolicyModule.ConfigurePutApiOperationPolicies(builder);
+        WorkspacePublisherModule.ConfigurePutWorkspaces(builder);
         WorkspaceNamedValueModule.ConfigurePutWorkspaceNamedValues(builder);
         WorkspaceBackendModule.ConfigurePutWorkspaceBackends(builder);
         WorkspaceTagModule.ConfigurePutWorkspaceTags(builder);
@@ -58,6 +59,7 @@ internal static class AppModule
         WorkspaceTagModule.ConfigureDeleteWorkspaceTags(builder);
         WorkspaceBackendModule.ConfigureDeleteWorkspaceBackends(builder);
         WorkspaceNamedValueModule.ConfigureDeleteWorkspaceNamedValues(builder);
+        WorkspacePublisherModule.ConfigureDeleteWorkspaces(builder);
         ApiOperationPolicyModule.ConfigureDeleteApiOperationPolicies(builder);
         ProductApiModule.ConfigureDeleteProductApis(builder);
         ProductTagModule.ConfigureDeleteProductTags(builder);
@@ -109,6 +111,7 @@ internal static class AppModule
         var putProductTags = provider.GetRequiredService<PutProductTags>();
         var putProductApis = provider.GetRequiredService<PutProductApis>();
         var putApiOperationPolicies = provider.GetRequiredService<PutApiOperationPolicies>();
+        var putWorkspaces = provider.GetRequiredService<PutWorkspaces>();
         var putWorkspaceNamedValues = provider.GetRequiredService<PutWorkspaceNamedValues>();
         var putWorkspaceBackends = provider.GetRequiredService<PutWorkspaceBackends>();
         var putWorkspaceTags = provider.GetRequiredService<PutWorkspaceTags>();
@@ -131,6 +134,7 @@ internal static class AppModule
         var deleteWorkspaceTags = provider.GetRequiredService<DeleteWorkspaceTags>();
         var deleteWorkspaceBackends = provider.GetRequiredService<DeleteWorkspaceBackends>();
         var deleteWorkspaceNamedValues = provider.GetRequiredService<DeleteWorkspaceNamedValues>();
+        var deleteWorkspaces = provider.GetRequiredService<DeleteWorkspaces>();
         var deleteApiOperationPolicies = provider.GetRequiredService<DeleteApiOperationPolicies>();
         var deleteProductApis = provider.GetRequiredService<DeleteProductApis>();
         var deleteProductTags = provider.GetRequiredService<DeleteProductTags>();
@@ -191,6 +195,7 @@ internal static class AppModule
 
             if (await featureManager.IsEnabledAsync("Workspaces"))
             {
+                await putWorkspaces(cancellationToken);
                 await putWorkspaceNamedValues(cancellationToken);
                 await putWorkspaceBackends(cancellationToken);
                 await putWorkspaceTags(cancellationToken);
@@ -213,6 +218,7 @@ internal static class AppModule
                 await deleteWorkspaceTags(cancellationToken);
                 await deleteWorkspaceBackends(cancellationToken);
                 await deleteWorkspaceNamedValues(cancellationToken);
+                await deleteWorkspaces(cancellationToken);
             }
 
             await deleteApiOperationPolicies(cancellationToken);
