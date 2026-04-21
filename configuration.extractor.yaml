@@ -1,5 +1,8 @@
 # Note: With the introduction of workspaces we recommend using workspaces with APIOps when possible to limit what can be extracted whenever possible. 
 # More information about workspaces can be found here https://learn.microsoft.com/en-us/azure/api-management/workspaces-overview
+# 
+# All name filters below are optional. If omitted, all resources of that type are extracted.
+# Use workspaceNames to limit extraction to specific workspaces (recommended when using workspaces).
 
  apiNames:
   - apiName1
@@ -10,8 +13,16 @@
   - backendName2
 
  diagnosticNames:
- - diagnosticName1
- - diagnosticName2
+  - diagnosticName1
+  - diagnosticName2
+
+ gatewayNames:
+  - gatewayName1
+  - gatewayName2
+
+ groupNames:
+  - groupName1
+  - groupName2
 
  loggerNames:
   - loggerName1
@@ -21,18 +32,26 @@
   - namedValueName1
   - namedValueName2
 
+ policyFragmentNames:
+  - policyFragment1
+  - policyFragment2
+
  productNames:
   - productName1
   - productName2
 
  subscriptionNames:
- - subscriptionName1
- - subscriptionName2
+  - subscriptionName1
+  - subscriptionName2
 
  tagNames:
   - tagName1
   - tagName2
-  
- policyFragmentNames:
-  - policyFragment1
-  - policyFragment2
+
+ versionSetNames:
+  - versionSetName1
+  - versionSetName2
+
+ workspaceNames:
+  - workspaceName1
+  - workspaceName2
