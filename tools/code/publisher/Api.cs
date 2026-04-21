@@ -397,7 +397,7 @@ internal static class ApiModule
                 return;
             }
 
-            logger.LogInformation("Changing current revision on {ApiName} from {RevisionNumber} to {RevisionNumber}...", name, existingRevisionNumber, newRevisionNumber);
+            logger.LogInformation("Changing current revision on {ApiName} from {OldRevisionNumber} to {NewRevisionNumber}...", name, existingRevisionNumber, newRevisionNumber);
 
             await putRevision(name, newRevisionNumber, existingRevisionNumber, cancellationToken);
             await makeApiRevisionCurrent(name, newRevisionNumber, cancellationToken);
