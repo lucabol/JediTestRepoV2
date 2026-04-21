@@ -387,7 +387,7 @@ internal static class WorkspaceApiModule
                 return;
             }
 
-            logger.LogInformation("Changing current revision on {ApiName} in workspace {WorkspaceName} from {RevisionNumber} to {RevisionNumber}...", name, workspaceName, existingRevisionNumber, newRevisionNumber);
+            logger.LogInformation("Changing current revision on {ApiName} in workspace {WorkspaceName} from {OldRevisionNumber} to {NewRevisionNumber}...", name, workspaceName, existingRevisionNumber, newRevisionNumber);
 
             await putRevision(name, newRevisionNumber, existingRevisionNumber, workspaceName, cancellationToken);
             await makeApiRevisionCurrent(name, newRevisionNumber, workspaceName, cancellationToken);
