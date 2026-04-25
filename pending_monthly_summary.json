@@ -1,6 +1,6 @@
 {
   "issue": 234,
   "status": "pending_update",
-  "run259_pending": true,
-  "note": "Run 259 (2026-04-25): MCP blocked again (401). Task5: Found YAML indentation inconsistency in configuration.prod.yaml (loggers uses 4-space indent, diagnostics uses 3-space indent; should both be 2-space like all other sections). Not covered by any open PR. Fix prepared locally but couldn't push. Task6: Identified superseded PRs - PRs #259,#260,#205,#204 all address same duplicate log line in WorkspaceApiRelease.cs; PR #187 subsumes all of them with full orchestration rewrite. PRs #183 and #224 both add WorkspaceSubscription publisher - #224 is newer. Run258 update was last applied. Next run should update monthly summary issue #234 and attempt the YAML fix."
+  "run260_pending": true,
+  "note": "Run 260 (2026-04-25): MCP blocked again. Task8: Prepared performance fix branch repo-assist/perf-git-commit-lookup-2026-04-25 (O(1) git commit lookup), but could not push PR due to no MCP."
 }
