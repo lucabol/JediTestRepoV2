@@ -1,6 +1,1 @@
-{
-  "issue": 234,
-  "status": "pending_update",
-  "run260_pending": true,
-  "note": "Run 260 (2026-04-25): MCP blocked again. Task8: Prepared performance fix branch repo-assist/perf-git-commit-lookup-2026-04-25 (O(1) git commit lookup), but could not push PR due to no MCP."
-}
+{"issue":234,"status":"updated","run261_done":true}
