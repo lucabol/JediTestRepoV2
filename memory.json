@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-27T07:44Z",
-  "run": 266,
+  "r": "2026-04-27T13:31Z",
+  "run": 267,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run266: Tasks 3+6+11. MCP safeoutputs BLOCKED again (tools not in available functions list). Task3: Investigated issue #96 (empty serviceUrl causes ValidationError on publish). Root cause: Api.PutDto (non-soap, no Format/Value path) serializes dto as-is including empty serviceUrl=''. Fix: normalize string.IsNullOrEmpty(ServiceUrl) to null in both WriteDto (extractor) and PutDto (publisher) in Api.cs and WorkspaceApi.cs. Task6: Cannot check PR CI status without GitHub API access. Task11: Cannot update monthly summary without MCP. KEY FIX READY: issue #96 serviceUrl empty string normalization in common/Api.cs (lines 534-536) and common/WorkspaceApi.cs (lines 479-481). Also WorkspaceApi.WriteDto (line 660) and Api.WriteDto (line 718). BACKLOG: When MCP becomes available: (1) create PR for issue #96 serviceUrl fix, (2) update monthly summary #234 to add Run266 entry, (3) add #96 fix PR to suggested actions."
+  "notes": "Run267: Tasks 2+6+11. MCP safeoutputs BLOCKED again (tools not in available functions list). Task2: All open issues (checked #1-113) already have RA comments; no new human activity detected. Rate limit hit (unauthenticated: 60/hr). Task6: Checked CI for PRs #260-#263; no check-runs, no failures to fix. PR #230 already open for #96 serviceUrl fix. Task11: Cannot update monthly summary - MCP blocked. Next run: check issues #114-123 range; verify PR #259 (dup of #260) still open."
 }
