@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-28T01:27Z",
-  "run": 269,
+  "r": "2026-04-28T07:43Z",
+  "run": 270,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run269: Tasks 2+3+11. MCP safeoutputs BLOCKED (tools not in available functions list). API rate limit ok (50 remaining). All issues #1-113 have RA comments, no new user issues (max is #113). No new human activity on any issues. 139 repo-assist PRs open. Investigated deletion bug (#85, #106): publish-all mode cant delete APIs from APIM since deleted files arent on disk - known limitation, not fixable without querying APIM. All recent issues only have RA comments. Monthly summary is #234 (April 2026). Next run: MCP still blocked, same state."
+  "notes": "Run270: Tasks 3+2+11. MCP safeoutputs BLOCKED (tools not in available functions list - same as runs 265-269). gh CLI not authenticated. Cannot post comments, create PRs, or update issues. All issues #1-113 have RA comments. No new user issues. 139 repo-assist PRs open. Monthly summary is #234 (April 2026). Persistent state: MCP has been blocked since run ~265. No forward progress possible without MCP tools."
 }
