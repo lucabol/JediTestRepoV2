@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-27T19:25Z",
-  "run": 268,
+  "r": "2026-04-28T01:27Z",
+  "run": 269,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run268: Tasks 3+6+11. MCP safeoutputs BLOCKED (tools not in available functions list). GitHub API rate limit exceeded (unauthenticated). Cannot perform any GitHub read/write operations. Same as run 267. All issues #1-113 already have RA comments. 139 repo-assist PRs open. PR #230 for issue #96 serviceUrl fix still open. Next run: verify if MCP becomes available; check issues #114-123."
+  "notes": "Run269: Tasks 2+3+11. MCP safeoutputs BLOCKED (tools not in available functions list). API rate limit ok (50 remaining). All issues #1-113 have RA comments, no new user issues (max is #113). No new human activity on any issues. 139 repo-assist PRs open. Investigated deletion bug (#85, #106): publish-all mode cant delete APIs from APIM since deleted files arent on disk - known limitation, not fixable without querying APIM. All recent issues only have RA comments. Monthly summary is #234 (April 2026). Next run: MCP still blocked, same state."
 }
