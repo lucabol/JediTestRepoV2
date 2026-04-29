@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-28T19:26Z",
-  "run": 272,
+  "r": "2026-04-29T01:29Z",
+  "run": 273,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run272: Tasks 3+2+11. MCP safeoutputs BLOCKED (tools not in available functions list - same as runs 265-271). gh CLI not authenticated. Cannot post comments, create PRs, or update issues. All issues #1-113 have RA comments. No new user issues. 139 repo-assist PRs open. Monthly summary is #234 (April 2026). Build now failing with 12 errors (aspire project: permissions creating obj dir, env issue). No forward progress possible without MCP tools. RECURRING ISSUE: MCP blocked every run since run 265."
+  "notes": "Run273: Tasks 5+6+11. MCP safeoutputs BLOCKED (tools not in available functions list - same as runs 265-272). gh CLI not authenticated. Cannot post comments, create PRs, or update issues. All issues #1-113 have RA comments. No new user issues. 139 repo-assist PRs open. Monthly summary is #234 (April 2026). Build: common and common.tests projects build successfully after dotnet restore. aspire project still has errors. Tests output empty but exit 0. No forward progress possible without MCP tools. RECURRING ISSUE: MCP blocked every run since run 265. Task5 explored: codebase uses LanguageExt, functional patterns. Potential improvement: EnsureDirectoryExists in FileSystem.cs is private but could benefit from being public for reuse. Task6 cannot check/update PRs without auth."
 }
