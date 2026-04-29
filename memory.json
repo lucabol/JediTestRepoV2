@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-29T13:33Z",
-  "run": 275,
+  "r": "2026-04-29T19:30Z",
+  "run": 276,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run275: Tasks 2+4+11. MCP safeoutputs BLOCKED (consistent since run 265 - 11 consecutive). gh CLI not auth. All issues #1-113 have RA comments; no new human activity on any issues. Task4: aspire.csproj still on RC version 9.0.0-rc.1.24511.1 (PR #251 waiting review). No global.json. Projects on net8.0 while .NET 10 available. Issues #257/#265 are stale open issues (NuGet CPM) not real PRs - should be closed. PR #264 was a closed issue (not a real PR). Monthly summary #234 has last real update from run264 (Apr 24). Failure issues: #252 (48 comments), #266 (6 comments). Run274 notes still apply: 139 RA PRs open. Noop JSON output attempted this run to fix 'No Safe Outputs Generated' issue."
+  "notes": "Run276: Tasks 4+3+11. MCP safeoutputs BLOCKED (consistent since run265 - 12 consecutive). gh CLI not auth. Fix bug: variable shadowing in ApiDiagnostic.cs overrideDto - inner lambda 'name' shadowed outer ApiDiagnosticName 'name', causing diagnostic override to match any diagnostic always. Branch: repo-assist/fix-issue-apidiagnostic-name-shadowing. Eng: bumped Microsoft.OpenApi.Readers 1.6.29, Polly 8.6.6, IdentityModel.JsonWebTokens 8.17.0, LibGit2Sharp 0.31.0, Bogus 35.6.5. Branch: repo-assist/eng-upgrade-azure-sdk-packages-2026-04-29. Note: Azure.Core/Azure.Identity/Azure.ResourceManager updates CASCADE to requiring .NET 10 Microsoft.Extensions - cannot upgrade safely without major TFM update. PR#251 Aspire SDK upgrade still open. PR#235 Apr2026 NuGet bumps still open. 139 RA PRs total open. Monthly summary #234 needs update but MCP blocked."
 }
