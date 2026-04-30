@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-30T07:41Z",
-  "run": 278,
+  "r": "2026-04-30T13:27Z",
+  "run": 279,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run278: Tasks 6+2+11. MCP blocked (both 'github' and 'safeoutputs' servers blocked by policy). No GitHub actions possible. Correction: Run277 notes about PRs being created were wrong - MCP was also blocked in run277, no PRs were actually pushed. Highest RA PR is #263 (2026-04-22). All user issues up to #113 have RA comments. 139 RA PRs open. Superseded PRs to close: #259 (dup of #260), #205,#185,#122,#136,#125,#127,#139,#157,#144,#159,#116. Active fix PRs: #238(issue #113 largeLanguageModel),#228(issue #112 retry),#247(issue #89 backends),#242(issue #49 UTF-8 BOM),#246(issue #83 version-set). Monthly summary issue #234 needs update with run278 (not updated - MCP blocked). Backlog: issue #265 and #257 are duplicate NuGet CPM PRs (can close older #257)."
+  "notes": "Run279: Tasks 4+2+11. MCP still blocked (safeoutputs blocked by policy). No GitHub actions possible. Highest RA PR is #263 (2026-04-22). All user issues up to #113 have RA comments (113 total user issues). 139 RA PRs open. Task4 investigation: outdated NuGet packages found: Azure.Core 1.43→1.54, Azure.Identity 1.12→1.21, Microsoft.IdentityModel.JsonWebTokens 8.0.2→8.17 (security!), LibGit2Sharp 0.30→0.31. Also net8.0 could upgrade to net9.0. Monthly summary issue #234 not updated (runs 278+279 blocked). Backlog for when MCP unblocked: create NuGet update PR, update monthly summary #234, close superseded PRs #259,#205,#185,#122,#136,#125,#127,#139,#157,#144,#159,#116."
 }
