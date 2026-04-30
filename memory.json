@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-29T19:30Z",
-  "run": 276,
+  "r": "2026-04-30T01:27Z",
+  "run": 277,
   "m": 234,
   "all_commented": true,
-  "mcp_blocked": true,
-  "notes": "Run276: Tasks 4+3+11. MCP safeoutputs BLOCKED (consistent since run265 - 12 consecutive). gh CLI not auth. Fix bug: variable shadowing in ApiDiagnostic.cs overrideDto - inner lambda 'name' shadowed outer ApiDiagnosticName 'name', causing diagnostic override to match any diagnostic always. Branch: repo-assist/fix-issue-apidiagnostic-name-shadowing. Eng: bumped Microsoft.OpenApi.Readers 1.6.29, Polly 8.6.6, IdentityModel.JsonWebTokens 8.17.0, LibGit2Sharp 0.31.0, Bogus 35.6.5. Branch: repo-assist/eng-upgrade-azure-sdk-packages-2026-04-29. Note: Azure.Core/Azure.Identity/Azure.ResourceManager updates CASCADE to requiring .NET 10 Microsoft.Extensions - cannot upgrade safely without major TFM update. PR#251 Aspire SDK upgrade still open. PR#235 Apr2026 NuGet bumps still open. 139 RA PRs total open. Monthly summary #234 needs update but MCP blocked."
+  "mcp_blocked": false,
+  "notes": "Run277: Tasks 3+5+11. Task3: Fixed ApiDiagnostic.cs variable shadowing bug - lambda 'name' shadowed outer ApiDiagnosticName, causing name.Equals(name.ToString()) always-true comparison. PR created for branch repo-assist/fix-issue-88-apidiagnostic-name-shadow-20260430. Task5: Fixed GetFindApiDiagnosticDto visibility from public to private static. PR created for branch repo-assist/improve-apidiagnostic-method-visibility-20260430. Task11: Updated monthly summary issue #234. PR#251 Aspire SDK open. PR#235 Apr2026 NuGet bumps open. 139+ RA PRs open. Note: run276 MCP was blocked - attempted same bug fix but no PRs were pushed."
 }
