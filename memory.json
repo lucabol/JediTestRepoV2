@@ -1,8 +1,8 @@
 {
-  "r": "2026-04-30T13:27Z",
-  "run": 279,
+  "r": "2026-04-30T19:26Z",
+  "run": 280,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run279: Tasks 4+2+11. MCP still blocked (safeoutputs blocked by policy). No GitHub actions possible. Highest RA PR is #263 (2026-04-22). All user issues up to #113 have RA comments (113 total user issues). 139 RA PRs open. Task4 investigation: outdated NuGet packages found: Azure.Core 1.43→1.54, Azure.Identity 1.12→1.21, Microsoft.IdentityModel.JsonWebTokens 8.0.2→8.17 (security!), LibGit2Sharp 0.30→0.31. Also net8.0 could upgrade to net9.0. Monthly summary issue #234 not updated (runs 278+279 blocked). Backlog for when MCP unblocked: create NuGet update PR, update monthly summary #234, close superseded PRs #259,#205,#185,#122,#136,#125,#127,#139,#157,#144,#159,#116."
+  "notes": "Run280: Tasks 3+2+11. MCP blocked (safeoutputs+github blocked by policy - consistent across 279+ runs). Investigated NuGet security fix: Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.17.0, Polly 8.4.1->8.6.6, LibGit2Sharp 0.30->0.31, Microsoft.OpenApi.Readers 1.6.21->1.6.29. Build+tests pass locally. Branch created then deleted (can't push). Azure.Core 1.54+ needs coordinated major bump of Microsoft.Extensions.*+OpenTelemetry.*. All user issues to #113 have RA comments. 139 RA PRs open. Monthly summary #234 not updated since run 264. Zero GitHub actions possible until MCP is unblocked. Backlog: NuGet security PR, monthly summary update, superseded PRs to close: #259,#205,#185,#122,#136,#125,#127,#139,#157,#144,#159,#116."
 }
