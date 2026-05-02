@@ -1,9 +1,9 @@
 {
-  "r": "2026-05-01T19:24Z",
-  "run": 284,
+  "r": "2026-05-02T01:27Z",
+  "run": 285,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run284: Tasks 6+3+11. MCP still blocked (consistent since run 264). No GitHub actions possible. Created local branch repo-assist/fix-opentelemetry-vuln-2026-05-01 with fix for GHSA-4625-4j76-fww9 - updated OTel packages 1.9.0->1.15.3/1.15.1, build+tests pass. Branch exists locally but cannot be pushed (no gh auth, no MCP). Monthly summary #234 not updated since run 264. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205. Also: #185,#122,#136,#125,#127,#139,#144,#116. TODO in integration.tests/Api.cs re ServiceUrl edge cases. integration.tests has pre-existing build error (Google namespace missing in Gateway.cs).",
-  "backlog_pkg_update": "OTel fix branch created but not pushed. Next run: retry push/PR if MCP unblocks. Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated."
+  "notes": "Run285: Tasks 2+6+11. MCP still blocked (consistent since run 264). No GitHub actions possible. gh CLI also not authenticated. OTel fix branch (repo-assist/fix-opentelemetry-vuln-2026-05-01) still exists locally but cannot be pushed. Monthly summary #234 not updated since run 264. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205. Also: #185,#122,#136,#125,#127,#139,#144,#116.",
+  "backlog_pkg_update": "OTel fix branch created but not pushed. Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated."
 }
