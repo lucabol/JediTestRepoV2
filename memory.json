@@ -1,9 +1,9 @@
 {
-  "r": "2026-05-02T01:27Z",
-  "run": 285,
+  "r": "2026-05-02T07:25Z",
+  "run": 286,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run285: Tasks 2+6+11. MCP still blocked (consistent since run 264). No GitHub actions possible. gh CLI also not authenticated. OTel fix branch (repo-assist/fix-opentelemetry-vuln-2026-05-01) still exists locally but cannot be pushed. Monthly summary #234 not updated since run 264. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205. Also: #185,#122,#136,#125,#127,#139,#144,#116.",
-  "backlog_pkg_update": "OTel fix branch created but not pushed. Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated."
+  "notes": "Run286: Tasks 4+2+11. MCP still blocked (consistent since run 264). No GitHub actions possible. gh CLI also not authenticated. Monthly summary #234 not updated since run 264. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205. Also: #185,#122,#136,#125,#127,#139,#144,#116. Eng: Main projects on net8.0, aspire on net9.0. dotnet 10 available in runner. net8->net9 upgrade is a potential Task4 PR. Packages still outdated: Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6.",
+  "backlog_pkg_update": "OTel fix branch created but not pushed. Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade for extractor/publisher/common/tests also a candidate."
 }
