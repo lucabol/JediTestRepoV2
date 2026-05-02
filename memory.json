@@ -1,9 +1,12 @@
 {
-  "r": "2026-05-02T07:25Z",
-  "run": 286,
+  "r": "2026-05-02T13:23Z",
+  "run": 287,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run286: Tasks 4+2+11. MCP still blocked (consistent since run 264). No GitHub actions possible. gh CLI also not authenticated. Monthly summary #234 not updated since run 264. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205. Also: #185,#122,#136,#125,#127,#139,#144,#116. Eng: Main projects on net8.0, aspire on net9.0. dotnet 10 available in runner. net8->net9 upgrade is a potential Task4 PR. Packages still outdated: Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6.",
-  "backlog_pkg_update": "OTel fix branch created but not pushed. Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade for extractor/publisher/common/tests also a candidate."
+  "notes": "Run287: Tasks 9+6+11. MCP still blocked (consistent since run 264). No GitHub actions possible. gh CLI also not authenticated. Monthly summary #234 not updated since run 264. Unpushed branch: repo-assist/improve-workspace-test-models-20260502 (10 new workspace test models in common.tests, build verified). Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade for extractor/publisher/common/tests also a candidate.",
+  "unpushed_branches": {
+    "repo-assist/improve-workspace-test-models-20260502": "Task9: Add 10 missing workspace test model generators to common.tests (WorkspaceTag, WorkspaceGroup, WorkspaceBackend, WorkspaceNamedValue, WorkspacePolicyFragment, WorkspacePolicy, WorkspaceLogger, WorkspaceDiagnostic, WorkspaceVersionSet, WorkspaceSubscription). Build verified. Needs push + PR creation when auth available."
+  }
 }
