@@ -2,16 +2,24 @@
   "issue": 234,
   "status": "stale_since_run264",
   "last_updated_run": 264,
-  "current_run": 287,
+  "current_run": 288,
   "pending_run_entries": [
+    {
+      "run": 288,
+      "date": "2026-05-02 19:18 UTC",
+      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25259736205",
+      "actions": [
+        "🔧 Created PR for branch repo-assist/improve-workspace-test-models-20260502: Added 10 missing workspace test model generators (WorkspaceTag, WorkspaceGroup, WorkspaceBackend, WorkspaceNamedValue, WorkspacePolicyFragment, WorkspacePolicy, WorkspaceLogger, WorkspaceDiagnostic, WorkspaceVersionSet, WorkspaceSubscription). Build verified (0 errors)."
+      ]
+    },
     {
       "run": 287,
       "date": "2026-05-02 13:23 UTC",
       "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25252864496",
       "actions": [
-        "🔧 Prepared branch repo-assist/improve-workspace-test-models-20260502: Added 10 missing workspace test model generators (WorkspaceTag, WorkspaceGroup, WorkspaceBackend, WorkspaceNamedValue, WorkspacePolicyFragment, WorkspacePolicy, WorkspaceLogger, WorkspaceDiagnostic, WorkspaceVersionSet, WorkspaceSubscription). Build verified. Awaiting push/PR when auth available."
+        "🔧 Prepared branch repo-assist/improve-workspace-test-models-20260502: Added 10 missing workspace test model generators. Build verified. Awaiting push/PR when auth available."
       ]
     }
   ],
-  "note": "MCP blocked since run 264. Cannot update issue #234 directly. Suggested actions to add when unblocked: branch repo-assist/improve-workspace-test-models-20260502 needs PR creation."
+  "note": "MCP blocked since run 264. Monthly summary #234 stale. Suggested actions pending when unblocked."
 }
