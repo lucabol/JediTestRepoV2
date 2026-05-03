@@ -1,12 +1,12 @@
 {
-  "r": "2026-05-02T19:18Z",
-  "run": 288,
+  "r": "2026-05-03T01:27Z",
+  "run": 289,
   "m": 234,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run288: Tasks 6+2+11. MCP still blocked (consistent since run 264). Created PR for workspace test models branch (repo-assist/improve-workspace-test-models-20260502) - 10 new workspace test model generators in common.tests, build verified (0 errors). PR creation attempted via safeoutputs. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade for extractor/publisher/common/tests also a candidate.",
+  "notes": "Run289: Tasks 5+9+11. Branch repo-assist/improve-workspace-test-models-20260503 created locally with 2 commits: (1) tools/code/common.tests/WorkspaceModels.cs - 10 workspace test model generators; (2) Fix CA1508 in common/Workspace.cs+WorkspaceApi.cs. Build: 0 errors. MCP still blocked - PR could not be pushed. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade also a candidate.",
   "fix_attempts": {
-    "repo-assist/improve-workspace-test-models-20260502": "Task9: Add 10 missing workspace test model generators to common.tests. Build verified. PR attempted run 288."
+    "repo-assist/improve-workspace-test-models-20260503": "Tasks 5+9: 10 workspace test model generators + CA1508 fix. Build verified 0 errors. Branch exists locally; MCP blocked so PR not pushed. Retry next run."
   }
 }
