@@ -1,12 +1,17 @@
 {
-  "r": "2026-05-03T01:27Z",
-  "run": 289,
+  "r": "2026-05-03T07:33Z",
+  "run": 290,
   "m": 234,
+  "m_may": "not_yet_created",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run289: Tasks 5+9+11. Branch repo-assist/improve-workspace-test-models-20260503 created locally with 2 commits: (1) tools/code/common.tests/WorkspaceModels.cs - 10 workspace test model generators; (2) Fix CA1508 in common/Workspace.cs+WorkspaceApi.cs. Build: 0 errors. MCP still blocked - PR could not be pushed. Superseded PRs to close: #259 by #260, #157 by #247, #159 by #246, #196 by #238, #204 by #205.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21, MSAL.JsonWebTokens 8.0.2->8.18.0, Polly 8.4.1->8.6.6 still outdated. net8->net9 upgrade also a candidate.",
-  "fix_attempts": {
-    "repo-assist/improve-workspace-test-models-20260503": "Tasks 5+9: 10 workspace test model generators + CA1508 fix. Build verified 0 errors. Branch exists locally; MCP blocked so PR not pushed. Retry next run."
-  }
+  "notes": "Run290: Tasks 4+2+11. Committed patch bumps to PR #235 branch (MSAL 8.18.0, OpenApi.Readers 1.6.29) - branch commit exists locally, push blocked by MCP. Monthly summary for May needs creation. April summary #234 needs closing. All user issues commented, no new human activity.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped (pull .NET 10 transitives). MSAL 8.18.0 + OpenApi.Readers 1.6.29 need push to PR #235.",
+  "pending_pr_push": {
+    "pr": 235,
+    "branch": "repo-assist/eng-nuget-updates-2026-04-01-edc2c0a4b4f9100a",
+    "commit_msg": "eng: bump JsonWebTokens to 8.18.0 and OpenApi.Readers to 1.6.29",
+    "status": "committed_locally_not_pushed"
+  },
+  "fix_attempts": {}
 }
