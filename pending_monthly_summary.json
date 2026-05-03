@@ -3,8 +3,18 @@
   "april_status": "open_needs_closing",
   "may_issue": null,
   "may_status": "needs_creation",
-  "note": "Run291: MCP blocked again. April #234 not closed. May summary not created. Retry next run.",
+  "note": "Run292: MCP blocked again. April #234 not closed. May summary not created. Retry next run.",
   "pending_run_entries": [
+    {
+      "run": 292,
+      "date": "2026-05-03 19:18 UTC",
+      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25288270879",
+      "actions": [
+        "🔧 Task 6: Re-verified and fixed duplicate code bugs (env resets each run, MCP still blocked)",
+        "✅ Build: 0 errors after both fixes (extractor/WorkspacePolicyFragment.cs + publisher/WorkspaceApiRelease.cs)",
+        "🚫 MCP blocked: could not push branch or create PR/issues"
+      ]
+    },
     {
       "run": 291,
       "date": "2026-05-03 13:30 UTC",

@@ -1,16 +1,20 @@
 {
-  "r": "2026-05-03T13:30Z",
-  "run": 291,
+  "r": "2026-05-03T19:18Z",
+  "run": 292,
   "m": 234,
   "m_may": "pending_creation",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run291: Tasks 3+6+11. Fixed 2 duplicate-code bugs: (1) extractor/WorkspacePolicyFragment.cs removed duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call; (2) publisher/WorkspaceApiRelease.cs removed duplicate log line (supersedes PRs #204,#205,#259,#260). Both on branch repo-assist/fix-workspace-policy-fragment-dup-configure. Build OK (0 errors). April #234 still open (MCP blocked). May summary not yet created.",
+  "notes": "Run292: Tasks 6+2+11. MCP blocked (all safeoutputs tools unavailable again). Re-verified and fixed 2 duplicate-code bugs: (1) extractor/WorkspacePolicyFragment.cs removed duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call; (2) publisher/WorkspaceApiRelease.cs removed duplicate log line. Branch repo-assist/fix-workspace-policy-fragment-dup-configure committed locally (0 build errors) but NOT pushed (env resets each run). April #234 still open (MCP blocked). May summary not yet created. Task 2: all_commented still true from run 291 (124 open issues vs 113 commented - 11 may be new). Need to investigate new issues if MCP unblocks.",
   "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped (pull .NET 10 transitives). PR #235 is open eng NuGet bump.",
   "pending_pr_push": {
     "branch": "repo-assist/fix-workspace-policy-fragment-dup-configure",
-    "commits": ["fix: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call in extractor", "fix: remove duplicate log line in WorkspaceApiRelease.DeleteWorkspaceApiReleaseFromApim"],
-    "status": "committed_locally_not_pushed"
+    "commits": ["fix: remove duplicate code in workspace policy fragment and API release"],
+    "status": "committed_locally_not_pushed_env_resets",
+    "files": [
+      "tools/code/extractor/WorkspacePolicyFragment.cs: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call on line 27",
+      "tools/code/publisher/WorkspaceApiRelease.cs: remove duplicate LogInformation call on line 58"
+    ]
   },
   "fix_attempts": {}
 }
