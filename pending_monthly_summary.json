@@ -3,8 +3,18 @@
   "april_status": "open_needs_closing",
   "may_issue": null,
   "may_status": "needs_creation",
-  "note": "Run290: MCP blocked. April #234 not closed. May summary not created. Retry next run.",
+  "note": "Run291: MCP blocked again. April #234 not closed. May summary not created. Retry next run.",
   "pending_run_entries": [
+    {
+      "run": 291,
+      "date": "2026-05-03 13:30 UTC",
+      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25280316503",
+      "actions": [
+        "🔧 Task 3: Fixed duplicate configure call in extractor/WorkspacePolicyFragment.cs (local branch: repo-assist/fix-workspace-policy-fragment-dup-configure)",
+        "🔧 Task 6: Fixed duplicate log line in publisher/WorkspaceApiRelease.cs (same branch, supersedes PRs #204, #205, #259, #260)",
+        "✅ Build: 0 errors after both fixes"
+      ]
+    },
     {
       "run": 290,
       "date": "2026-05-03 07:33 UTC",
