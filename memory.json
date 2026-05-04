@@ -1,20 +1,28 @@
 {
-  "r": "2026-05-03T19:18Z",
-  "run": 292,
+  "r": "2026-05-04T01:31Z",
+  "run": 293,
   "m": 234,
   "m_may": "pending_creation",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run292: Tasks 6+2+11. MCP blocked (all safeoutputs tools unavailable again). Re-verified and fixed 2 duplicate-code bugs: (1) extractor/WorkspacePolicyFragment.cs removed duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call; (2) publisher/WorkspaceApiRelease.cs removed duplicate log line. Branch repo-assist/fix-workspace-policy-fragment-dup-configure committed locally (0 build errors) but NOT pushed (env resets each run). April #234 still open (MCP blocked). May summary not yet created. Task 2: all_commented still true from run 291 (124 open issues vs 113 commented - 11 may be new). Need to investigate new issues if MCP unblocks.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped (pull .NET 10 transitives). PR #235 is open eng NuGet bump.",
+  "notes": "Run293: Tasks 2+4+11. MCP still blocked (5th consecutive run). Fixed duplicate code bugs: (1) extractor/WorkspacePolicyFragment.cs duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts; (2) publisher/WorkspaceApiRelease.cs duplicate LogInformation. Build: 0 errors. Branch repo-assist/fix-duplicate-code-issues committed locally, NOT pushed (no auth). Also found: OpenTelemetry.Exporter.OpenTelemetryProtocol 1.9.0 has moderate CVE GHSA-4625-4j76-fww9, latest is 1.15.3. April #234 still open (MCP blocked). May summary not yet created.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped (pull .NET 10 transitives). PR #235 is open eng NuGet bump. OpenTelemetry suite 1.9.0->1.15.3 (security fix for GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0. Microsoft.OpenApi.Readers 1.6.21->1.6.29.",
   "pending_pr_push": {
-    "branch": "repo-assist/fix-workspace-policy-fragment-dup-configure",
-    "commits": ["fix: remove duplicate code in workspace policy fragment and API release"],
+    "branch": "repo-assist/fix-duplicate-code-issues",
+    "commits": ["fix: remove duplicate code in WorkspacePolicyFragment and WorkspaceApiRelease"],
     "status": "committed_locally_not_pushed_env_resets",
     "files": [
-      "tools/code/extractor/WorkspacePolicyFragment.cs: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call on line 27",
-      "tools/code/publisher/WorkspaceApiRelease.cs: remove duplicate LogInformation call on line 58"
+      "tools/code/extractor/WorkspacePolicyFragment.cs: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call",
+      "tools/code/publisher/WorkspaceApiRelease.cs: remove duplicate LogInformation call"
     ]
+  },
+  "security_findings": {
+    "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
+      "current": "1.9.0",
+      "latest": "1.15.3",
+      "severity": "moderate",
+      "cve": "GHSA-4625-4j76-fww9"
+    }
   },
   "fix_attempts": {}
 }
