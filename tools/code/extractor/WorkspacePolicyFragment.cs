@@ -24,7 +24,6 @@ internal static class WorkspacePolicyFragmentModule
     {
         ConfigureListWorkspacePolicyFragments(builder);
         ConfigureWriteWorkspacePolicyFragmentArtifacts(builder);
-        ConfigureWriteWorkspacePolicyFragmentArtifacts(builder);
 
         builder.Services.TryAddSingleton(GetExtractWorkspacePolicyFragments);
     }
