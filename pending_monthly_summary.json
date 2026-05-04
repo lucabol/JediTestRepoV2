@@ -1,67 +1,8 @@
 {
   "april_issue": 234,
-  "april_status": "open_needs_closing",
-  "may_issue": null,
-  "may_status": "needs_creation",
-  "note": "Run295: MCP blocked again (7th run). April #234 not closed. May summary not created.",
-  "pending_run_entries": [
-    {
-      "run": 295,
-      "date": "2026-05-04 13:27 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25321579098",
-      "actions": [
-        "🔧 Task 6: Fixed WorkspacePolicyFragment.cs - removed duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call; build: 0 errors, tests: pass",
-        "🔍 Task 2: All user issues already have Repo Assist comments",
-        "🚫 MCP blocked: could not push branch or create PR/issues (7th consecutive blocked run)"
-      ]
-    },
-    {
-      "run": 294,
-      "date": "2026-05-04 07:53 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25307435305",
-      "actions": [
-        "🔧 Task 3: Fixed duplicate code bugs (extractor/WorkspacePolicyFragment.cs, publisher/WorkspaceApiRelease.cs) - build: 0 errors, unit tests: passed",
-        "🔍 Task 6: Identified duplicate PRs #259 and #260 (same fix); #259 should be closed",
-        "🚫 MCP blocked: could not push branch or create PR/issues (6th consecutive blocked run)"
-      ]
-    },
-    {
-      "run": 293,
-      "date": "2026-05-04 01:31 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25296585083",
-      "actions": [
-        "🔍 Task 2: all issues already commented; discovered OpenTelemetry CVE GHSA-4625-4j76-fww9 (1.9.0 -> 1.15.3 available)",
-        "🚫 MCP blocked: could not push branch or create PR/issues (5th consecutive blocked run)"
-      ]
-    },
-    {
-      "run": 292,
-      "date": "2026-05-03 19:18 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25288270879",
-      "actions": [
-        "🔧 Task 6: Re-verified and fixed 2 duplicate-code bugs (env resets each run, MCP still blocked)",
-        "✅ Build: 0 errors",
-        "🚫 MCP blocked: could not push branch or create PR/issues"
-      ]
-    },
-    {
-      "run": 291,
-      "date": "2026-05-03 13:30 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25280316503",
-      "actions": [
-        "🔧 Task 3: Fixed duplicate configure call in extractor/WorkspacePolicyFragment.cs",
-        "🔧 Task 6: Fixed duplicate log line in publisher/WorkspaceApiRelease.cs",
-        "✅ Build: 0 errors"
-      ]
-    },
-    {
-      "run": 290,
-      "date": "2026-05-03 07:33 UTC",
-      "run_link": "https://github.com/lucabol/JediTestRepoV2/actions/runs/25273173181",
-      "actions": [
-        "🔍 Task 2: All 113 user issues have Repo Assist comments",
-        "🚫 MCP blocked: could not push branch or create PR/issues"
-      ]
-    }
-  ]
+  "april_status": "closed_run296",
+  "may_issue": "created_run296",
+  "may_status": "open",
+  "note": "Run296: April #234 closed, May summary created. Pending entries cleared.",
+  "pending_run_entries": []
 }
