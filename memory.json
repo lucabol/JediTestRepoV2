@@ -1,19 +1,18 @@
 {
-  "r": "2026-05-04T07:53Z",
-  "run": 294,
+  "r": "2026-05-04T13:27Z",
+  "run": 295,
   "m": 234,
   "m_may": "pending_creation",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run294: Tasks 6+3+11. MCP still blocked (6th consecutive run). Fixed duplicate code bugs AGAIN: (1) extractor/WorkspacePolicyFragment.cs duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts; (2) publisher/WorkspaceApiRelease.cs duplicate LogInformation. Build: 0 errors, 16 warnings. Unit tests: passed. Branch repo-assist/fix-duplicate-code-issues-20260504 committed locally, NOT pushed (no auth/mcp). Also: PR #259 and #260 are duplicates (same WorkspaceApiRelease log fix); #259 is older, should be closed. April #234 still open (MCP blocked). May summary still not created.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped (pull .NET 10 transitives). PR #235 is open eng NuGet bump. OpenTelemetry suite 1.9.0->1.15.3 (security fix for GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0. Microsoft.OpenApi.Readers 1.6.21->1.6.29.",
+  "notes": "Run295: Tasks 2+6+11. MCP still blocked (7th consecutive run). Task 6: Fixed WorkspacePolicyFragment.cs (remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call) - branch repo-assist/fix-workspace-policy-fragment-duplicate-configure-20260504, committed locally. Build: 0 errors, tests pass. Task 2: all issues already commented (all_commented=true). Task 11: April #234 still open (MCP blocked), May summary not created. WorkspaceApiRelease fix: 5 existing PRs (#204,#205,#249,#259,#260) - do NOT create another. PR #259 is duplicate of #260 (older, should close).",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry suite 1.9.0->1.15.3 (security fix for GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0. Microsoft.OpenApi.Readers 1.6.21->1.6.29.",
   "pending_pr_push": {
-    "branch": "repo-assist/fix-duplicate-code-issues-20260504",
-    "commits": ["fix: remove duplicate configure and log calls in extractor/publisher"],
-    "status": "committed_locally_not_pushed_env_resets",
+    "branch": "repo-assist/fix-workspace-policy-fragment-duplicate-configure-20260504",
+    "commits": ["fix: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call in extractor"],
+    "status": "committed_locally_not_pushed_mcp_blocked",
     "files": [
-      "tools/code/extractor/WorkspacePolicyFragment.cs: remove duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts call",
-      "tools/code/publisher/WorkspaceApiRelease.cs: remove duplicate LogInformation call"
+      "tools/code/extractor/WorkspacePolicyFragment.cs: remove 2nd ConfigureWriteWorkspacePolicyFragmentArtifacts call (line 27)"
     ]
   },
   "security_findings": {
@@ -26,9 +25,10 @@
   },
   "duplicate_prs": {
     "workspaceapirelease_log_fix": {
-      "older": 259,
-      "newer": 260,
-      "action": "close #259"
+      "prs": [204, 205, 249, 259, 260],
+      "keep": 260,
+      "close": [204, 205, 249, 259],
+      "note": "5 PRs for same WorkspaceApiRelease duplicate log fix - keep newest #260, close others"
     }
   },
   "fix_attempts": {}
