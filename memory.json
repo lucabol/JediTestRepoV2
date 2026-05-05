@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-04T19:45Z",
-  "run": 296,
-  "m_may": "created",
+  "r": "2026-05-05T01:26Z",
+  "run": 297,
+  "m_may": "updated_run297",
   "all_commented": true,
   "mcp_blocked": false,
-  "notes": "Run296: MCP unblocked! Tasks 5+6+11 all succeeded. Task5: Created PR for WorkspacePolicyFragment.cs duplicate Configure fix. Task6: Commented on PR #259 as duplicate of #260. Task11: Closed April #234, created May 2026 summary issue. Next: find new improvements, continue PR backlog triage.",
+  "notes": "Run297: Tasks 6+3+11. Task6: Checked all open Repo Assist PRs - all mergeable, no CI configured so no CI failures. PR #264 no longer exists (404), replaced by #267 (WorkspacePolicyFragment dup configure fix). Task3: Investigated deletion bugs #85/#106 - root cause is COMMIT_ID not being passed; code is correct. Task11: Updated May summary #268, closing April #234.",
   "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -24,16 +24,22 @@
   },
   "fix_attempts": {
     "workspace_policy_fragment_dup_configure": {
-      "pr": 264,
-      "branch": "repo-assist/fix-workspace-policy-fragment-duplicate-configure-20260504",
+      "pr": 267,
+      "branch": "repo-assist/fix-workspace-policy-fragment-duplicate-configure-20260504-45c74c4e518234ea",
       "status": "open_pr_created",
-      "run": 296
+      "run": 296,
+      "note": "PR #264 was not found (404). PR #267 is the current open one."
     }
   },
   "monthly": {
     "april_issue": 234,
-    "april_status": "closed_run296",
-    "may_issue": "created_run296",
-    "may_status": "open"
+    "april_status": "open_needs_close",
+    "may_issue": 268,
+    "may_status": "updated_run297"
+  },
+  "oddities": {
+    "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
+    "issue_257": "Issue (not PR) with PR-like body about NuGet CPM",
+    "issue_245": "Issue (not PR) with PR-like body about ModifyItems fix"
   }
 }
