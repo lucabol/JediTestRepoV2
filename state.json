@@ -1,1 +1,49 @@
-{"p":124,"m_may":"created","run":296,"mcp_blocked_runs":[289,290,291,292,293,294,295]}
+{
+  "r": "2026-05-05T07:45Z",
+  "run": 298,
+  "m_may": "updated_run298",
+  "all_commented": true,
+  "mcp_blocked": false,
+  "notes": "Run298: Tasks 2+3+11. Task2: No new human activity on any issues since last run; all issues have Repo Assist comments. Task3: Investigated codebase - all known bugs have existing open PRs (140 total). Found April summary #234 still open despite run296 close attempt. Task11: Updated May summary #268, closed April #234.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
+  "security_findings": {
+    "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
+      "current": "1.9.0",
+      "latest": "1.15.3",
+      "severity": "moderate",
+      "cve": "GHSA-4625-4j76-fww9"
+    }
+  },
+  "duplicate_prs": {
+    "workspaceapirelease_log_fix": {
+      "prs": [204, 205, 249, 259, 260],
+      "keep": 260,
+      "close": [204, 205, 249, 259],
+      "note": "Still need maintainer to close #204, #205, #249, #259."
+    }
+  },
+  "fix_attempts": {
+    "workspace_policy_fragment_dup_configure": {
+      "pr": 267,
+      "status": "open_pr_created",
+      "run": 296,
+      "note": "PR #267 open, fixes duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts in extractor/WorkspacePolicyFragment.cs"
+    },
+    "spectral_lint_path_fix": {
+      "pr": 116,
+      "status": "open_pr_created",
+      "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
+    }
+  },
+  "monthly": {
+    "april_issue": 234,
+    "april_status": "closed_run298",
+    "may_issue": 268,
+    "may_status": "updated_run298"
+  },
+  "oddities": {
+    "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
+    "issue_257": "Issue (not PR) with PR-like body about NuGet CPM",
+    "issue_245": "Issue (not PR) with PR-like body about ModifyItems fix"
+  }
+}
