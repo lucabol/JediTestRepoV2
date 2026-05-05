@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-05T07:45Z",
-  "run": 298,
-  "m_may": "updated_run298",
+  "r": "2026-05-05T13:26Z",
+  "run": 299,
+  "m_may": "update_attempted_mcp_blocked",
   "all_commented": true,
-  "mcp_blocked": false,
-  "notes": "Run298: Tasks 2+3+11. Task2: No new human activity on any issues since last run; all issues have Repo Assist comments. Task3: Investigated codebase - all known bugs have existing open PRs (140 total). Found April summary #234 still open despite run296 close attempt. Task11: Updated May summary #268, closed April #234.",
+  "mcp_blocked": true,
+  "notes": "Run299: Tasks 2+3+11. Task2: No new human activity; all 113 user issues have Repo Assist comments. Task3: Investigated codebase - all 140 open Repo Assist PRs cover known bugs; no new actionable bugs found. Task11: Prepared updated monthly summary body but MCP blocked - could not update issue #268. Body prepared to: fix PR #264->PR #267 in suggested actions, add run299 history entry.",
   "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -39,7 +39,11 @@
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "updated_run298"
+    "may_status": "needs_update_run300",
+    "may_pending_update": {
+      "action": "Fix PR #264 ref -> #267 in suggested actions, add run299 entry",
+      "prepared": true
+    }
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
