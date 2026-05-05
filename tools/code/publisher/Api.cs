@@ -220,8 +220,23 @@ internal static class ApiModule
 
             dto = overrideDto(name, dto);
 
+            // Normalize empty strings to null so they are omitted from the PUT body.
+            // Sending "" for serviceUrl causes APIM to substitute the service base URL,
+            // and sending "" for description silently clears the existing description.
+            dto = normalizeEmptyStringsToNull(dto);
+
             return dto;
         }
+
+        static ApiDto normalizeEmptyStringsToNull(ApiDto dto) =>
+            dto with
+            {
+                Properties = dto.Properties with
+                {
+                    ServiceUrl = string.IsNullOrEmpty(dto.Properties.ServiceUrl) ? null : dto.Properties.ServiceUrl,
+                    Description = string.IsNullOrEmpty(dto.Properties.Description) ? null : dto.Properties.Description
+                }
+            };
 
         static async ValueTask<ApiDto> addSpecificationToDto(ApiName name, ApiDto dto, ApiSpecification specification, BinaryData contents, CancellationToken cancellationToken) =>
             dto with
