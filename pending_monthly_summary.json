@@ -2,18 +2,6 @@
   "april_issue": 234,
   "april_status": "closed_run298",
   "may_issue": 268,
-  "may_status": "update_needed_run301",
-  "note": "Run300: MCP blocked. Fix PR for issue #34 implemented (branch: repo-assist/fix-issue-34-normalize-empty-api-properties, normalizes empty serviceUrl/description to null in publisher). Next run: push branch, create PR #TBD, comment on #34, update #268 monthly summary. Monthly summary #268 still has #264 ref instead of #267 in Suggested Actions.",
-  "pending_run_entries": [
-    {
-      "run": 300,
-      "run_id": "25397373814",
-      "date": "2026-05-05 19:24 UTC",
-      "actions": [
-        "Task 3: Implemented fix for issue #34 - normalize empty serviceUrl/description to null in publisher/Api.cs",
-        "Task 6: Verified 140 Repo Assist PRs - all clean/unstable (no CI), no fixes needed",
-        "MCP blocked - branch not pushed, no PR created"
-      ]
-    }
-  ]
+  "may_status": "updated_run301",
+  "note": "Run301: Updated May summary #268. Fixed stale #264 ref (closed) to #267, added #269 to Suggested Actions. All 141 Repo Assist PRs verified mergeable."
 }

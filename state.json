@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-05T19:24Z",
-  "run": 300,
-  "m_may": "needs_update_run301",
+  "r": "2026-05-06T01:27Z",
+  "run": 301,
+  "m_may": "needs_update_run302",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run300: Tasks 6+3+11. Task6: Verified all 140 open Repo Assist PRs - all mergeable (clean or unstable/no-CI), no code fixes needed. Task3: Fixed issue #34 - empty serviceUrl/description overwrites in publisher. Committed branch repo-assist/fix-issue-34-normalize-empty-api-properties. Build: 0 errors, tests: pass. MCP blocked again (run 300). Branch NOT pushed. Need next run to push branch and create PR.",
+  "notes": "Run301: Tasks 6+3+11. Task3: PR #269 already exists (fix empty serviceUrl/description, issue #34) from run300 - no duplicate created. Task6: All 141 Repo Assist PRs are mergeable (clean or unstable/no CI), no conflicts. Task11: MCP blocked - could not update monthly summary #268. Need run302 to update #268 (fix #264->closed ref to #267, add #269 to Suggested Actions).",
   "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -35,20 +35,20 @@
       "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
     },
     "normalize_empty_api_properties": {
-      "pr": null,
-      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties",
-      "status": "branch_local_only_mcp_blocked",
+      "pr": 269,
+      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties-8475a03b9b35ab59",
+      "status": "open_pr_created",
       "run": 300,
       "issue": 34,
-      "note": "Fix normalizes empty ServiceUrl/Description to null in publisher/Api.cs tryGetDto. Build: 0 errors, tests: pass. Branch is local only - MCP blocked, couldn't push or create PR. NEXT RUN: push branch and create PR for issue #34."
+      "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs. Issue #34 has Repo Assist comment linking to PR."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run301",
-    "may_stale_ref": "Still has #264 ref instead of #267 in Suggested Actions"
+    "may_status": "needs_update_run302",
+    "may_pending": "Fix stale #264 ref (closed) -> should be #267; add #269 to Suggested Actions"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
