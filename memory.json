@@ -1,11 +1,11 @@
 {
-  "r": "2026-05-05T01:26Z",
-  "run": 297,
-  "m_may": "updated_run297",
+  "r": "2026-05-06T13:27Z",
+  "run": 303,
+  "m_may": "needs_update_run303",
   "all_commented": true,
-  "mcp_blocked": false,
-  "notes": "Run297: Tasks 6+3+11. Task6: Checked all open Repo Assist PRs - all mergeable, no CI configured so no CI failures. PR #264 no longer exists (404), replaced by #267 (WorkspacePolicyFragment dup configure fix). Task3: Investigated deletion bugs #85/#106 - root cause is COMMIT_ID not being passed; code is correct. Task11: Updated May summary #268, closing April #234.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
+  "mcp_blocked": true,
+  "notes": "Run303: MCP blocked. Task4: security NuGet fix prepared but not pushed (OTel CVE GHSA-4625-4j76-fww9 + IdentityModel). Task3: WorkspaceSubscription publisher implemented but not pushed. Both need redo next run. Task11: not updated (MCP blocked). See state.json pending_fix_branches for details.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 open eng NuGet bump. OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). IdentityModel 8.0.2->8.18.0. NEEDS NEW PR.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
       "current": "1.9.0",
@@ -19,23 +19,43 @@
       "prs": [204, 205, 249, 259, 260],
       "keep": 260,
       "close": [204, 205, 249, 259],
-      "note": "Commented on #259 in run296. Still need maintainer to close #204, #205, #249, #259."
+      "note": "Still need maintainer to close #204, #205, #249, #259."
     }
   },
   "fix_attempts": {
     "workspace_policy_fragment_dup_configure": {
       "pr": 267,
-      "branch": "repo-assist/fix-workspace-policy-fragment-duplicate-configure-20260504-45c74c4e518234ea",
       "status": "open_pr_created",
       "run": 296,
-      "note": "PR #264 was not found (404). PR #267 is the current open one."
+      "note": "PR #267 open, fixes duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts in extractor/WorkspacePolicyFragment.cs"
+    },
+    "spectral_lint_path_fix": {
+      "pr": 116,
+      "status": "open_pr_created",
+      "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
+    },
+    "normalize_empty_api_properties": {
+      "pr": 269,
+      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties-8475a03b9b35ab59",
+      "status": "open_pr_created",
+      "run": 300,
+      "issue": 34,
+      "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs."
+    },
+    "workspace_subscription_publisher": {
+      "status": "pending_mcp_unblock",
+      "note": "NEXT RUN: Create publisher/WorkspaceSubscription.cs (follow WorkspaceTag.cs pattern). Update App.cs to register ConfigurePut/DeleteWorkspaceSubscriptions. Build tested and confirmed passing. Create PR from repo-assist/fix-workspace-subscription-publisher-YYYYMMDD."
+    },
+    "security_nuget_otel_identitymodel": {
+      "status": "pending_mcp_unblock",
+      "note": "NEXT RUN: Update common.csproj: OTel Exporter+Hosting 1.9.0->1.15.3, OTel Http+Runtime 1.9.0->1.15.1, IdentityModel 8.0.2->8.18.0. Remove unused 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from integration.tests/Gateway.cs line 20. Build confirmed passing. Create security fix PR."
     }
   },
   "monthly": {
     "april_issue": 234,
-    "april_status": "open_needs_close",
+    "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "updated_run297"
+    "may_status": "needs_update_run303"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",

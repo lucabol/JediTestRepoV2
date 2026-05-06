@@ -1,17 +1,32 @@
 {
-  "r": "2026-05-06T07:45Z",
-  "run": 302,
-  "m_may": "updated_run302",
+  "r": "2026-05-06T13:27Z",
+  "run": 303,
+  "m_may": "needs_update_run303",
   "all_commented": true,
-  "mcp_blocked": false,
-  "notes": "Run302: Tasks 2+6+11. Task2: No new human comments on user issues; all_commented still true. Task6: Verified all 141 Repo Assist PRs are mergeable (checked #267, #269, #260, #263, #262, #261, #258, #256, #255, #253 - all mergeable=True). Task11: Updated May summary #268: fixed stale #264 (closed) ref to #267, added #269 to Suggested Actions.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0.",
+  "mcp_blocked": true,
+  "notes": "Run303: Tasks 4+3+11. MCP BLOCKED - could not create PRs or update issues. Task4: Prepared security fix branch repo-assist/eng-security-nuget-20260506 (OTel 1.9.0->1.15.3 GHSA-4625-4j76-fww9, IdentityModel 8.0.2->8.18.0, removes unused Google.Protobuf using static from Gateway.cs). Build succeeded. Task3: Implemented WorkspaceSubscription publisher in repo-assist/fix-workspace-subscription-publisher-20260506 (new publisher/WorkspaceSubscription.cs + App.cs registrations). Build succeeded. BOTH BRANCHES LOST because MCP blocked. Next run must redo these changes and create PRs.",
+  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. PR #235 is open eng NuGet bump. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0. NEEDS NEW PR.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
       "current": "1.9.0",
-      "latest": "1.15.3",
+      "fixed": "1.15.3",
       "severity": "moderate",
-      "cve": "GHSA-4625-4j76-fww9"
+      "cve": "GHSA-4625-4j76-fww9",
+      "note": "Also upgrade Extensions.Hosting 1.9.0->1.15.3, Instrumentation.Http 1.9.0->1.15.1, Instrumentation.Runtime 1.9.0->1.15.1. Side effect: remove 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from integration.tests/Gateway.cs (was silently valid via transitive dep, now unused). IdentityModel 8.0.2->8.18.0."
+    }
+  },
+  "pending_fix_branches": {
+    "security_nuget_fix": {
+      "branch": "repo-assist/eng-security-nuget-20260506",
+      "status": "lost_mcp_blocked",
+      "files": ["tools/code/common/common.csproj", "tools/code/integration.tests/Gateway.cs"],
+      "note": "RECREATE NEXT RUN: Update OTel 1.9.0->1.15.3(Exporter+Hosting), 1.15.1(Http+Runtime), IdentityModel 8.0.2->8.18.0, remove 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from Gateway.cs line 20"
+    },
+    "workspace_subscription_publisher": {
+      "branch": "repo-assist/fix-workspace-subscription-publisher-20260506",
+      "status": "lost_mcp_blocked",
+      "files": ["tools/code/publisher/WorkspaceSubscription.cs (NEW)", "tools/code/publisher/App.cs"],
+      "note": "RECREATE NEXT RUN: Create WorkspaceSubscription.cs in publisher following WorkspaceTag.cs pattern. Add ConfigurePutWorkspaceSubscriptions after ConfigurePutWorkspaceApis in App.cs. Add ConfigureDeleteWorkspaceSubscriptions after ConfigureDeleteWorkspaceNamedValues. Add GetRequired/await calls in workspace block."
     }
   },
   "duplicate_prs": {
@@ -47,7 +62,7 @@
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "updated_run302"
+    "may_status": "needs_update_run303"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
