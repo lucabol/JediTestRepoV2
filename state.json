@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-07T13:34Z",
-  "run": 307,
-  "m_may": "needs_update_run307",
+  "r": "2026-05-07T19:26Z",
+  "run": 308,
+  "m_may": "needs_update_run308",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run307: Tasks 3+6+11. Task3: Fixed bug in publisher/Api.cs where deleting a revisioned API folder from git caused ALL API revisions to be deleted from APIM (instead of just the specific revision). Bug: processRevisionedApi was calling deleteFromApim(name) where name=root API name, triggering DeleteAllRevisions. Fix: call deleteFromApim(ApiName.GetRevisionedName(name, revisionNumber)) to target only the specific revision. Committed to branch repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507 (commit 6394d87). Build passed. NEXT RUN: push branch + create PR for issue #65. Task6: All recent Repo Assist PRs mergeable (no CI failures). Task11: Could not update monthly summary (MCP blocked).",
+  "notes": "Run308: Tasks 6+2. Re-implemented fix for issue #65 (deleteFromApim called with root name instead of revisioned name in processRevisionedApi). Local branch committed (552a0cd). MCP blocked - cannot push. PR#166 already open with same fix title - verify overlap next run. No API access for Task6 CI checks or Task2 comments.",
   "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -27,41 +27,36 @@
     "workspace_policy_fragment_dup_configure": {
       "pr": 267,
       "status": "open_pr_created",
-      "run": 296,
-      "note": "PR #267 open, fixes duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts in extractor/WorkspacePolicyFragment.cs"
+      "run": 296
     },
     "spectral_lint_path_fix": {
       "pr": 116,
-      "status": "open_pr_created",
-      "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
+      "status": "open_pr_created"
     },
     "normalize_empty_api_properties": {
       "pr": 269,
-      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties-8475a03b9b35ab59",
       "status": "open_pr_created",
       "run": 300,
-      "issue": 34,
-      "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs."
+      "issue": 34
     },
     "workspace_subscription_publisher": {
       "pr": 224,
-      "status": "open_pr_created",
-      "note": "PR #224 already open and clean - covers WorkspaceSubscription publisher support. No new PR needed."
+      "status": "open_pr_created"
     },
     "revision_deletion_deletes_all": {
       "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507",
-      "commit": "6394d87",
+      "commit": "552a0cd",
       "status": "committed_mcp_blocked",
-      "run": 307,
+      "run": 308,
       "issue": 65,
-      "note": "NEXT RUN: push branch + create PR for issue #65. Fix: in processRevisionedApi, use ApiName.GetRevisionedName(name, revisionNumber) instead of name when calling deleteFromApim."
+      "note": "Fix: in processRevisionedApi, pass ApiName.GetRevisionedName(name, revisionNumber) to deleteFromApim instead of root name. PR#166 already open with same title - check if it covers this."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run307"
+    "may_status": "needs_update_run308"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
