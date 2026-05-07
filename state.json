@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-07T07:51Z",
-  "run": 306,
-  "m_may": "updated_run306",
+  "r": "2026-05-07T13:34Z",
+  "run": 307,
+  "m_may": "needs_update_run307",
   "all_commented": true,
-  "mcp_blocked": false,
-  "notes": "Run306: Tasks 6+2+11. Task6: Verified key PRs (#267,#269,#260,#258,#256,#235,#224) all clean/mergeable. Found PR #224 already covers WorkspaceSubscription publisher (clean, mergeable). Task2: All issues commented, no new human activity. Task11: Updated monthly summary - added PR #224 to Suggested Actions.",
+  "mcp_blocked": true,
+  "notes": "Run307: Tasks 3+6+11. Task3: Fixed bug in publisher/Api.cs where deleting a revisioned API folder from git caused ALL API revisions to be deleted from APIM (instead of just the specific revision). Bug: processRevisionedApi was calling deleteFromApim(name) where name=root API name, triggering DeleteAllRevisions. Fix: call deleteFromApim(ApiName.GetRevisionedName(name, revisionNumber)) to target only the specific revision. Committed to branch repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507 (commit 6394d87). Build passed. NEXT RUN: push branch + create PR for issue #65. Task6: All recent Repo Assist PRs mergeable (no CI failures). Task11: Could not update monthly summary (MCP blocked).",
   "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -47,13 +47,21 @@
       "pr": 224,
       "status": "open_pr_created",
       "note": "PR #224 already open and clean - covers WorkspaceSubscription publisher support. No new PR needed."
+    },
+    "revision_deletion_deletes_all": {
+      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507",
+      "commit": "6394d87",
+      "status": "committed_mcp_blocked",
+      "run": 307,
+      "issue": 65,
+      "note": "NEXT RUN: push branch + create PR for issue #65. Fix: in processRevisionedApi, use ApiName.GetRevisionedName(name, revisionNumber) instead of name when calling deleteFromApim."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "updated_run306"
+    "may_status": "needs_update_run307"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",

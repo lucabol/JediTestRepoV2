@@ -1,126 +1,28 @@
 {
-  "r": "2026-05-07T01:26Z",
-  "run": 305,
-  "m_may": "needs_update_run305",
+  "r": "2026-05-07T13:34Z",
+  "run": 307,
+  "m_may": "needs_update_run307",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run305: Tasks 6+3+11. Recreated WorkspaceSubscription publisher on branch repo-assist/fix-workspace-subscription-publisher-20260507 (commit 9f6e7fe). Build+tests passed. MCP still blocked - could not push or create PR. NEXT RUN: push branch + create PR. Also recreate NuGet security fix (OTel CVE). Monthly summary #268 still needs update.",
-  "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). IdentityModel 8.0.2->8.18.0. NEEDS NEW PR.",
-  "security_findings": {
-    "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
-      "current": "1.9.0",
-      "latest": "1.15.3",
-      "severity": "moderate",
-      "cve": "GHSA-4625-4j76-fww9"
-    }
-  },
-  "duplicate_prs": {
-    "workspaceapirelease_log_fix": {
-      "prs": [204, 205, 249, 259, 260],
-      "keep": 260,
-      "close": [204, 205, 249, 259],
-      "note": "Still need maintainer to close #204, #205, #249, #259."
-    }
-  },
+  "mcp_blocked_runs": [289,290,291,292,293,294,295,305,307],
+  "notes": "Run307: Tasks 3+6+11. Task3: Fixed publisher/Api.cs bug #65 - processRevisionedApi called deleteFromApim(rootName) instead of deleteFromApim(revisionedName), causing DeleteAllRevisions to wipe entire API when deleting a single revision folder. Committed to branch repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507 (commit 6394d87). NEXT RUN: push+PR. Task6: PRs all mergeable. Task11: MCP blocked.",
+  "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "fix_attempts": {
-    "workspace_policy_fragment_dup_configure": {
-      "pr": 267,
-      "status": "open_pr_created",
-      "run": 296,
-      "note": "PR #267 open, fixes duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts in extractor/WorkspacePolicyFragment.cs"
-    },
-    "spectral_lint_path_fix": {
-      "pr": 116,
-      "status": "open_pr_created",
-      "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
-    },
-    "normalize_empty_api_properties": {
-      "pr": 269,
-      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties-8475a03b9b35ab59",
-      "status": "open_pr_created",
-      "run": 300,
-      "issue": 34,
-      "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs."
-    },
-    "workspace_subscription_publisher": {
-      "branch": "repo-assist/fix-workspace-subscription-publisher-20260507",
+    "workspace_policy_fragment_dup_configure": {"pr": 267, "status": "open_pr_created"},
+    "spectral_lint_path_fix": {"pr": 116, "status": "open_pr_created"},
+    "normalize_empty_api_properties": {"pr": 269, "status": "open_pr_created", "issue": 34},
+    "workspace_subscription_publisher": {"pr": 224, "status": "open_pr_created"},
+    "revision_deletion_deletes_all": {
+      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507",
+      "commit": "6394d87",
       "status": "committed_mcp_blocked",
-      "run": 305,
-      "commit": "9f6e7fe",
-      "note": "Branch committed run305, MCP blocked. NEXT RUN: push + create PR."
-    },
-    "security_nuget_otel_identitymodel": {
-      "status": "pending_mcp_unblock",
-      "note": "NEXT RUN: Update common.csproj OTel 1.9.0->1.15.3, IdentityModel 8.0.2->8.18.0. Remove 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from Gateway.cs:20."
+      "run": 307,
+      "issue": 65,
+      "note": "NEXT RUN: push branch + create PR. Fix in publisher/Api.cs processRevisionedApi."
     }
   },
   "monthly": {
-    "april_issue": 234,
-    "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run305"
-  },
-  "oddities": {
-    "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
-    "issue_257": "Issue (not PR) with PR-like body about NuGet CPM",
-    "issue_245": "Issue (not PR) with PR-like body about ModifyItems fix"
-  }
-}
-
-  "security_findings": {
-    "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
-      "current": "1.9.0",
-      "latest": "1.15.3",
-      "severity": "moderate",
-      "cve": "GHSA-4625-4j76-fww9"
-    }
-  },
-  "duplicate_prs": {
-    "workspaceapirelease_log_fix": {
-      "prs": [204, 205, 249, 259, 260],
-      "keep": 260,
-      "close": [204, 205, 249, 259],
-      "note": "Still need maintainer to close #204, #205, #249, #259."
-    }
-  },
-  "fix_attempts": {
-    "workspace_policy_fragment_dup_configure": {
-      "pr": 267,
-      "status": "open_pr_created",
-      "run": 296,
-      "note": "PR #267 open, fixes duplicate ConfigureWriteWorkspacePolicyFragmentArtifacts in extractor/WorkspacePolicyFragment.cs"
-    },
-    "spectral_lint_path_fix": {
-      "pr": 116,
-      "status": "open_pr_created",
-      "note": "PR #116 fixes backslash path separators in run-publisher-with-env.yaml spectral lint step (Closes #61)"
-    },
-    "normalize_empty_api_properties": {
-      "pr": 269,
-      "branch": "repo-assist/fix-issue-34-normalize-empty-api-properties-8475a03b9b35ab59",
-      "status": "open_pr_created",
-      "run": 300,
-      "issue": 34,
-      "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs."
-    },
-    "workspace_subscription_publisher": {
-      "status": "pending_mcp_unblock",
-      "note": "NEXT RUN: Create publisher/WorkspaceSubscription.cs (follow WorkspaceTag.cs pattern). Update App.cs to register ConfigurePut/DeleteWorkspaceSubscriptions. Build tested and confirmed passing. Create PR from repo-assist/fix-workspace-subscription-publisher-YYYYMMDD."
-    },
-    "security_nuget_otel_identitymodel": {
-      "status": "pending_mcp_unblock",
-      "note": "NEXT RUN: Update common.csproj: OTel Exporter+Hosting 1.9.0->1.15.3, OTel Http+Runtime 1.9.0->1.15.1, IdentityModel 8.0.2->8.18.0. Remove unused 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from integration.tests/Gateway.cs line 20. Build confirmed passing. Create security fix PR."
-    }
-  },
-  "monthly": {
-    "april_issue": 234,
-    "april_status": "closed_run298",
-    "may_issue": 268,
-    "may_status": "needs_update_run305"
-  },
-  "oddities": {
-    "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
-    "issue_257": "Issue (not PR) with PR-like body about NuGet CPM",
-    "issue_245": "Issue (not PR) with PR-like body about ModifyItems fix"
+    "may_status": "needs_update_run307"
   }
 }
