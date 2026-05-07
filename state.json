@@ -1,33 +1,18 @@
 {
-  "r": "2026-05-07T01:26Z",
-  "run": 305,
-  "m_may": "needs_update_run305",
+  "r": "2026-05-07T07:51Z",
+  "run": 306,
+  "m_may": "updated_run306",
   "all_commented": true,
-  "mcp_blocked": true,
-  "notes": "Run305: Task6+Task3+Task11. RECREATED WorkspaceSubscription publisher branch repo-assist/fix-workspace-subscription-publisher-20260507 (commit 9f6e7fe). Build passed (0 errors), tests passed. MCP BLOCKED again - branch committed but not pushed. NEXT RUN: push branch and create PR. Also recreate NuGet security fix. Monthly summary #268 still needs update.",
-  "backlog_pkg_update": "Azure.Core 1.43->1.54, Azure.Identity 1.12->1.21 skipped. OpenTelemetry 1.9.0->1.15.3 (GHSA-4625-4j76-fww9). Microsoft.IdentityModel.JsonWebTokens 8.0.2->8.18.0. NEEDS NEW PR.",
+  "mcp_blocked": false,
+  "notes": "Run306: Tasks 6+2+11. Task6: Verified key PRs (#267,#269,#260,#258,#256,#235,#224) all clean/mergeable. Found PR #224 already covers WorkspaceSubscription publisher (clean, mergeable). Task2: All issues commented, no new human activity. Task11: Updated monthly summary - added PR #224 to Suggested Actions.",
+  "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
       "current": "1.9.0",
-      "fixed": "1.15.3",
+      "latest": "1.15.3",
       "severity": "moderate",
       "cve": "GHSA-4625-4j76-fww9",
-      "note": "Also upgrade Extensions.Hosting 1.9.0->1.15.3, Instrumentation.Http 1.9.0->1.15.1, Instrumentation.Runtime 1.9.0->1.15.1. Side effect: remove 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from integration.tests/Gateway.cs line 20. IdentityModel 8.0.2->8.18.0."
-    }
-  },
-  "pending_fix_branches": {
-    "workspace_subscription_publisher": {
-      "branch": "repo-assist/fix-workspace-subscription-publisher-20260507",
-      "status": "committed_mcp_blocked",
-      "commit": "9f6e7fe",
-      "files": ["tools/code/publisher/WorkspaceSubscription.cs (NEW)", "tools/code/publisher/App.cs"],
-      "note": "NEXT RUN: Push branch and create PR. Build+tests confirmed passing."
-    },
-    "security_nuget_fix": {
-      "branch": "needs_recreation",
-      "status": "lost_mcp_blocked",
-      "files": ["tools/code/common/common.csproj", "tools/code/integration.tests/Gateway.cs"],
-      "note": "RECREATE NEXT RUN: Update OTel 1.9.0->1.15.3(Exporter+Hosting), 1.15.1(Http+Runtime), IdentityModel 8.0.2->8.18.0, remove 'using static Google.Protobuf.Reflection.SourceCodeInfo.Types' from Gateway.cs line 20"
+      "note": "PR #235 includes this fix"
     }
   },
   "duplicate_prs": {
@@ -59,18 +44,16 @@
       "note": "PR #269 open - normalizes empty ServiceUrl/Description to null in publisher/Api.cs."
     },
     "workspace_subscription_publisher": {
-      "branch": "repo-assist/fix-workspace-subscription-publisher-20260507",
-      "status": "committed_need_pr",
-      "run": 305,
-      "commit": "9f6e7fe",
-      "note": "Branch committed run305 but MCP blocked. NEXT RUN: push and create PR."
+      "pr": 224,
+      "status": "open_pr_created",
+      "note": "PR #224 already open and clean - covers WorkspaceSubscription publisher support. No new PR needed."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run305"
+    "may_status": "updated_run306"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
