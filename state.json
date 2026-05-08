@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-07T19:26Z",
-  "run": 308,
-  "m_may": "needs_update_run308",
+  "r": "2026-05-08T01:30Z",
+  "run": 309,
+  "m_may": "needs_update_run309",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run308: Tasks 6+2. Re-implemented fix for issue #65 (deleteFromApim called with root name instead of revisioned name in processRevisionedApi). Local branch committed (552a0cd). MCP blocked - cannot push. PR#166 already open with same fix title - verify overlap next run. No API access for Task6 CI checks or Task2 comments.",
+  "notes": "Run309: Fix for issue #65 committed and PR created. Rate limited on GitHub API for Task2.",
   "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -24,39 +24,23 @@
     }
   },
   "fix_attempts": {
-    "workspace_policy_fragment_dup_configure": {
-      "pr": 267,
-      "status": "open_pr_created",
-      "run": 296
-    },
-    "spectral_lint_path_fix": {
-      "pr": 116,
-      "status": "open_pr_created"
-    },
-    "normalize_empty_api_properties": {
-      "pr": 269,
-      "status": "open_pr_created",
-      "run": 300,
-      "issue": 34
-    },
-    "workspace_subscription_publisher": {
-      "pr": 224,
-      "status": "open_pr_created"
-    },
+    "workspace_policy_fragment_dup_configure": {"pr": 267, "status": "open_pr_created", "run": 296},
+    "spectral_lint_path_fix": {"pr": 116, "status": "open_pr_created"},
+    "normalize_empty_api_properties": {"pr": 269, "status": "open_pr_created", "run": 300, "issue": 34},
+    "workspace_subscription_publisher": {"pr": 224, "status": "open_pr_created"},
     "revision_deletion_deletes_all": {
-      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507",
-      "commit": "552a0cd",
-      "status": "committed_mcp_blocked",
-      "run": 308,
+      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260508",
+      "status": "pr_created_run309",
+      "run": 309,
       "issue": 65,
-      "note": "Fix: in processRevisionedApi, pass ApiName.GetRevisionedName(name, revisionNumber) to deleteFromApim instead of root name. PR#166 already open with same title - check if it covers this."
+      "note": "Fix: pass ApiName.GetRevisionedName(name, revisionNumber) to deleteFromApim in processRevisionedApi."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run308"
+    "may_status": "needs_update_run309"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",

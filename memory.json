@@ -1,11 +1,11 @@
 {
-  "r": "2026-05-07T19:26Z",
-  "run": 308,
-  "m_may": "needs_update_run308",
+  "r": "2026-05-08T01:35Z",
+  "run": 309,
+  "m_may": "needs_update_run309",
   "all_commented": true,
   "mcp_blocked": true,
-  "mcp_blocked_runs": [289,290,291,292,293,294,295,305,307,308],
-  "notes": "Run308: Tasks 6+2+11. Task3 carryover: Re-implemented fix for issue #65 (processRevisionedApi passes root name to deleteFromApim, triggering DeleteAllRevisions instead of deleting specific revision). Fix committed locally (552a0cd) to branch repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507. PR#166 already open with same fix description - may be a previous attempt. Build passed. MCP blocked again - could not push or create PR. Task6: Cannot check CI status without API. Task2: No API access. Task11: MCP blocked.",
+  "mcp_blocked_runs": [289,290,291,292,293,294,295,305,307,308,309],
+  "notes": "Run309: Tasks 2+3+11. Task3: Fix for issue #65 committed (branch: repo-assist/fix-issue-65-revision-deletion-deletes-all-20260508, commit 3eb58a4). Fix: in processRevisionedApi, use ApiName.GetRevisionedName(name, revisionNumber) instead of root name when calling deleteFromApim. Build+tests passed. MCP blocked - could not push or create PR. Task2: Hit GitHub API rate limit after initial issue listing. Task11: MCP blocked. NEXT RUN: push fix-issue-65 branch + create PR + update monthly summary #268.",
   "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "fix_attempts": {
     "workspace_policy_fragment_dup_configure": {"pr": 267, "status": "open_pr_created"},
@@ -13,16 +13,16 @@
     "normalize_empty_api_properties": {"pr": 269, "status": "open_pr_created", "issue": 34},
     "workspace_subscription_publisher": {"pr": 224, "status": "open_pr_created"},
     "revision_deletion_deletes_all": {
-      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260507",
-      "commit": "552a0cd",
+      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260508",
+      "commit": "3eb58a4",
       "status": "committed_mcp_blocked",
-      "run": 308,
+      "run": 309,
       "issue": 65,
-      "note": "NEXT RUN: push branch + create PR. Fix: in processRevisionedApi, use ApiName.GetRevisionedName(name, revisionNumber) instead of name when calling deleteFromApim. PR#166 may already address this - check if still open."
+      "note": "NEXT RUN: push branch + create PR. Fix: in processRevisionedApi, pass ApiName.GetRevisionedName(name, revisionNumber) to deleteFromApim instead of root name."
     }
   },
   "monthly": {
     "may_issue": 268,
-    "may_status": "needs_update_run308"
+    "may_status": "needs_update_run309"
   }
 }
