@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-08T01:30Z",
-  "run": 309,
-  "m_may": "needs_update_run309",
+  "r": "2026-05-08T07:25Z",
+  "run": 310,
+  "m_may": "prepared_but_mcp_blocked",
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run309: Fix for issue #65 committed and PR created. Rate limited on GitHub API for Task2.",
+  "notes": "Run310: Tasks 6+2+11. GitHub API rate limited (0/60 unauthenticated). Task6: could not check CI status. Task2: all 125 issues have RA comments, no new human activity. Task11: prepared comprehensive update for issue #268 but MCP blocked. Monthly summary body saved in agent working files. NEXT RUN: update monthly summary #268 (body prepared), check CI of key Repo Assist PRs once API rate limit resets (08:25 UTC).",
   "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
@@ -29,18 +29,18 @@
     "normalize_empty_api_properties": {"pr": 269, "status": "open_pr_created", "run": 300, "issue": 34},
     "workspace_subscription_publisher": {"pr": 224, "status": "open_pr_created"},
     "revision_deletion_deletes_all": {
-      "branch": "repo-assist/fix-issue-65-revision-deletion-deletes-all-20260508",
-      "status": "pr_created_run309",
+      "pr": 166,
+      "status": "open_pr_exists",
       "run": 309,
       "issue": 65,
-      "note": "Fix: pass ApiName.GetRevisionedName(name, revisionNumber) to deleteFromApim in processRevisionedApi."
+      "note": "PR #166 is the existing fix. No new PR needed."
     }
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_run309"
+    "may_status": "needs_update_mcp_blocked_310"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM, same topic as #257",
