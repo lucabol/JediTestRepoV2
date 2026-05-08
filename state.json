@@ -1,10 +1,10 @@
 {
-  "r": "2026-05-08T13:25Z",
-  "run": 311,
+  "r": "2026-05-08T19:24Z",
+  "run": 312,
   "all_commented": true,
   "mcp_blocked": true,
-  "notes": "Run311: Task6 verified 141 PRs - 0 conflicts, no CI checks. Task2: all 125 issues have RA comments. Task11: body prepared for #268 but MCP blocked.",
-  "backlog_pkg_update": "OTel 1.9.0->1.15.3 (GHSA-4625-4j76-fww9) covered in PR #235. IdentityModel 8.0.2->8.18.0 still pending.",
+  "notes": "Run312: Prepared dep update branch but MCP blocked - could not push or create PR. All 125 issues have RA comments.",
+  "backlog_pkg_update": "OTel 1.9.0->1.15.3 covered in PR #235. dep_updates branch repo-assist/eng-dep-updates-20260508 committed locally but not pushed (MCP blocked). Azure.Core+ResourceManager bundle still pending.",
   "security_findings": {
     "OpenTelemetry.Exporter.OpenTelemetryProtocol": {
       "current": "1.9.0",
@@ -27,13 +27,14 @@
     "spectral_lint_path_fix": {"pr": 116, "status": "open_pr_created"},
     "normalize_empty_api_properties": {"pr": 269, "status": "open_pr_created", "issue": 34},
     "workspace_subscription_publisher": {"pr": 224, "status": "open_pr_created"},
-    "revision_deletion_deletes_all": {"pr": 166, "status": "open_pr_exists", "issue": 65}
+    "revision_deletion_deletes_all": {"pr": 166, "status": "open_pr_exists", "issue": 65},
+    "dep_updates_minor_patch": {"branch": "repo-assist/eng-dep-updates-20260508", "status": "branch_committed_not_pushed_run312"}
   },
   "monthly": {
     "april_issue": 234,
     "april_status": "closed_run298",
     "may_issue": 268,
-    "may_status": "needs_update_mcp_blocked_311"
+    "may_status": "needs_update_mcp_blocked_312"
   },
   "oddities": {
     "issue_265": "Issue (not PR) with PR-like body about NuGet CPM",
